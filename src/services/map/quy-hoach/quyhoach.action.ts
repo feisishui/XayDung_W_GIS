@@ -3,10 +3,11 @@ import { DM_RGQH_TrangThai } from './models/ranhgioiquyhoach.model';
 import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
 import { Dispatch } from 'redux';
+import HanhChinh from '../models/HanhChinh';
 
 
 export const ThongTinQuyHoach = {
-  chonHanhChinh: (hanhChinh: string) => chonHanhChinh(DM_RGQH_TrangThai["Thông tin"], hanhChinh)
+  chonHanhChinh: (hanhChinh: HanhChinh) => chonHanhChinh(DM_RGQH_TrangThai["Thông tin"], hanhChinh)
 }
 
 /**
@@ -14,7 +15,7 @@ export const ThongTinQuyHoach = {
  * @param giaiDoan Giai đoạn quy hoạch
  * @param hanhChinh Mã hành chính
  */
-export const chonHanhChinh = (giaiDoan: DM_RGQH_TrangThai, hanhChinh: string) => {
+export const chonHanhChinh = (giaiDoan: DM_RGQH_TrangThai, hanhChinh: HanhChinh) => {
   return (dispatch: Dispatch<QuyHoachAction>) => {
     switch (giaiDoan) {
       case DM_RGQH_TrangThai["Thông tin"]:

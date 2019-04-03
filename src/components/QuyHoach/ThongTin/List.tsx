@@ -28,7 +28,8 @@ const styles = (theme: Theme) => createStyles({
 });
 
 type StateToProps = {
-  loaiQuyHoachs: DM_LoaiQuyHoach[]
+  loaiQuyHoachs: DM_LoaiQuyHoach[],
+  tenHanhChinh?:string
 }
 
 type Props = {
@@ -49,13 +50,14 @@ class Component extends React.Component<Props, States>{
     };
   }
   render() {
-    const { classes, loaiQuyHoachs } = this.props;
+    const { classes, loaiQuyHoachs ,tenHanhChinh} = this.props;
     return <List
       component="nav"
       subheader={
         <ListSubheader component="div">
           <Typography className={classes.title} color="primary" variant="title">
-            <i className="fas fa-globe-asia"></i>TP. Thủ Dầu Một
+            <i className="fas fa-globe-asia"></i>
+            {tenHanhChinh}
           </Typography>
           Danh mục tra cứu thông tin quy hoạch
       </ListSubheader>}
@@ -72,7 +74,8 @@ class Component extends React.Component<Props, States>{
 }
 
 const mapStateToProps = (state: AllModelReducer): StateToProps => ({
-  loaiQuyHoachs: state.quyHoach.loaiQuyHoachs
+  loaiQuyHoachs: state.quyHoach.loaiQuyHoachs,
+  tenHanhChinh:state.quyHoach.hanhChinhSelected && state.quyHoach.hanhChinhSelected.TenHuyenTP
 });
 
 export default connect(mapStateToProps, null)(withStyles(styles)(Component));

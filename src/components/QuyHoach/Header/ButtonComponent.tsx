@@ -14,7 +14,7 @@ const styles = createStyles({
 });
 
 type Props = {
-  onItemClick: (maHuyenTP: string) => void
+  onItemClick: (hanhChinh:HanhChinh) => void
 }
   & WithStyles<typeof styles>;
 
@@ -88,7 +88,7 @@ class ButtonComponent extends React.Component<Props, States>{
         {values.map((m, index) =>
           <MenuItem
             key={index}
-            onClick={this.handleItemClick.bind(null, m.MaHuyenTP)}>
+            onClick={this.handleItemClick.bind(null, m)}>
             {m.TenHuyenTP}
           </MenuItem>)}
       </Menu>
@@ -99,8 +99,8 @@ class ButtonComponent extends React.Component<Props, States>{
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleItemClick = (id?: string) => {
-    id && this.props.onItemClick(id);
+  handleItemClick = (hanhChinh:HanhChinh) => {
+    this.props.onItemClick(hanhChinh);
     this.handleClose();
   };
   handleClose = () => {

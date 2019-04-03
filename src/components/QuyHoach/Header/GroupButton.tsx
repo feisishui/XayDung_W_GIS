@@ -4,12 +4,13 @@ import Button from './ButtonComponent';
 import { DM_RGQH_TrangThai } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
 import { chonHanhChinh } from '../../../services/map/map.action';
 import { connect } from 'react-redux';
+import HanhChinh from '../../../services/map/models/HanhChinh';
 const styles = createStyles({
   root: {}
 });
 
 type DispatchToProps = {
-  chonHanhChinh: (giaiDoan: DM_RGQH_TrangThai, id: string) => void
+  chonHanhChinh: (giaiDoan: DM_RGQH_TrangThai, hanhChinh:HanhChinh) => void
 }
 
 type Props = {
@@ -40,8 +41,8 @@ class ButtonComponent extends React.Component<Props, States>{
     </div>;
   }
 
-  handleButtonClick = (giaiDoan: DM_RGQH_TrangThai, maHuyenTP: string) => {
-    this.props.chonHanhChinh(giaiDoan, maHuyenTP);
+  handleButtonClick = (giaiDoan: DM_RGQH_TrangThai, hanhChinh: HanhChinh) => {
+    this.props.chonHanhChinh(giaiDoan, hanhChinh);
   }
 }
 export default connect(null, {
