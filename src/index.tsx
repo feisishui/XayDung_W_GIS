@@ -39,7 +39,7 @@ if (!versionmanager.equalVersion(version)) {
 // MUI THEME
 const theme = createMuiTheme({
   palette: {
-    type:'dark',
+    // type:'dark',
     // text: {
     //   primary: "#fff",
     //   secondary: "#000"

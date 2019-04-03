@@ -8,7 +8,7 @@ const styles = createStyles({
     display: 'inline-block'
   },
   button: {
-
+    color: '#fff'
   }
 });
 
@@ -56,7 +56,7 @@ class ButtonComponent extends React.Component<Props, States>{
         open={Boolean(anchorEl)}
         onClose={this.handleClose}
       >
-        {values.map(m => <MenuItem onClick={this.handleClose}>{m}</MenuItem>)}
+        {values.map((m, index) => <MenuItem key={index} onClick={this.handleClose}>{m}</MenuItem>)}
       </Menu>
     </div>
   }

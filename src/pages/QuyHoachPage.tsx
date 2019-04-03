@@ -6,7 +6,7 @@ import BasePage from './BasePage';
 import { initViewDiv } from '../actions/index';
 
 // Component
-import {MapComponent,HeaderComponent as Header} from '../components/QuyHoach';
+import { MapComponent, HeaderComponent as Header, ToolPaneComponent } from '../components/QuyHoach';
 
 import LayerInfo from '../services/map/models/LayerInfo';
 import layerUtils from '../map-lib/support/LayerHelper';
@@ -56,8 +56,9 @@ class QuyHoachPage extends BasePage<Props, States> {
 
     return (
       <div className={classes.root}>
-      <Header/>
-        <SplitterLayout primaryIndex={0} secondaryInitialSize={300} 	>
+        <Header />
+        <SplitterLayout primaryIndex={1} secondaryInitialSize={320}>
+          <ToolPaneComponent />
           <MapComponent
             loadMapDiv={this.loadMapDiv.bind(this)}
             layerInfos={layerInfos}
