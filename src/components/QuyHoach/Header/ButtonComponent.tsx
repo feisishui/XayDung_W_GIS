@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createStyles, WithStyles, withStyles, Button, Menu, MenuItem } from '@material-ui/core';
+import HanhChinh from '../../../services/map/models/HanhChinh';
 const styles = createStyles({
   root: {
     borderColor: '#fff',
@@ -13,7 +14,7 @@ const styles = createStyles({
 });
 
 type Props = {
-
+  onItemClick: (maHuyenTP: string) => void
 }
   & WithStyles<typeof styles>;
 
@@ -21,15 +22,43 @@ type States = {
   anchorEl: HTMLInputElement | null
 };
 
-const values = [
-  'TP. Thủ Dầu Một',
-  'Huyện Bến Cát',
-  'Huyện Bắc Tân Uyên',
-  'Huyện Tân Uyên',
-  'Huyện Thuận An',
-  'Huyện Dĩ An',
-  'Huyện Phú Giáo',
-  'Huyện Dầu Tiếng',
+const values: HanhChinh[] = [
+  {
+    TenHuyenTP: 'Bàu Bàng',
+    MaHuyenTP: '726'
+  },
+  {
+    TenHuyenTP: 'Dầu Tiếng',
+    MaHuyenTP: '720'
+  },
+  {
+    TenHuyenTP: 'Dĩ An',
+    MaHuyenTP: '724'
+  },
+  {
+    TenHuyenTP: 'Phú Giáo',
+    MaHuyenTP: '722'
+  },
+  {
+    TenHuyenTP: 'TP Bắc Tân Uyên',
+    MaHuyenTP: '727'
+  },
+  {
+    TenHuyenTP: 'TP Thủ Dầu Một',
+    MaHuyenTP: '718'
+  },
+  {
+    TenHuyenTP: 'Thuận An',
+    MaHuyenTP: '725'
+  },
+  {
+    TenHuyenTP: 'Tân Uyên',
+    MaHuyenTP: '723'
+  },
+  {
+    TenHuyenTP: 'Bến Cát',
+    MaHuyenTP: '721'
+  }
 ]
 
 class ButtonComponent extends React.Component<Props, States>{
@@ -56,7 +85,12 @@ class ButtonComponent extends React.Component<Props, States>{
         open={Boolean(anchorEl)}
         onClose={this.handleClose}
       >
-        {values.map((m, index) => <MenuItem key={index} onClick={this.handleClose}>{m}</MenuItem>)}
+        {values.map((m, index) =>
+          <MenuItem
+            key={index}
+            onClick={this.handleItemClick.bind(null, m.MaHuyenTP)}>
+            {m.TenHuyenTP}
+          </MenuItem>)}
       </Menu>
     </div>
   }
@@ -65,6 +99,10 @@ class ButtonComponent extends React.Component<Props, States>{
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleItemClick = (id?: string) => {
+    id && this.props.onItemClick(id);
+    this.handleClose();
+  };
   handleClose = () => {
     this.setState({ anchorEl: null });
   };

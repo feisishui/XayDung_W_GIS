@@ -4,11 +4,13 @@ import {
   WithStyles, withStyles,
   List,
   ListSubheader,
-  ListItemText,
   Theme,
   Typography
 } from '@material-ui/core';
 import ListItem from './ListItem';
+import { DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
+import { AllModelReducer } from '../../../reducers';
+import { connect } from 'react-redux';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -19,16 +21,21 @@ const styles = (theme: Theme) => createStyles({
   },
   title: {
     textAlign: 'center',
-    '& i':{
-      marginRight:5
+    '& i': {
+      marginRight: 5
     }
   }
 });
 
+type StateToProps = {
+  loaiQuyHoachs: DM_LoaiQuyHoach[]
+}
+
 type Props = {
 
 }
-  & WithStyles<typeof styles>;
+  & WithStyles<typeof styles>
+  & StateToProps;
 
 type States = {
 
@@ -42,7 +49,7 @@ class Component extends React.Component<Props, States>{
     };
   }
   render() {
-    const { classes } = this.props;
+    const { classes, loaiQuyHoachs } = this.props;
     return <List
       component="nav"
       subheader={
@@ -54,15 +61,18 @@ class Component extends React.Component<Props, States>{
       </ListSubheader>}
       className={classes.root}
     >
-      <ListItem title="Quy hoạch vùng" />
-      <ListItem title="Quy hoạch phân khu" />
-      <ListItem title="Quy hoạch chi tiết" />
-      <ListItem title="Quy hoạch nông thôn" />
+      {
+        loaiQuyHoachs.length > 0
+        ?
+        loaiQuyHoachs.map((m,index) => <ListItem key={index} title={m} />)
+        : <Typography>Vui lòng chọn quy hoạch</Typography>
+      }
     </List>;
   }
-
-
-
 }
 
-export default withStyles(styles)(Component);
+const mapStateToProps = (state: AllModelReducer): StateToProps => ({
+  loaiQuyHoachs: state.quyHoach.loaiQuyHoachs
+});
+
+export default connect(mapStateToProps, null)(withStyles(styles)(Component));

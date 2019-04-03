@@ -1,3 +1,5 @@
+export * from './quy-hoach/quyhoach.action';
+
 import { alertActions, MapAction, loading } from '../../actions';
 import { MapActionType } from '../../actions/action-types';
 import { Dispatch } from 'redux';
