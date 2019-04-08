@@ -8,9 +8,9 @@ import {
   Typography
 } from '@material-ui/core';
 import ListItem from './ListItem';
-import RanhGioiQuyHoach, { DM_RGQH_TrangThai, DoAnQuyHoach, DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
+import { DM_RGQH_TrangThai, DoAnQuyHoach, DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
 import { AllModelReducer } from '../../../reducers';
-import { chonLoaiQuyHoach } from '../../../actions/action';
+import { chonLoaiQuyHoach,chonDoAnQuyHoach } from '../../../actions/action';
 import { connect } from 'react-redux';
 
 
@@ -34,11 +34,12 @@ const styles = (theme: Theme) => createStyles({
 type StateToProps = {
   doAnQuyHoach: DoAnQuyHoach[],
   tenHanhChinh?: string,
-  giaiDoan?: DM_RGQH_TrangThai
+  giaiDoan?: DM_RGQH_TrangThai,
 }
 
 type DispatchToProps = {
-  chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => void
+  chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => void,
+  chonDoAnQuyHoach: (objectId:number) => void
 };
 
 type Props = {
@@ -79,6 +80,7 @@ class Component extends React.Component<Props, States>{
           doAnQuyHoach.map((m, index) =>
             <ListItem
               onClick={this.handleItemClick.bind(null, m)}
+              onSubItemClick={this.handleSubItemClick}
               key={index}
               title={m.loaiQuyHoach}
               doAnQuyHoachs={m.doAns}
@@ -104,6 +106,11 @@ class Component extends React.Component<Props, States>{
     this.props.chonLoaiQuyHoach(doAnQuyHoach.loaiQuyHoach);
     return false;
   }
+  handleSubItemClick = async (objectId:number) => {
+    this.props.chonDoAnQuyHoach(objectId);
+    return false;
+  }
+
 }
 
 const mapStateToProps = (state: AllModelReducer): StateToProps => ({
@@ -113,7 +120,8 @@ const mapStateToProps = (state: AllModelReducer): StateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
-  chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => dispatch(chonLoaiQuyHoach({ loaiQuyHoach }))
+  chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => dispatch(chonLoaiQuyHoach({ loaiQuyHoach })),
+  chonDoAnQuyHoach:(objectId:number)=>dispatch(chonDoAnQuyHoach({objectId}))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Component));

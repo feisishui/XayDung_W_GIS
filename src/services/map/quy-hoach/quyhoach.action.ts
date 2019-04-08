@@ -38,6 +38,11 @@ export const chonHanhChinh = (hanhChinh: HanhChinh) => {
   }
 }
 
+
+/**
+ * Chọn loại quy hoạch
+ * @param params tham số
+ */
 export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: DM_LoaiQuyHoach, giaiDoan?: DM_RGQH_TrangThai }) => {
   return async (dispatch: Dispatch<QuyHoachAction | MainAction>, getState: () => AllModelReducer) => {
     const quyHoachStore = getState().quyHoach;
@@ -58,7 +63,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
             const features = (await rgqhLayer.queryFeatures({
               where: `LoaiQuyHoach = '${loaiQuyHoach}' and MaQuanHuyen = '${maQuanHuyen}' and TrangThai = '${giaiDoan}'`,
               returnGeometry: false,
-              outFields: [RanhGioiQuyHoachName.TenDuAn]
+              outFields: ['OBJECTID',RanhGioiQuyHoachName.TenDuAn]
             })).features;
 
             if (features.length === 0) {
@@ -86,8 +91,39 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
     } catch (error) {
       dispatch(alertActions.error(error.message));
     }
-    finally{
+    finally {
       dispatch(loading.loadingFinish());
     }
   };
+}
+
+export const chonDoAnQuyHoach = (params: { objectId: number }) => {
+  return async (dispatch: Dispatch<MainAction | QuyHoachAction>, getState: () => AllModelReducer) => {
+    // focus theo objectId
+    try {
+      dispatch(loading.loadingReady());
+      const view = getState().map.view;
+
+      if (view) {
+        const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
+        if (rgqhLayer) {
+          const features = (await rgqhLayer.queryFeatures({
+            returnGeometry: true,
+            outSpatialReference: view.spatialReference,
+            objectIds: [params.objectId]
+          })).features;
+          view.goTo(features);
+        } else {
+          throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
+        }
+      } else {
+        throw new Error('Không xác định được view engine');
+      }
+    } catch (error) {
+      dispatch(alertActions.error(error.message));
+    }
+    finally {
+      dispatch(loading.loadingFinish());
+    }
+  }
 }

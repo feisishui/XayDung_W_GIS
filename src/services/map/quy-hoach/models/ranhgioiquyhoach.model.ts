@@ -12,6 +12,7 @@ export interface DoAnQuyHoach {
 }
 
 export default interface RanhGioiQuyHoach {
+  OBJECTID?: number;
   MaQuanHuyen?: string;
   MaPhuongXa?: string;
   LoaiQuyHoach?: DM_LoaiQuyHoach;

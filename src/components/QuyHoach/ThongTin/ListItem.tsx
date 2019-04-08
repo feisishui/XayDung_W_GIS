@@ -18,15 +18,20 @@ const styles = (theme: Theme) => createStyles({
   margin: {
     margin: theme.spacing.unit * 2,
   },
+  item:{
+    cursor:'pointer'
+  },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
+    cursor:'pointer'
   },
 });
 
 type Props = {
   title: string,
   doAnQuyHoachs: RanhGioiQuyHoach[],
-  onClick: () => Promise<boolean>
+  onClick: () => Promise<boolean>,
+  onSubItemClick:(objectId:number)=>void
 }
   & WithStyles<typeof styles>;
 
@@ -48,7 +53,7 @@ class Component extends React.Component<Props, States>{
     const { isLoading } = this.state;
     return <React.Fragment>
       {isLoading && <LinearProgress />}
-      <ListItem button onClick={this.handleClick}>
+      <ListItem button onClick={this.handleClick} className={classes.item}>
         <Badge badgeContent={1} color="primary" className={classes.margin}>
           <ListItemText primary={this.getName(title)} />
         </Badge>
@@ -57,7 +62,7 @@ class Component extends React.Component<Props, States>{
       <Collapse in={this.state.open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {doAnQuyHoachs.map((m, index) =>
-            <ListItem key={index} button className={classes.nested}>
+            <ListItem key={index} button className={classes.nested} onClick={this.props.onSubItemClick.bind(null,m.OBJECTID as number)}>
               <ListItemText primary={m.TenDuAn || 'Chưa có tên đồ án'} />
             </ListItem>
           )}

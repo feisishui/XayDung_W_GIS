@@ -49,12 +49,10 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
       if (doAnQuyHoach) {
         doAnQuyHoach.doAns = action.quyHoachs;
       } else {
-        doAnQuyHoach = { loaiQuyHoach: action.loaiQuyHoach, doAns: action.quyHoachs }
+        doAnQuyHoach = { loaiQuyHoach: action.loaiQuyHoach, doAns: action.quyHoachs };
+        doAnQuyHoachs.push(doAnQuyHoach);
       }
-      // nếu có dữ liệu rồi thì cập nhật lại
-      let index = doAnQuyHoachs.findIndex(s => s.loaiQuyHoach === action.loaiQuyHoach);
-      index > -1 && doAnQuyHoachs.splice(index, 1);
-      doAnQuyHoachs.push(doAnQuyHoach);
+    
       return { ...state, doAnQuyHoachs };
     default:
       return state;
