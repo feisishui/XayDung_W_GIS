@@ -40,15 +40,23 @@ if (!versionmanager.equalVersion(version)) {
 const theme = createMuiTheme({
   palette: {
     // type:'dark',
-    // text: {
-    //   primary: "#fff",
-    //   secondary: "#000"
-    // },
     primary: {
       main: '#1B9CFC',
     },
     secondary: {
       main: '#25CCF7'
+    }
+  },
+  overrides: {
+    MuiButton: {
+      textPrimary: {
+        color: '#fff'
+      }
+    },
+    MuiBadge: {
+      colorPrimary: {
+        color: '#fff'
+      }
     }
   },
   typography: {

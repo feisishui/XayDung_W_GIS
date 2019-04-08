@@ -63,7 +63,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
             const features = (await rgqhLayer.queryFeatures({
               where: `LoaiQuyHoach = '${loaiQuyHoach}' and MaQuanHuyen = '${maQuanHuyen}' and TrangThai = '${giaiDoan}'`,
               returnGeometry: false,
-              outFields: ['OBJECTID',RanhGioiQuyHoachName.TenDuAn]
+              outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn]
             })).features;
 
             if (features.length === 0) {
@@ -97,6 +97,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
   };
 }
 
+var highlightDoAnQuyHoach: IHandle | null = null;
 export const chonDoAnQuyHoach = (params: { objectId: number }) => {
   return async (dispatch: Dispatch<MainAction | QuyHoachAction>, getState: () => AllModelReducer) => {
     // focus theo objectId
@@ -105,13 +106,17 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
       const view = getState().map.view;
 
       if (view) {
+
         const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
         if (rgqhLayer) {
+          const layerView = await view.whenLayerView(rgqhLayer);
           const features = (await rgqhLayer.queryFeatures({
             returnGeometry: true,
             outSpatialReference: view.spatialReference,
             objectIds: [params.objectId]
           })).features;
+          highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
+          highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
           view.goTo(features);
         } else {
           throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');

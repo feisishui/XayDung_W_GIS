@@ -18,12 +18,12 @@ const styles = (theme: Theme) => createStyles({
   margin: {
     margin: theme.spacing.unit * 2,
   },
-  item:{
-    cursor:'pointer'
+  item: {
+    cursor: 'pointer'
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
-    cursor:'pointer'
+    cursor: 'pointer'
   },
 });
 
@@ -31,7 +31,7 @@ type Props = {
   title: string,
   doAnQuyHoachs: RanhGioiQuyHoach[],
   onClick: () => Promise<boolean>,
-  onSubItemClick:(objectId:number)=>void
+  onSubItemClick: (objectId: number) => void
 }
   & WithStyles<typeof styles>;
 
@@ -54,16 +54,16 @@ class Component extends React.Component<Props, States>{
     return <React.Fragment>
       {isLoading && <LinearProgress />}
       <ListItem button onClick={this.handleClick} className={classes.item}>
-        <Badge badgeContent={1} color="primary" className={classes.margin}>
+        <Badge badgeContent={doAnQuyHoachs.length} color="primary" className={classes.margin}>
           <ListItemText primary={this.getName(title)} />
         </Badge>
         {this.state.open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List component="div">
           {doAnQuyHoachs.map((m, index) =>
-            <ListItem key={index} button className={classes.nested} onClick={this.props.onSubItemClick.bind(null,m.OBJECTID as number)}>
-              <ListItemText primary={m.TenDuAn || 'Chưa có tên đồ án'} />
+            <ListItem key={index} button className={classes.nested} onClick={this.props.onSubItemClick.bind(null, m.OBJECTID as number)}>
+              <ListItemText primary={(index + 1) + '. ' + (m.TenDuAn || 'Chưa có tên đồ án')} />
             </ListItem>
           )}
         </List>
