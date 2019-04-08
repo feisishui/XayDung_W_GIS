@@ -1,7 +1,7 @@
-import PopupTemplate = require('esri/PopupTemplate');
 import Action = require('esri/support/actions/ActionButton');
 import PopupEditing from './Popup/Editing';
-import { FIELDS_NO_EDIT } from '../../constants/map.constant';
+import PopupViewModel from './Popup/PopupViewModel';
+import HighlightGraphic from '../support/HighlightGraphic';
 
 export enum PopupAction {
   EDIT,
@@ -22,7 +22,7 @@ export interface LayerFieldInfo {
 export interface LayerInfo {
   layerFields: LayerFieldInfo[];
   isEditable?: boolean;
-  layer: __esri.FeatureLayer;
+  layer: __esri.FeatureLayer | __esri.MapImageLayer;
   showAttachments?: boolean;
   showDeleteButton?: boolean;
   showObjectID?: boolean;
@@ -39,6 +39,7 @@ class Popup {
   private view: __esri.MapView | __esri.SceneView;
   private layerInfos: LayerInfo[];
   private editing: PopupEditing;
+  private highlight: HighlightGraphic;
   constructor(params: ConstructorProperties) {
     this.view = params.view;
     this.layerInfos = params.layerInfos;
@@ -47,6 +48,7 @@ class Popup {
       this.initPopup(f);
     });
     this.editing = new PopupEditing({ view: this.view });
+    this.highlight = new HighlightGraphic(this.view);
     this.registerEvent();
   }
 
@@ -55,123 +57,8 @@ class Popup {
    * @param layerInfo Định nghĩa những lớp hiển thị popup
    */
   private initPopup(layerInfo: LayerInfo) {
-    layerInfo.showObjectID = layerInfo.showObjectID !== undefined ? layerInfo.showObjectID : false;
-    layerInfo.showGlobalID = layerInfo.showGlobalID !== undefined ? layerInfo.showGlobalID : false;
-    layerInfo.showAttachments = layerInfo.showAttachments !== undefined ? layerInfo.showAttachments : false;
-    layerInfo.isEditable = layerInfo.isEditable !== undefined ? layerInfo.isEditable : false;
-    const { layer, isEditable, showDeleteButton, showAttachments, showGlobalID, showObjectID,
-      actions } = layerInfo;
-    layer.when((layerView: __esri.LayerView) => {
-
-      let _actions: __esri.ActionBase[] = [];
-
-      // nếu có action thì thêm vào
-      if (actions && actions.length > 0) {
-        actions.forEach(a => _actions.push(a));
-      }
-
-      // nếu được phép chỉnh sửa
-      if (isEditable) {
-        _actions.push(new Action({
-          id: PopupAction.EDIT + '',
-          title: 'Cập nhật',
-          className: 'esri-icon-edit',
-        }));
-
-        // nếu point thì cho chuyển vị trí
-        if (layer.geometryType === 'point')
-          _actions.push(new Action({
-            id: PopupAction.MOVE + '',
-            title: 'Di chuyển không gian',
-            className: 'fas fa-people-carry',
-          }));
-      }
-      // nếu hiện nút xóa
-      if (showDeleteButton) {
-        _actions.push(new Action({
-          id: PopupAction.DELETE + '',
-          title: 'Xóa',
-          className: 'esri-icon-erase',
-        }));
-      }
-      let layerFields: LayerFieldInfo[];
-      if (layerInfo.layerFields) {
-        layerFields = layerInfo.layerFields.slice();
-        layerFields.forEach(layerField => {
-          let field = layer.fields.find(_field => _field.name === layerField.name);
-          if (field) {
-            if (!layerField.alias) {
-              layerField.alias = field.alias;
-            }
-            layerField.domain = field.domain;
-            layerField.type = field.type as any;
-          }
-        });
-      } else {
-        // nếu không có thì tự tạo
-
-        // lấy tất cả field từ layer
-        let _fields: __esri.Field[] = [];
-        if (layer.outFields.indexOf('*') !== -1) {
-          _fields = layer.fields;
-        } else if (layer.outFields.length > 0) {
-          // lọc danh sách field có trong outFields
-          _fields = layer.fields.filter(f => layer.outFields.indexOf(f.name) !== -1);
-        }
-
-        _fields = _fields
-          .filter(field => {
-
-            // không cho phép hiển thị objectid
-            if (field && field.type === 'oid' && !showObjectID) {
-              return false;
-            }
-            // không cho phép hiển thị global id
-            else if (field && field.type === 'global-id' && !showGlobalID) {
-              return false;
-            }
-            if (field) {
-              return true;
-            } else {
-              return false;
-            }
-          });
-        layerFields = _fields.map(m => {
-          return {
-            name: m.name,
-            isEditable: isEditable === true ? FIELDS_NO_EDIT.indexOf(m.name) === -1 : true, // mặc định không cho chỉnh sửa,
-            domain: m.domain,
-            alias: m.alias,
-            type: m.type
-          } as LayerFieldInfo;
-        });
-
-        layerInfo.layerFields = layerFields;
-      }
-      // lấy fields để nhận name và alias
-
-      let content = [{
-        type: 'fields',
-        fieldInfos: layerFields.map((m) => {
-          return {
-            fieldName: m.name,
-            label: m.alias,
-          };
-        })
-      }];
-
-      if (showAttachments) {
-        content.push({
-          type: 'attachments'
-        } as any);
-      }
-      var popupTemplate = new PopupTemplate({
-        title: layer.title,
-        content,
-        actions: _actions as any
-      });
-      layer.popupTemplate = popupTemplate;
-    });
+    layerInfo.layer.type === 'feature' && new PopupViewModel().popupFeatureLayer(layerInfo);
+    layerInfo.layer.type === 'map-image' && new PopupViewModel().popupMapImageLayer(layerInfo);
   }
 
   /**
@@ -180,6 +67,12 @@ class Popup {
   private registerEvent() {
     // đăng ký sự kiện khi click vào action
     this.view.popup.on('trigger-action', this.triggerActionHandler.bind(this));
+    this.view.popup.watch('selectedFeature', (newValue: __esri.Graphic, oldValue: __esri.Graphic) => {
+      this.highlight.removeAll();
+      if (newValue && (!newValue.layer || (newValue.layer && newValue.layer.type !== 'feature'))) {
+        this.highlight.add(newValue);
+      } 
+    })
   }
 
   private triggerActionHandler(event: {

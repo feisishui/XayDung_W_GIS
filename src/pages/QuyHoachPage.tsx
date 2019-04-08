@@ -18,7 +18,11 @@ import { createStyles, WithStyles, withStyles, LinearProgress } from '@material-
 import SplitterLayout from 'react-splitter-layout';
 
 const styles = createStyles({
-  root: { height: '100%', width: '100%' }
+  root: { height: '100%', width: '100%' },
+  container: {
+    flex: '1 1 auto',
+    height: 'calc(100vh - 64px)'
+  }
 });
 
 type States = {
@@ -57,7 +61,7 @@ class QuyHoachPage extends BasePage<Props, States> {
     return (
       <div className={classes.root}>
         <Header />
-        <SplitterLayout primaryIndex={1} secondaryInitialSize={320}>
+        <SplitterLayout customClassName={classes.container} primaryIndex={1} secondaryInitialSize={320}>
           <ToolPaneComponent />
           <MapComponent
             loadMapDiv={this.loadMapDiv.bind(this)}

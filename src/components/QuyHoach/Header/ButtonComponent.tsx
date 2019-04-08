@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStyles, WithStyles, withStyles, Button, Menu, MenuItem } from '@material-ui/core';
-import HanhChinh from '../../../services/map/models/HanhChinh';
+import HanhChinh, { values } from '../../../services/map/models/HanhChinh';
 const styles = createStyles({
   root: {
     borderColor: '#fff',
@@ -23,44 +23,7 @@ type States = {
   anchorEl: HTMLInputElement | null
 };
 
-const values: HanhChinh[] = [
-  {
-    TenHuyenTP: 'Bàu Bàng',
-    MaHuyenTP: '726'
-  },
-  {
-    TenHuyenTP: 'Dầu Tiếng',
-    MaHuyenTP: '720'
-  },
-  {
-    TenHuyenTP: 'Dĩ An',
-    MaHuyenTP: '724'
-  },
-  {
-    TenHuyenTP: 'Phú Giáo',
-    MaHuyenTP: '722'
-  },
-  {
-    TenHuyenTP: 'TP Bắc Tân Uyên',
-    MaHuyenTP: '727'
-  },
-  {
-    TenHuyenTP: 'TP Thủ Dầu Một',
-    MaHuyenTP: '718'
-  },
-  {
-    TenHuyenTP: 'Thuận An',
-    MaHuyenTP: '725'
-  },
-  {
-    TenHuyenTP: 'Tân Uyên',
-    MaHuyenTP: '723'
-  },
-  {
-    TenHuyenTP: 'Bến Cát',
-    MaHuyenTP: '721'
-  }
-]
+
 
 class ButtonComponent extends React.Component<Props, States>{
   constructor(props: Props) {
@@ -88,6 +51,7 @@ class ButtonComponent extends React.Component<Props, States>{
       >
         {values.map((m, index) =>
           <MenuItem
+            dense
             key={index}
             onClick={this.handleItemClick.bind(null, m)}>
             {m.TenHuyenTP}

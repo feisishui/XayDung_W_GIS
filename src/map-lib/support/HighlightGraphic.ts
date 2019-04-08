@@ -16,7 +16,7 @@ class HighlightGraphic {
     options = options || {};
     this.view = view;
     this.symbolMarker = options.symbolMarker || new SimpleMarkerSymbol({
-      color: new Color([255, 0, 0]),
+      color: new Color([0,255,255]),
       size: 3,
       outline: new SimpleLineSymbol({
         width: 7,
@@ -25,13 +25,13 @@ class HighlightGraphic {
     });
 
     this.symbolLine = options.symbolLine || new SimpleLineSymbol({
-      color: new Color([255, 0, 0]),
+      color: new Color([0,255,255]),
       width: 4
     });
     this.symbolPlg = options.symbolPlg || {
       type: 'simple-fill',
       outline: { //  autocasts as new SimpleLineSymbol()
-        color: [255, 0, 0], //  autocasts as new Color()
+        color: [0,255,255], //  autocasts as new Color()
         width: 1
       }
     };

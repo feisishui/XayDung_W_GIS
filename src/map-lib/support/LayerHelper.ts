@@ -145,7 +145,7 @@ export default class LayerHelper {
         (layer as __esri.GroupLayer).layers.forEach(f => f.visible = false);
         break;
       case 'kml':
-        function download(url: string) {
+        const download = (url: string) => {
           var a = document.createElement('a');
           a.href = url;
           a.target = '_blank';

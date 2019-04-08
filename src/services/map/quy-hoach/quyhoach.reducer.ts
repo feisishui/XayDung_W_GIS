@@ -1,6 +1,6 @@
 import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
-import  { DM_LoaiQuyHoach, DM_RGQH_TrangThai, DoAnQuyHoach } from './models/ranhgioiquyhoach.model';
+import { DM_LoaiQuyHoach, DM_RGQH_TrangThai, DoAnQuyHoach } from './models/ranhgioiquyhoach.model';
 import HanhChinh from '../models/HanhChinh';
 
 
@@ -33,7 +33,7 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         loaiQuyHoachs = [];
       }
       // nếu không phải là thành phố thì có thêm quy hoạch nông thôn
-      else if (action.hanhChinh.MaHuyenTP !== '727' && action.hanhChinh.MaHuyenTP !== '718') {
+      else if (action.hanhChinh.MaHuyenTP !== '718') {
         loaiQuyHoachs.push(DM_LoaiQuyHoach["Quy hoạch nông thôn mới"]);
       }
       return {
@@ -52,7 +52,7 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         doAnQuyHoach = { loaiQuyHoach: action.loaiQuyHoach, doAns: action.quyHoachs };
         doAnQuyHoachs.push(doAnQuyHoach);
       }
-    
+
       return { ...state, doAnQuyHoachs };
     default:
       return state;

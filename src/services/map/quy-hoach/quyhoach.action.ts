@@ -23,18 +23,10 @@ export const chonGiaiDoan = (giaiDoan: DM_RGQH_TrangThai): QuyHoachAction => {
  */
 export const chonHanhChinh = (hanhChinh: HanhChinh) => {
   return (dispatch: Dispatch<QuyHoachAction>, getState: () => AllModelReducer) => {
-    const giaiDoan = getState().quyHoach.giaiDoan;
-    switch (giaiDoan) {
-      case DM_RGQH_TrangThai["Thông tin"]:
-        dispatch({
-          type: QuyHoachActionType.ThongTinQuyHoach_ChonHanhChinh,
-          hanhChinh
-        });
-        break;
-
-      default:
-        break;
-    }
+    dispatch({
+      type: QuyHoachActionType.ThongTinQuyHoach_ChonHanhChinh,
+      hanhChinh
+    })
   }
 }
 

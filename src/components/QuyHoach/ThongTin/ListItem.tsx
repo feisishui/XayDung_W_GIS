@@ -9,22 +9,35 @@ import {
   List,
   Theme,
   Badge,
-  LinearProgress
+  LinearProgress,
+  ListItemIcon,
+  Avatar
 } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RanhGioiQuyHoach, { DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
+import StarBorder from '@material-ui/icons/StarBorder';
+
 const styles = (theme: Theme) => createStyles({
-  margin: {
-    margin: theme.spacing.unit * 2,
+  badge: {
+    marginTop: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
   item: {
-    cursor: 'pointer'
+    cursor: 'pointer',
+    margin: 0,
+    padding: 0
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
     cursor: 'pointer'
   },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+    width: 20,
+    height: 20,
+    fontSize: '0.75rem'
+  }
 });
 
 type Props = {
@@ -54,16 +67,22 @@ class Component extends React.Component<Props, States>{
     return <React.Fragment>
       {isLoading && <LinearProgress />}
       <ListItem button onClick={this.handleClick} className={classes.item}>
-        <Badge badgeContent={doAnQuyHoachs.length} color="primary" className={classes.margin}>
+        <Badge badgeContent={doAnQuyHoachs.length} color="primary" className={classes.badge}>
+          <ListItemIcon>
+            <StarBorder />
+          </ListItemIcon>
           <ListItemText primary={this.getName(title)} />
         </Badge>
         {this.state.open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-        <List component="div">
+        <List component="div" disablePadding>
           {doAnQuyHoachs.map((m, index) =>
             <ListItem key={index} button className={classes.nested} onClick={this.props.onSubItemClick.bind(null, m.OBJECTID as number)}>
-              <ListItemText primary={(index + 1) + '. ' + (m.TenDuAn || 'Chưa có tên đồ án')} />
+              <ListItemIcon>
+                <Avatar className={classes.avatar}>{index + 1}</Avatar>
+              </ListItemIcon>
+              <ListItemText primary={m.TenDuAn || 'Chưa có tên đồ án'} />
             </ListItem>
           )}
         </List>

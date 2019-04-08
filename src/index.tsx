@@ -57,6 +57,13 @@ const theme = createMuiTheme({
       colorPrimary: {
         color: '#fff'
       }
+    },
+    MuiListItem: {
+    },
+    MuiListItemIcon: {
+      root: {
+        margin: 0
+      }
     }
   },
   typography: {
