@@ -33,6 +33,10 @@ var prodPlugins = [
 module.exports = env => {
   const isProd = env && env.production;
   var plugins = [
+    new webpack.DefinePlugin({
+      'SERVICE_URL': JSON.stringify(isProd? '/api':'http://bdqhxd.ditagis.com/api'),
+      'VERSION':JSON.stringify("0.0.1")
+    }),
     new CleanWebpackPlugin(["dist"]),
     new CopyWebpackPlugin([{
       context: './src/static/',

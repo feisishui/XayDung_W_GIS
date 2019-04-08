@@ -1,7 +1,7 @@
 import PopupTemplate = require('esri/PopupTemplate');
 import Action = require('esri/support/actions/ActionButton');
 import PopupEditing from './Popup/Editing';
-import { FIELDS_NO_EDIT } from '../../constants/map';
+import { FIELDS_NO_EDIT } from '../../constants/map.constant';
 
 export enum PopupAction {
   EDIT,

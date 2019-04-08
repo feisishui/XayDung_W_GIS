@@ -1,6 +1,5 @@
-export * from './map';
+
+export * from './core.constant';
+export * from './map.constant';
 export * from './MSG';
 
-export const enum APP {
-  QuyHoach = 'qh',
-};

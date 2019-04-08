@@ -14,7 +14,8 @@ const styles = createStyles({
 });
 
 type Props = {
-  onItemClick: (hanhChinh:HanhChinh) => void
+  onItemClick: (hanhChinh: HanhChinh) => void,
+  onClick: () => void
 }
   & WithStyles<typeof styles>;
 
@@ -96,10 +97,11 @@ class ButtonComponent extends React.Component<Props, States>{
   }
 
   handleClick = (event: any) => {
+    this.props.onClick();
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleItemClick = (hanhChinh:HanhChinh) => {
+  handleItemClick = (hanhChinh: HanhChinh) => {
     this.props.onItemClick(hanhChinh);
     this.handleClose();
   };

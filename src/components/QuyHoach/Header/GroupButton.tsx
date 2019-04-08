@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import Button from './ButtonComponent';
 import { DM_RGQH_TrangThai } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
-import { chonHanhChinh } from '../../../services/map/map.action';
+import { chonGiaiDoan, chonHanhChinh } from '../../../services/map/map.action';
 import { connect } from 'react-redux';
 import HanhChinh from '../../../services/map/models/HanhChinh';
 const styles = createStyles({
@@ -10,7 +10,8 @@ const styles = createStyles({
 });
 
 type DispatchToProps = {
-  chonHanhChinh: (giaiDoan: DM_RGQH_TrangThai, hanhChinh:HanhChinh) => void
+  chonGiaiDoan: (giaiDoan: DM_RGQH_TrangThai) => void,
+  chonHanhChinh: (hanhChinh: HanhChinh) => void
 }
 
 type Props = {
@@ -33,18 +34,23 @@ class ButtonComponent extends React.Component<Props, States>{
   render() {
     const { classes } = this.props;
     return <div className={classes.root}>
-      <Button onItemClick={this.handleButtonClick.bind(null, DM_RGQH_TrangThai["Thông tin"])}>Thông tin quy hoạch</Button>
-      <Button onItemClick={this.handleButtonClick.bind(null, DM_RGQH_TrangThai["Lấy ý kiến"])}>Góp ý quy hoạch</Button>
-      <Button onItemClick={this.handleButtonClick.bind(null, DM_RGQH_TrangThai["Công bố"])}>Công bố quy hoạch</Button>
-      <Button onItemClick={this.handleButtonClick.bind(null, DM_RGQH_TrangThai["Công bố"])}>Lưu trữ quy hoạch</Button>
+      <Button onClick={this.handleClick.bind(null, DM_RGQH_TrangThai["Thông tin"])} onItemClick={this.handleButtonClick}>Thông tin quy hoạch</Button>
+      <Button onClick={this.handleClick.bind(null, DM_RGQH_TrangThai["Lấy ý kiến"])} onItemClick={this.handleButtonClick}>Góp ý quy hoạch</Button>
+      <Button onClick={this.handleClick.bind(null, DM_RGQH_TrangThai["Công bố"])} onItemClick={this.handleButtonClick}>Công bố quy hoạch</Button>
+      <Button onClick={this.handleClick.bind(null, DM_RGQH_TrangThai["Lữu trữ"])} onItemClick={this.handleButtonClick}>Lưu trữ quy hoạch</Button>
       {/* <Button onItemClick={this.handleButtonClick}>Tra cứu quy hoạch</Button> */}
     </div>;
   }
 
-  handleButtonClick = (giaiDoan: DM_RGQH_TrangThai, hanhChinh: HanhChinh) => {
-    this.props.chonHanhChinh(giaiDoan, hanhChinh);
+  handleButtonClick = (hanhChinh: HanhChinh) => {
+    this.props.chonHanhChinh(hanhChinh);
+  }
+
+  handleClick = (giaiDoan: DM_RGQH_TrangThai) => {
+    this.props.chonGiaiDoan(giaiDoan);
   }
 }
 export default connect(null, {
-  chonHanhChinh
+  chonHanhChinh,
+  chonGiaiDoan
 })(withStyles(styles)(ButtonComponent));

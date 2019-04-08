@@ -11,7 +11,7 @@ import EsriMap = require('esri/Map');
 import MapView = require('esri/views/MapView');
 import {
   MAP as CST_MAP
-} from '../../constants/map';
+} from '../../constants/map.constant';
 import { MSG_MAP } from '../../constants/MSG';
 
 export const getLayerInfos = () => {

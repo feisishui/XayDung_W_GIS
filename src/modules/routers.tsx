@@ -1,5 +1,5 @@
 import { QuyHoachPage } from '../pages';
-import { APP } from '../constants';
+import { APPLICATION } from '../constants';
 export interface Route {
   id: string; name: string; component: any;
   props: { math?: boolean, exact?: boolean, path: string };
@@ -10,7 +10,7 @@ export interface Route {
 const routes: Array<Route> = [
   {
     id: 'qh', name: 'Quy hoạch', component: QuyHoachPage,
-    props: { exact: true, path: '/' + APP.QuyHoach },
+    props: { exact: true, path: '/' + APPLICATION.QuyHoach },
     avatar: '/images/icons/qlkd.png',
     isPrivate: false
   },

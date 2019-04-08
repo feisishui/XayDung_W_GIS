@@ -2,7 +2,7 @@ import MapImageLayer = require('esri/layers/MapImageLayer');
 import FeatureLayer from '../layers/FeatureLayer';
 import GroupLayer = require('esri/layers/GroupLayer');
 import LayerInfo from '../../services/map/models/LayerInfo';
-import { LAYER, APP_LAYER } from '../../constants/map';
+import { LAYER, APP_LAYER } from '../../constants/map.constant';
 import LayerList = require('esri/widgets/LayerList');
 export default class LayerHelper {
   public static assignLayer(layerInfos: LayerInfo[], APP_NAME?: string): Array<__esri.Layer> {

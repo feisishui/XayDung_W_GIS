@@ -1,8 +1,21 @@
+export const RanhGioiQuyHoachName = {
+  MaQuanHuyen: 'MaQuanHuyen',
+  MaPhuongXa: 'MaPhuongXa',
+  LoaiQuyHoach: 'LoaiQuyHoach',
+  TenDuAn: 'TenDuAn',
+  TrangThai: 'TrangThai'
+}
+
+export interface DoAnQuyHoach {
+  loaiQuyHoach: DM_LoaiQuyHoach,
+  doAns: RanhGioiQuyHoach[]
+}
+
 export default interface RanhGioiQuyHoach {
   MaQuanHuyen?: string;
   MaPhuongXa?: string;
   LoaiQuyHoach?: DM_LoaiQuyHoach;
-  TenQuyHoach?: string;
+  TenDuAn?: string;
   TrangThai: DM_RGQH_TrangThai;
 }
 
@@ -14,8 +27,8 @@ export enum DM_LoaiQuyHoach {
 }
 
 export interface LoaiQuyHoach extends __esri.CodedValueDomainCodedValues {
-  
-} 
+
+}
 
 export enum DM_RGQH_TrangThai {
   'Thông tin' = 1,

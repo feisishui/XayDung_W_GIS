@@ -8,8 +8,9 @@ import {
   Typography
 } from '@material-ui/core';
 import ListItem from './ListItem';
-import { DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
+import RanhGioiQuyHoach, { DM_RGQH_TrangThai, DoAnQuyHoach, DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
 import { AllModelReducer } from '../../../reducers';
+import { chonLoaiQuyHoach } from '../../../actions/action';
 import { connect } from 'react-redux';
 
 
@@ -24,19 +25,28 @@ const styles = (theme: Theme) => createStyles({
     '& i': {
       marginRight: 5
     }
+  },
+  hint: {
+    textAlign: 'center'
   }
 });
 
 type StateToProps = {
-  loaiQuyHoachs: DM_LoaiQuyHoach[],
-  tenHanhChinh?:string
+  doAnQuyHoach: DoAnQuyHoach[],
+  tenHanhChinh?: string,
+  giaiDoan?: DM_RGQH_TrangThai
 }
+
+type DispatchToProps = {
+  chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => void
+};
 
 type Props = {
 
 }
   & WithStyles<typeof styles>
-  & StateToProps;
+  & StateToProps
+  & DispatchToProps;
 
 type States = {
 
@@ -50,32 +60,60 @@ class Component extends React.Component<Props, States>{
     };
   }
   render() {
-    const { classes, loaiQuyHoachs ,tenHanhChinh} = this.props;
+    const { classes, doAnQuyHoach, tenHanhChinh, giaiDoan } = this.props;
     return <List
       component="nav"
       subheader={
         <ListSubheader component="div">
-          <Typography className={classes.title} color="primary" variant="title">
+          <Typography className={classes.title} color="primary" variant="h6">
             <i className="fas fa-globe-asia"></i>
             {tenHanhChinh}
           </Typography>
-          Danh mục tra cứu thông tin quy hoạch
-      </ListSubheader>}
+          Danh mục tra cứu {this.getGiaiDoan(giaiDoan)}
+        </ListSubheader>}
       className={classes.root}
     >
       {
-        loaiQuyHoachs.length > 0
-        ?
-        loaiQuyHoachs.map((m,index) => <ListItem key={index} title={m} />)
-        : <Typography>Vui lòng chọn quy hoạch</Typography>
+        doAnQuyHoach.length > 0
+          ?
+          doAnQuyHoach.map((m, index) =>
+            <ListItem
+              onClick={this.handleItemClick.bind(null, m)}
+              key={index}
+              title={m.loaiQuyHoach}
+              doAnQuyHoachs={m.doAns}
+            />)
+          : <Typography className={classes.hint}>Vui lòng chọn quy hoạch</Typography>
       }
     </List>;
+  }
+
+  getGiaiDoan = (giaiDoan?: DM_RGQH_TrangThai) => {
+    if (!giaiDoan) return '';
+    return giaiDoan === DM_RGQH_TrangThai["Thông tin"]
+      ? 'Thông tin'
+      : giaiDoan === DM_RGQH_TrangThai["Công bố"]
+        ? 'Công bố'
+        : giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"]
+          ? 'Lấy ý kiến'
+          : giaiDoan === DM_RGQH_TrangThai["Lữu trữ"]
+            ? 'Lữu trữ' : ''
+  }
+
+  handleItemClick = async (doAnQuyHoach: DoAnQuyHoach): Promise<boolean> => {
+    this.props.chonLoaiQuyHoach(doAnQuyHoach.loaiQuyHoach);
+    return false;
   }
 }
 
 const mapStateToProps = (state: AllModelReducer): StateToProps => ({
-  loaiQuyHoachs: state.quyHoach.loaiQuyHoachs,
-  tenHanhChinh:state.quyHoach.hanhChinhSelected && state.quyHoach.hanhChinhSelected.TenHuyenTP
+  doAnQuyHoach: state.quyHoach.doAnQuyHoachs || [],
+  tenHanhChinh: state.quyHoach.hanhChinhSelected && state.quyHoach.hanhChinhSelected.TenHuyenTP,
+  giaiDoan: state.quyHoach.giaiDoan
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Component));
+const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
+  chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => dispatch(chonLoaiQuyHoach({ loaiQuyHoach }))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Component));

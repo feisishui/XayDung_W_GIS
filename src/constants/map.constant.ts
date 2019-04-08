@@ -1,5 +1,4 @@
-import { APP } from '.';
-
+import {APPLICATION} from './core.constant';
 export const BASEMAP = {
   INDEX_HANH_CHINH: 5,
   MaHuyenTP: 'MaHuyenTP',
@@ -12,6 +11,7 @@ export const SERVICE_PRINT =
 
 export const LAYER = {
   BASE_MAP: 'basemap',
+  RanhGioiQuyHoach:'ranhgioiquyhoachLYR'
 };
 export const MAP = {
   CENTER: [106.477017,11.3254024],
@@ -19,7 +19,7 @@ export const MAP = {
 };
 
 export const APP_LAYER = {
-  [APP.QuyHoach]: ['*'],
+  [APPLICATION.QuyHoach]: ['*'],
 };
 
 export const FIELDS_NO_EDIT = [
