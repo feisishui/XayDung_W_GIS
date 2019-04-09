@@ -7,7 +7,7 @@ import MetriItemComponent from '../components/MenuPage/MetroItem';
 import FooterComponent from '../components/MenuPage/Footer';
 import routes, { Route } from '../modules/routers';
 import authService from '../services/api/AuthServices';
-import { alertActions, loading } from '../actions';
+import { alertActions, loading } from '../actions/action';
 import { connect } from 'react-redux';
 import MSG from '../constants/MSG';
 import BasePage, { PageProps } from './BasePage';

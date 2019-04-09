@@ -13,7 +13,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
-import createRootReducer, { initialState } from './reducers';
+import createRootReducer, { initialState } from './reducers/index';
 import { routerMiddleware, ConnectedRouter } from 'connected-react-router';
 
 // App

@@ -1,4 +1,4 @@
-import { API_URL, get } from '.';
+import { API_URL, get } from './index';
 import { UserResponse, Profile } from '../main/main.model';
 
 const authService = {

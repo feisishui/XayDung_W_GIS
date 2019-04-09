@@ -1,5 +1,5 @@
 import { QuyHoachPage } from '../pages';
-import { APPLICATION } from '../constants';
+import { APPLICATION } from '../constants/index';
 export interface Route {
   id: string; name: string; component: any;
   props: { math?: boolean, exact?: boolean, path: string };
