@@ -4,8 +4,8 @@ import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
 import { Dispatch } from 'redux';
 import HanhChinh from '../models/HanhChinh';
-import { AllModelReducer } from '../../../reducers';
-import { LAYER } from '../../../constants';
+import { AllModelReducer } from '../../../reducers/index';
+import { LAYER } from '../../../constants/index';
 import MainAction from '../../main/main.action-rule';
 
 

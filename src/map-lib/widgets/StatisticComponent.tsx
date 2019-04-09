@@ -22,7 +22,7 @@ import geometryEngine = require('esri/geometry/geometryEngine');
 import Item from './InputItem/LayerFieldItem';
 import * as moment from 'moment/moment';
 import SplitterLayout from 'react-splitter-layout';
-import { BASEMAP } from '../../constants';
+import { BASEMAP } from '../../constants/index';
 
 const styles = createStyles({
   root: {

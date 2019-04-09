@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import ListItem from './ListItem';
 import { DM_RGQH_TrangThai, DoAnQuyHoach, DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
-import { AllModelReducer } from '../../../reducers';
+import { AllModelReducer } from '../../../reducers/index';
 import { chonLoaiQuyHoach,chonDoAnQuyHoach } from '../../../actions/action';
 import { connect } from 'react-redux';
 

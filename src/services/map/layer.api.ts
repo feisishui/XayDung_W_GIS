@@ -1,4 +1,4 @@
-import { API_URL,  get } from '../api';
+import { API_URL,  get } from '../api/index';
 import fetch from '../../helpers/fetch';
 import LayerInfo from './models/LayerInfo';
 import Auth from '../../modules/Auth';

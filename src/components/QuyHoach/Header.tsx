@@ -8,7 +8,7 @@ import {
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import routes from '../../modules/routers';
-import { AllModelReducer } from '../../reducers';
+import { AllModelReducer } from '../../reducers/index';
 import { connect } from 'react-redux';
 import version from '../../modules/version';
 import GroupButton from './Header/GroupButton';

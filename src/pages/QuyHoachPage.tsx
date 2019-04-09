@@ -6,14 +6,14 @@ import BasePage from './BasePage';
 import { initViewDiv } from '../actions/index';
 
 // Component
-import { MapComponent, HeaderComponent as Header, ToolPaneComponent } from '../components/QuyHoach';
+import { MapComponent, HeaderComponent as Header, ToolPaneComponent } from '../components/QuyHoach/index';
 
 import LayerInfo from '../services/map/models/LayerInfo';
 import layerUtils from '../map-lib/support/LayerHelper';
 
 // ESRI
 import { connect } from 'react-redux';
-import { AllModelReducer } from '../reducers';
+import { AllModelReducer } from '../reducers/index';
 import { createStyles, WithStyles, withStyles, LinearProgress } from '@material-ui/core';
 import SplitterLayout from 'react-splitter-layout';
 

@@ -27,7 +27,7 @@ import QuanHuyenInputItem from './InputItem/QuanHuyenInputItem';
 import GiaoThongInputItem from './InputItem/GiaoThongInputItem';
 import ReactTable, { RowInfo } from 'react-table';
 import * as queryHelper from '../support/queryHelper';
-import { BASEMAP } from '../../constants';
+import { BASEMAP } from '../../constants/index';
 import MSG from '../../constants/MSG';
 const styles = (theme: Theme) => createStyles({
   root: {

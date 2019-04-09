@@ -1,5 +1,5 @@
 import { MapActionType, AuthActionType } from '../../actions/action-types';
-import { MapAction } from '../../actions';
+import { MapAction } from '../../actions/index';
 import LayerInfo from './models/LayerInfo';
 
 export type Model = {

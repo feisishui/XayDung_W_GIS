@@ -1,6 +1,6 @@
 export * from './quy-hoach/quyhoach.action';
 
-import { alertActions, MapAction, loading } from '../../actions';
+import { alertActions, MapAction, loading } from '../../actions/index';
 import { MapActionType } from '../../actions/action-types';
 import { Dispatch } from 'redux';
 import LayerInfo from './models/LayerInfo';

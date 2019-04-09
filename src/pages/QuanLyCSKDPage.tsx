@@ -14,7 +14,7 @@ import layerUtils from '../map-lib/support/LayerHelper';
 
 // ESRI
 import { connect } from 'react-redux';
-import { AllModelReducer } from '../reducers';
+import { AllModelReducer } from '../reducers/index';
 import { createStyles, WithStyles, withStyles, LinearProgress } from '@material-ui/core';
 import SplitterLayout from 'react-splitter-layout';
 

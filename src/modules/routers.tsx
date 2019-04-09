@@ -1,4 +1,4 @@
-import { QuyHoachPage } from '../pages';
+import { QuyHoachPage } from '../pages/index';
 import { APPLICATION } from '../constants/index';
 export interface Route {
   id: string; name: string; component: any;
