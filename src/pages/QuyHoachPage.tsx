@@ -7,18 +7,23 @@ import { initViewDiv } from '../actions/index';
 
 // Component
 import { MapComponent, HeaderComponent as Header, ToolPaneComponent, DanhMucHoSoContainer } from '../components/QuyHoach/index';
-
+import SplitterLayout from 'react-splitter-layout';
+import { createStyles, WithStyles, withStyles, LinearProgress, Paper } from '@material-ui/core';
 import LayerInfo from '../services/map/models/LayerInfo';
 import layerUtils from '../map-lib/support/LayerHelper';
 
 // ESRI
 import { connect } from 'react-redux';
 import { AllModelReducer } from '../reducers/index';
-import { createStyles, WithStyles, withStyles, LinearProgress, Paper } from '@material-ui/core';
-import SplitterLayout from 'react-splitter-layout';
+
 
 const styles = createStyles({
   root: { height: '100%', width: '100%' },
+  hosophaply: {
+    position: 'absolute', top: 15, right: 15, zIndex: 999, opacity: 0.96,
+    maxHeight: 500,
+    overflowY: 'auto'
+  },
   container: {
     flex: '1 1 auto',
     height: 'calc(100vh - 64px)'
@@ -69,7 +74,7 @@ class QuyHoachPage extends BasePage<Props, States> {
             layerInfos={layerInfos}
             view={view}
           >
-            <Paper style={{ position: 'absolute', top: 15, right:15, zIndex: 999,opacity:0.96 }}>
+            <Paper className={classes.hosophaply}>
               <DanhMucHoSoContainer />
             </Paper>
           </MapComponent>

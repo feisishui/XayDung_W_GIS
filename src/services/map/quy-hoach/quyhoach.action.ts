@@ -98,18 +98,21 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
       const view = getState().map.view;
 
       if (view) {
-
         const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
         if (rgqhLayer) {
-          const layerView = await view.whenLayerView(rgqhLayer);
-          const features = (await rgqhLayer.queryFeatures({
-            returnGeometry: true,
-            outSpatialReference: view.spatialReference,
-            objectIds: [params.objectId]
-          })).features;
-          highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
-          highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
-          view.goTo(features);
+          view.whenLayerView(rgqhLayer)
+            .then(layerView => {
+              rgqhLayer.queryFeatures({
+                returnGeometry: true,
+                outSpatialReference: view.spatialReference,
+                objectIds: [params.objectId]
+              })
+                .then(res => {
+                  highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
+                  highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
+                  view.goTo(res.features);
+                })
+            });
         } else {
           throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
         }

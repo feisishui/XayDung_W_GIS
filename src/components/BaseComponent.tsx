@@ -4,7 +4,7 @@ export type BaseProps = {
   className?: string
 };
 
-export default class BaseComponent<P={}, S = {}> extends React.Component<BaseProps & P, S>
+export default class BaseComponent<P = {}, S = {}> extends React.PureComponent<BaseProps & P, S>
 {
   constructor(props: BaseProps & P) {
     super(props);

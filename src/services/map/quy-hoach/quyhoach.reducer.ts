@@ -2,13 +2,15 @@ import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
 import { DM_LoaiQuyHoach, DM_RGQH_TrangThai, DoAnQuyHoach } from './models/ranhgioiquyhoach.model';
 import HanhChinh from '../models/HanhChinh';
+import { DanhMucHoSo } from './models/danhmuchoso.model';
 
 
 
 export type Model = {
   hanhChinhSelected?: HanhChinh,
   giaiDoan?: DM_RGQH_TrangThai,
-  doAnQuyHoachs?: Array<DoAnQuyHoach>
+  doAnQuyHoachs?: Array<DoAnQuyHoach>,
+  danhMucHoSos?: DanhMucHoSo[]
 };
 
 export const defaultState: Model = {
@@ -22,6 +24,7 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         giaiDoan: action.giaiDoan,
         doAnQuyHoachs: undefined,
         hanhChinhSelected: undefined,
+        danhMucHoSos: undefined
       }
     case QuyHoachActionType.ThongTinQuyHoach_ChonHanhChinh:
       let loaiQuyHoachs: DM_LoaiQuyHoach[] = [
@@ -53,7 +56,9 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         doAnQuyHoachs.push(doAnQuyHoach);
       }
 
-      return { ...state, doAnQuyHoachs };
+      return { ...state, doAnQuyHoachs, danhMucHoSos: [] };
+    case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM:
+      return { ...state, danhMucHoSos: action.danhMucHoSos }
     default:
       return state;
   }

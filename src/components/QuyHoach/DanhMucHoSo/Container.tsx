@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { createStyles, WithStyles, withStyles, List, ListSubheader, ListItem, ListItemText, Avatar, Theme } from '@material-ui/core';
+import { DanhMucHoSo, LoaiHoSo } from '../../../services/map/quy-hoach/models/danhmuchoso.model';
+import { AllModelReducer } from '../../../reducers';
 const styles = (theme: Theme) => createStyles({
   root: {
   },
@@ -11,24 +13,38 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
+type StateToProps = {
+  danhMucHoSos?: DanhMucHoSo[]
+};
+
 type Props = {
 
 }
-  & WithStyles<typeof styles>;
+  & WithStyles<typeof styles>
+  & StateToProps;
 
 type States = {
-
+  hoSoPhapLys: DanhMucHoSo[],
+  banVes: DanhMucHoSo[],
+  thuyetMinhs: DanhMucHoSo[]
 };
 
-class Component extends React.Component<Props, States>{
+class Component extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {
-
+      hoSoPhapLys: [],
+      banVes: [],
+      thuyetMinhs: []
     };
   }
   render() {
-    const { classes } = this.props;
+    const { classes, danhMucHoSos } = this.props;
+
+    if (!danhMucHoSos) {
+      return null;
+    }
+
     return <div className={classes.root}>
       <List
         component="nav"
@@ -59,6 +75,26 @@ class Component extends React.Component<Props, States>{
       </List>
     </div>;
   }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.danhMucHoSos != this.props.danhMucHoSos) {
+      if (nextProps.danhMucHoSos) {
+        this.setState({
+          banVes:nextProps.danhMucHoSos.filter(f=>f.LoaiHoSo === LoaiHoSo.BanVe),
+          thuyetMinhs:nextProps.danhMucHoSos.filter(f=>f.LoaiHoSo === LoaiHoSo.ThuyetMinh),
+          hoSoPhapLys:nextProps.danhMucHoSos.filter(f=>f.LoaiHoSo === LoaiHoSo.PhapLy)
+        })
+      } else {
+        this.setState({
+          banVes: [], thuyetMinhs: [], hoSoPhapLys: []
+        })
+      }
+    }
+  }
 }
+
+const dispatchStateToProps = (state: AllModelReducer): StateToProps => ({
+  danhMucHoSos: state.quyHoach.danhMucHoSos
+});
 
 export default withStyles(styles)(Component);
