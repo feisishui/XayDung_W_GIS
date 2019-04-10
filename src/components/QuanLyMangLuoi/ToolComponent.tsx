@@ -40,7 +40,7 @@ enum TabIndex {
   TimKiem, ThongKe, Tao, In
 }
 
-class ToolComponent extends React.Component<Props, States>{
+class ToolComponent extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {

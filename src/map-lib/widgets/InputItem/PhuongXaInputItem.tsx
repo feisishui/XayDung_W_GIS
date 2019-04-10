@@ -21,7 +21,7 @@ type States = {
   isLoading: boolean
 };
 
-class PhuongXaInputItemComponent extends React.Component<Props, States>{
+class PhuongXaInputItemComponent extends React.PureComponent<Props, States>{
   private static hanhChinhs: Array<HanhChinh[]> = []; // lưu cached
   constructor(props: Props) {
     super(props);

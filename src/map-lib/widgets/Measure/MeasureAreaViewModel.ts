@@ -5,7 +5,7 @@ import Polygon = require('esri/geometry/Polygon');
 import geometryEngine = require('esri/geometry/geometryEngine');
 
 export default class MeasureAreaViewModel
-// extends React.Component<Props, {}> 
+// extends React.PureComponent<Props, {}> 
 {
   private draw: Draw;
   private graphicsLayer: GraphicsLayer;

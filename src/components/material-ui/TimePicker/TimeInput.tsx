@@ -47,7 +47,7 @@ type State = {
   newValue?: Date
 };
 
-class TimeInput extends React.Component<Props, State> {
+class TimeInput extends React.PureComponent<Props, State> {
   public static defaultProps = {
     autoOk: false,
     cancelLabel: 'Cancel',

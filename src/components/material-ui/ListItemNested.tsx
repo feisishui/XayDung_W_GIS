@@ -22,7 +22,7 @@ type States = {
   isOpen: boolean
 };
 
-class ListItemNestedComponent extends React.Component<Props, States>{
+class ListItemNestedComponent extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {

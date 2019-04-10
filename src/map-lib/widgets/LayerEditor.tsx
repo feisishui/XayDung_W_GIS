@@ -21,7 +21,7 @@ type Props = {
   view: __esri.MapView | __esri.SceneView;
 };
 
-export default class LayerEditorComponent extends React.Component<Props, States> {
+export default class LayerEditorComponent extends React.PureComponent<Props, States> {
   private viewModel: ViewModel;
   private rendering: RenderingItemModel;
   constructor(props: Props) {

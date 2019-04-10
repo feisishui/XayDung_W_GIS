@@ -18,7 +18,7 @@ const styles: StyleRulesCallback = (theme) => ({
   }
 });
 
-class LoadingPage extends React.Component<WithStyles<typeof styles>,{}> {
+class LoadingPage extends React.PureComponent<WithStyles<typeof styles>,{}> {
   render() {
     const {classes}=this.props;
     return <div className={classes.root}>

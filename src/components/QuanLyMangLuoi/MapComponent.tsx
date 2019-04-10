@@ -24,7 +24,7 @@ type States = {
   isLoading: boolean
 };
 
-class QuanLyMangLuoiComponent extends React.Component<Props, States> {
+class QuanLyMangLuoiComponent extends React.PureComponent<Props, States> {
   private mapDiv: HTMLDivElement | undefined;
   private isLoadWidget: boolean = false;
   private isRegistryEvent: boolean = false;

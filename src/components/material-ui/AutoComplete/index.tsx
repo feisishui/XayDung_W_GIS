@@ -218,7 +218,7 @@
 // }
 //   & WithStyles<typeof styles, true>;
 
-// class AutoComplete extends React.Component<Props, {}> {
+// class AutoComplete extends React.PureComponent<Props, {}> {
 //   handleChange = () => value => {
 //     this.props.onChange(value);
 //   };

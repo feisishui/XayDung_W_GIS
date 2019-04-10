@@ -67,7 +67,7 @@ type State = {
   minutes: number
 };
 
-class TimePicker extends React.Component<Props & WithStyles<typeof styles>, State> {
+class TimePicker extends React.PureComponent<Props & WithStyles<typeof styles>, State> {
   public static defaultProps = {
     mode: Mode["12h"]
   };

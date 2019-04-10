@@ -53,7 +53,7 @@ type States = {
   isLoading: boolean
 };
 
-class Component extends React.Component<Props, States>{
+class Component extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {

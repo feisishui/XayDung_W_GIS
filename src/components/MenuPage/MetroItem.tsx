@@ -41,7 +41,7 @@ type States = {
 
 };
 
-class MetroItemComponent extends React.Component<Props, States>{
+class MetroItemComponent extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {

@@ -13,7 +13,7 @@ export type Props = {
   inputProps?: TextFieldProps
 };
 
-class CustomDatePicker extends React.Component<Props, {}>{
+class CustomDatePicker extends React.PureComponent<Props, {}>{
   private rel: HTMLInputElement | undefined;
   render() {
     const { value, type, onChange, inputProps } = this.props;

@@ -49,7 +49,7 @@
 //   { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 // ];
 
-// class EnhancedTableHead extends React.Component<{
+// class EnhancedTableHead extends React.PureComponent<{
 //   numSelected: number,
 //   onRequestSort: Function,
 //   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void,
@@ -197,7 +197,7 @@
 
 // }&WithStyles<typeof styles>;
 
-// class EnhancedTable extends React.Component<Props, State> {
+// class EnhancedTable extends React.PureComponent<Props, State> {
 //   constructor(props:Props)
 //   {
 //     super(props);

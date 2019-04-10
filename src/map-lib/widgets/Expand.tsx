@@ -10,7 +10,7 @@ type Props = {
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
 };
 
-class ExpandWidget extends React.Component<Props, {}> {
+class ExpandWidget extends React.PureComponent<Props, {}> {
   private divElement: HTMLDivElement;
   private expand: Expand;
   componentDidMount() {

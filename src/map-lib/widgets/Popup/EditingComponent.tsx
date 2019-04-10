@@ -20,7 +20,7 @@ interface States {
 
 }
 
-class EditingComponent extends React.Component<Props, States> {
+class EditingComponent extends React.PureComponent<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {

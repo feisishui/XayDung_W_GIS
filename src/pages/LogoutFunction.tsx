@@ -9,7 +9,7 @@ type DispatchToProps = {
 type Props = {
 } & RouteComponentProps<null> & DispatchToProps;
 
-class LogoutFunction extends React.Component<Props, {}> {
+class LogoutFunction extends React.PureComponent<Props, {}> {
 
   componentDidMount() {
     this.props.logout();

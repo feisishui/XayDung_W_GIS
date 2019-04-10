@@ -26,12 +26,12 @@ type States = {
 };
 
 type PrivateComponentProps = {
-  Component: React.ComponentType<any>
+  Component: React.PureComponentType<any>
   id: string
 }
   & WithStyles<typeof styles>;
 
-class PrivateComponent extends React.Component<PrivateComponentProps, States>{
+class PrivateComponent extends React.PureComponent<PrivateComponentProps, States>{
   constructor(props: PrivateComponentProps) {
     super(props);
     this.state = { isLoadAccess: false, isAccess: false };

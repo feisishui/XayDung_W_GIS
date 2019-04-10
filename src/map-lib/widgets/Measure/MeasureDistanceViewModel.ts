@@ -7,7 +7,7 @@ import Graphic = require('esri/Graphic');
 import geometryEngine = require('esri/geometry/geometryEngine');
 
 export default class MeasureDistanceViewModel
-// extends React.Component<Props, {}> 
+// extends React.PureComponent<Props, {}> 
 {
   private draw: Draw;
   private graphicsLayer: GraphicsLayer;

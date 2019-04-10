@@ -19,7 +19,7 @@ type StateToProps = {
 type Props = {
 } & RouteComponentProps<null> & DispatchToProps & StateToProps;
 
-class LoginPage extends React.Component<Props, State> {
+class LoginPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

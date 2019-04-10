@@ -13,7 +13,7 @@ type Props = {
 type States = {
 
 };
-export default class SketchSearch extends React.Component<Props, States>{
+export default class SketchSearch extends React.PureComponent<Props, States>{
   render() {
     return (
       <div style={{ display: 'flex', flexDirection: 'row' }}>

@@ -9,7 +9,7 @@ type Props = {
   profile: Profile
 };
 
-export default class MapLayout extends React.Component<Props, {}> {
+export default class MapLayout extends React.PureComponent<Props, {}> {
   render() {
     const { routes, title, children, profile } = this.props;
 

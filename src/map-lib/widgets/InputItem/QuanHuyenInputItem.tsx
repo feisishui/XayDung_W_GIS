@@ -20,7 +20,7 @@ type States = {
   isLoading: boolean
 };
 
-class QuanHuyenInputItem extends React.Component<Props, States>{
+class QuanHuyenInputItem extends React.PureComponent<Props, States>{
   private static hanhChinhs: HanhChinh[] | null = null; // lưu cached
   constructor(props: Props) {
     super(props);

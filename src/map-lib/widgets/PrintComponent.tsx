@@ -17,7 +17,7 @@ type States = {
 
 };
 
-class PrintComponent extends React.Component<Props, States>{
+class PrintComponent extends React.PureComponent<Props, States>{
   private container: HTMLDivElement | null = null;
   constructor(props: Props) {
     super(props);

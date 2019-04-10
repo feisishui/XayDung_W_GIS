@@ -29,7 +29,7 @@ type States = {
 
 };
 
-class LoginComponent extends React.Component<Props, States> {
+class LoginComponent extends React.PureComponent<Props, States> {
   render() {
     const { user, onChange, onSubmit, classes } = this.props;
     return (

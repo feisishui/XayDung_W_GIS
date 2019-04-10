@@ -23,7 +23,7 @@ type States = {
   value: any
 };
 
-class QuanHuyenInputItem extends React.Component<Props, States>{
+class QuanHuyenInputItem extends React.PureComponent<Props, States>{
   private giaoThongAPI: GiaoThongAPI = new GiaoThongAPI();
   constructor(props: Props) {
     super(props);

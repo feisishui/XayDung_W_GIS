@@ -83,7 +83,7 @@ type States = {
 type Props = {
   view: __esri.MapView | __esri.SceneView
 } & WithStyles<typeof styles>;
-class SearchComponent extends React.Component<Props, States> {
+class SearchComponent extends React.PureComponent<Props, States> {
   private highlightGraphic: HighlightGraphic | undefined;
   private sketchSearch: SketchSearchViewModel;
   constructor(props: Props) {

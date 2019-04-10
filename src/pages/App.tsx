@@ -48,7 +48,7 @@ type Props = {
 } & DispatchToProps & StateToProps & WithStyles<typeof styles> & RouteComponentProps<any>;
 
 
-class AppPage extends React.Component<Props, {}> {
+class AppPage extends React.PureComponent<Props, {}> {
   constructor(props: Props) {
     super(props);
   }

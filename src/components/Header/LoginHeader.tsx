@@ -35,7 +35,7 @@ type States = {
   isOpenDrawer: boolean
 };
 
-class Header extends React.Component<Props, States> {
+class Header extends React.PureComponent<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {

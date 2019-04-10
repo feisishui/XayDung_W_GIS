@@ -71,7 +71,7 @@ type Props = {
   view: __esri.MapView | __esri.SceneView,
   layers: __esri.FeatureLayer[]
 } & WithStyles<typeof styles>;
-class StatisticComponent extends React.Component<Props, States> {
+class StatisticComponent extends React.PureComponent<Props, States> {
   static defaultProps = {
     layers: [],
   };

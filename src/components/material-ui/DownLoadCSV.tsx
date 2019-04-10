@@ -10,7 +10,7 @@ type Props = {
   label?: string
 };
 
-export default class Download extends React.Component<Props, States> {
+export default class Download extends React.PureComponent<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
