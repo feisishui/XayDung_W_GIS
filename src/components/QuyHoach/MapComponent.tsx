@@ -143,6 +143,7 @@ class MapComponent extends React.Component<Props, States> {
             view={this.props.view as any}
           />
         }
+        {this.props.children}
       </div>
     );
   }

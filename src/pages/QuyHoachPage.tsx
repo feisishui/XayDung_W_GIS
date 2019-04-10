@@ -6,7 +6,7 @@ import BasePage from './BasePage';
 import { initViewDiv } from '../actions/index';
 
 // Component
-import { MapComponent, HeaderComponent as Header, ToolPaneComponent } from '../components/QuyHoach/index';
+import { MapComponent, HeaderComponent as Header, ToolPaneComponent, DanhMucHoSoContainer } from '../components/QuyHoach/index';
 
 import LayerInfo from '../services/map/models/LayerInfo';
 import layerUtils from '../map-lib/support/LayerHelper';
@@ -14,7 +14,7 @@ import layerUtils from '../map-lib/support/LayerHelper';
 // ESRI
 import { connect } from 'react-redux';
 import { AllModelReducer } from '../reducers/index';
-import { createStyles, WithStyles, withStyles, LinearProgress } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, LinearProgress, Paper } from '@material-ui/core';
 import SplitterLayout from 'react-splitter-layout';
 
 const styles = createStyles({
@@ -61,13 +61,18 @@ class QuyHoachPage extends BasePage<Props, States> {
     return (
       <div className={classes.root}>
         <Header />
+
         <SplitterLayout customClassName={classes.container} primaryIndex={1} secondaryInitialSize={320}>
           <ToolPaneComponent />
           <MapComponent
             loadMapDiv={this.loadMapDiv.bind(this)}
             layerInfos={layerInfos}
             view={view}
-          />
+          >
+            <Paper style={{ position: 'absolute', top: 15, right:15, zIndex: 999,opacity:0.96 }}>
+              <DanhMucHoSoContainer />
+            </Paper>
+          </MapComponent>
           {!isLoadLayers && <LinearProgress />}
         </SplitterLayout>
       </div>
