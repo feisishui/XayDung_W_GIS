@@ -59,9 +59,6 @@ const theme = createMuiTheme({
       }
     },
     MuiListItem: {
-      button:{
-        padding: '5px 15px 0 15px'
-      }
     },
     MuiListItemIcon: {
       root: {

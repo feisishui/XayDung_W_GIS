@@ -1,1 +1,1 @@
-export { default as DanhMucHoSoContainer } from './Container';
+export { default as DanhMucHoSoContainer } from './DanhMucHoSo.Container';

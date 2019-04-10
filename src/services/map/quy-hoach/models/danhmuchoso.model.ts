@@ -2,9 +2,11 @@ export interface DanhMucHoSo {
   ID?: number;
   TenTep?: string;
   TenHoSo?: string;
-  LoaiHoSo?: number;
+  LoaiDanhMuc?: number;
+  Url?:string;
+  ContentType?:string;
 }
 
-export enum LoaiHoSo{
+export enum LoaiDanhMuc{
   PhapLy=1,BanVe,ThuyetMinh
 }

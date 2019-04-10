@@ -10,7 +10,8 @@ export type Model = {
   hanhChinhSelected?: HanhChinh,
   giaiDoan?: DM_RGQH_TrangThai,
   doAnQuyHoachs?: Array<DoAnQuyHoach>,
-  danhMucHoSos?: DanhMucHoSo[]
+  danhMucHoSos?: DanhMucHoSo[],
+  danhMucHoSoSelected?: DanhMucHoSo
 };
 
 export const defaultState: Model = {
@@ -59,6 +60,8 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
       return { ...state, doAnQuyHoachs };
     case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM:
       return { ...state, danhMucHoSos: action.danhMucHoSos }
+    case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_SELECTED:
+      return { ...state, danhMucHoSoSelected: action.danhMucHoSo };
     default:
       return state;
   }

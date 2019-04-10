@@ -8,7 +8,7 @@ import { AllModelReducer } from '../../../reducers/index';
 import { LAYER } from '../../../constants/index';
 import MainAction from '../../main/main.action-rule';
 import { DanhMucHoSo } from './models/danhmuchoso.model';
-
+import DanhMucHoSoAPI from './api/danhmuchoso.api';
 
 export const chonGiaiDoan = (giaiDoan: DM_RGQH_TrangThai): QuyHoachAction => {
   return {
@@ -102,24 +102,23 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
       if (view) {
         const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
         if (rgqhLayer) {
-          view.whenLayerView(rgqhLayer)
-            .then(layerView => {
-              rgqhLayer.queryFeatures({
-                returnGeometry: true,
-                outSpatialReference: view.spatialReference,
-                objectIds: [params.objectId],
-                outFields: [RanhGioiQuyHoachName.MaDuAn]
-              })
-                .then(res => {
-                  highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
-                  highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
-                  view.goTo(res.features);
-                });
+          const layerView = await view.whenLayerView(rgqhLayer);
+          const features = (await rgqhLayer.queryFeatures({
+            returnGeometry: true,
+            outSpatialReference: view.spatialReference,
+            objectIds: [params.objectId],
+            outFields: [RanhGioiQuyHoachName.MaDuAn]
+          })).features;
+          highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
+          highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
 
-              dispatch(setDanhMucHoSo([{ ID: 1, LoaiHoSo: 1, TenHoSo: 'Test', TenTep: 'hoso.jpg' }
-                , { ID: 1, LoaiHoSo: 2, TenHoSo: 'Test', TenTep: 'hoso.jpg' }
-                , { ID: 1, LoaiHoSo: 3, TenHoSo: 'Test', TenTep: 'hoso.jpg' }]))
-            });
+          if (features.length > 0) {
+            view.goTo(features);
+
+            // lấy danh mục hồ sơ
+            const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
+            dispatch(setDanhMucHoSo(danhMuc));
+          }
         } else {
           throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
         }
@@ -139,3 +138,8 @@ export const setDanhMucHoSo = (danhMucHoSos?: DanhMucHoSo[]): QuyHoachAction => 
   type: QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM,
   danhMucHoSos
 });
+
+export const chonHoSo = (hoSo?: DanhMucHoSo): QuyHoachAction => ({
+  type: QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_SELECTED,
+  danhMucHoSo: hoSo
+})

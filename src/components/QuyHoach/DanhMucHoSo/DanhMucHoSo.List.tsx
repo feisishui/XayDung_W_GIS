@@ -7,7 +7,8 @@ const styles = createStyles({
 
 type Props = {
   title: string,
-  danhMucHoSos: DanhMucHoSo[]
+  danhMucHoSos: DanhMucHoSo[],
+  chonHoSo:(hoSo:DanhMucHoSo)=>void
 }
   & WithStyles<typeof styles>;
 
@@ -30,12 +31,15 @@ class Component extends React.Component<Props, States>{
       className={classes.root}
     >
       {
-        danhMucHoSos.length == 0 && <Typography>Không có hồ sơ</Typography>
+        danhMucHoSos.length == 0 &&
+        <ListItem button>
+          <ListItemText primary="Không có hồ sơ" />
+        </ListItem>
       }
       {
         danhMucHoSos
           .map((m, index) =>
-            <ListItem key={index} button>
+            <ListItem key={index} button onClick={this.props.chonHoSo.bind(null,m)}>
               <ListItemText primary={m.TenHoSo || 'Chưa có tên'} />
             </ListItem>)
       }

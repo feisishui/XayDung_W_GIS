@@ -19,7 +19,7 @@ type States = {
   }
 };
 
-export default class MeasureComponent extends React.PureComponent<Props, States> {
+export default class MeasureComponent extends React.Component<Props, States> {
   private measureArea: MeasureAreaViewModel;
   private measureDistance: MeasureDistanceViewModel;
   constructor(props: Props) {
