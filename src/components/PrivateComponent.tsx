@@ -26,7 +26,7 @@ type States = {
 };
 
 type PrivateComponentProps = {
-  Component: React.PureComponentType<any>
+  Component: React.ComponentType<any>
   id: string
 }
   & WithStyles<typeof styles>;

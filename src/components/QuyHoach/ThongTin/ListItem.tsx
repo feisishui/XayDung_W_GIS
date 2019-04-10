@@ -37,7 +37,8 @@ const styles = (theme: Theme) => createStyles({
     width: 20,
     height: 20,
     fontSize: '0.75rem'
-  }
+  },
+  primary: {}
 });
 
 type Props = {
@@ -71,7 +72,7 @@ class Component extends React.PureComponent<Props, States>{
           <ListItemIcon>
             <StarBorder />
           </ListItemIcon>
-          <ListItemText primary={this.getName(title)} />
+          <ListItemText classes={{ primary: classes.primary }} primary={this.getName(title)} />
         </Badge>
         {this.state.open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -82,7 +83,7 @@ class Component extends React.PureComponent<Props, States>{
               <ListItemIcon>
                 <Avatar className={classes.avatar}>{index + 1}</Avatar>
               </ListItemIcon>
-              <ListItemText primary={m.TenDuAn || 'Chưa có tên đồ án'} />
+              <ListItemText classes={{ primary: classes.primary }} primary={m.TenDuAn || 'Chưa có tên đồ án'} />
             </ListItem>
           )}
         </List>
@@ -93,7 +94,8 @@ class Component extends React.PureComponent<Props, States>{
   handleClick = async () => {
     try {
       this.setState({ isLoading: true });
-      await this.props.onClick();
+      if (!this.state.open)
+        await this.props.onClick();
       this.setState(state => ({ open: !state.open, isLoading: false }));
     } catch (error) {
       this.setState({ isLoading: false })

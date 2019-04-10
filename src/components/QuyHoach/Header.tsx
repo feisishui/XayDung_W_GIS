@@ -65,7 +65,6 @@ type Props = {
 
 type States = {
   isOpenDrawer: boolean,
-  anchorEl?: HTMLElement
 };
 
 class Header extends React.PureComponent<Props, States> {
@@ -76,13 +75,6 @@ class Header extends React.PureComponent<Props, States> {
     };
   }
 
-  handleMenu = (event: any) => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: undefined });
-  };
 
   toggleDrawer = (open: boolean) => () => {
     this.setState({
@@ -91,9 +83,8 @@ class Header extends React.PureComponent<Props, States> {
   };
 
   render() {
-    const { displayName, classes } = this.props;
-    const { anchorEl, isOpenDrawer } = this.state;
-    const open = Boolean(anchorEl);
+    const {  classes } = this.props;
+    const {  isOpenDrawer } = this.state;
     return (
       <div>
         <AppBar position="static">

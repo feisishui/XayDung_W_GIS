@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createStyles, WithStyles, withStyles, LinearProgress } from '@material-ui/core';
-import LayerFieldItem from '../../material-ui/LayerFieldItem';
 import GiaoThongAPI from '../../../services/map/api/giaothong.api';
 import Field = require('esri/layers/support/Field');
 import Select from 'react-select';

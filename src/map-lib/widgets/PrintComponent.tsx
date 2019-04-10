@@ -3,7 +3,7 @@ import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 
 // Esri
 import Print = require('esri/widgets/Print');
-import { SERVICE_PRINT } from '../../constants/map';
+import { SERVICE_PRINT } from '../../constants/map.constant';
 const styles = createStyles({
   root: {}
 });

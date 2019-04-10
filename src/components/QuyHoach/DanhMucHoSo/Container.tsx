@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { createStyles, WithStyles, withStyles, List, ListSubheader, ListItem, ListItemText, Avatar, Theme } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, Theme } from '@material-ui/core';
 import { DanhMucHoSo, LoaiHoSo } from '../../../services/map/quy-hoach/models/danhmuchoso.model';
 import { AllModelReducer } from '../../../reducers';
+import { connect } from 'react-redux';
+import List from './List';
 const styles = (theme: Theme) => createStyles({
   root: {
   },
@@ -45,34 +47,12 @@ class Component extends React.PureComponent<Props, States>{
       return null;
     }
 
+    const { hoSoPhapLys, banVes, thuyetMinhs } = this.state;
+
     return <div className={classes.root}>
-      <List
-        component="nav"
-        subheader={<ListSubheader component="div">I. Hồ sơ pháp lý</ListSubheader>}
-        className={classes.root}
-      >
-        <ListItem button>
-          <ListItemText primary="Quyết định phê duyệt QHPK Phương An" />
-        </ListItem>
-      </List>
-      <List
-        component="nav"
-        subheader={<ListSubheader component="div">II. Bản vẽ</ListSubheader>}
-        className={classes.root}
-      >
-        <ListItem button>
-          <ListItemText primary="Bản vẽ QHPK Phương An" />
-        </ListItem>
-      </List>
-      <List
-        component="nav"
-        subheader={<ListSubheader component="div">III. Thuyết minh</ListSubheader>}
-        className={classes.root}
-      >
-        <ListItem button>
-          <ListItemText primary="Thuyết minh QHPK khu đô thị Phương An" />
-        </ListItem>
-      </List>
+      <List title="I. Hồ sơ pháp lý" danhMucHoSos={hoSoPhapLys} />
+      <List title="II. Bản vẽ" danhMucHoSos={banVes} />
+      <List title="III. Thuyết minh" danhMucHoSos={thuyetMinhs} />
     </div>;
   }
 
@@ -80,9 +60,9 @@ class Component extends React.PureComponent<Props, States>{
     if (nextProps.danhMucHoSos != this.props.danhMucHoSos) {
       if (nextProps.danhMucHoSos) {
         this.setState({
-          banVes:nextProps.danhMucHoSos.filter(f=>f.LoaiHoSo === LoaiHoSo.BanVe),
-          thuyetMinhs:nextProps.danhMucHoSos.filter(f=>f.LoaiHoSo === LoaiHoSo.ThuyetMinh),
-          hoSoPhapLys:nextProps.danhMucHoSos.filter(f=>f.LoaiHoSo === LoaiHoSo.PhapLy)
+          banVes: nextProps.danhMucHoSos.filter(f => f.LoaiHoSo === LoaiHoSo.BanVe),
+          thuyetMinhs: nextProps.danhMucHoSos.filter(f => f.LoaiHoSo === LoaiHoSo.ThuyetMinh),
+          hoSoPhapLys: nextProps.danhMucHoSos.filter(f => f.LoaiHoSo === LoaiHoSo.PhapLy)
         })
       } else {
         this.setState({
@@ -97,4 +77,4 @@ const dispatchStateToProps = (state: AllModelReducer): StateToProps => ({
   danhMucHoSos: state.quyHoach.danhMucHoSos
 });
 
-export default withStyles(styles)(Component);
+export default connect(dispatchStateToProps, null)(withStyles(styles)(Component));

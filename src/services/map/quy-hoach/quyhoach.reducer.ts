@@ -56,7 +56,7 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         doAnQuyHoachs.push(doAnQuyHoach);
       }
 
-      return { ...state, doAnQuyHoachs, danhMucHoSos: [] };
+      return { ...state, doAnQuyHoachs };
     case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM:
       return { ...state, danhMucHoSos: action.danhMucHoSos }
     default:

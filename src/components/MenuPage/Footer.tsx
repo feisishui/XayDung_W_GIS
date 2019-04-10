@@ -23,12 +23,6 @@ type States = {
 
 };
 
-const links = [
-  { title: 'Sở công thương', url: 'http://congthuongbentre.gov.vn/' },
-  { title: 'Sở kế hoạch và đầu tư', url: 'http://www.skhdt.bentre.gov.vn/' },
-  { title: 'Phòng kinh tế', url: '#' }
-]
-
 class Component extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);

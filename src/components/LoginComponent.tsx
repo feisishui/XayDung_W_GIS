@@ -1,5 +1,5 @@
 import * as React from 'react';
-import User from '../services/user/model';
+import {User} from '../services/main/user/user.model';
 import { Card, TextField, Button, createStyles, WithStyles, Theme, withStyles, Typography } from '@material-ui/core';
 
 const styles = (theme: Theme) => createStyles({

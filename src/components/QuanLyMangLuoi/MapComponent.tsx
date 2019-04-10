@@ -13,7 +13,7 @@ import * as Popup from '../../map-lib/widgets/Popup';
 // APP
 import LayerInfo from '../../services/map/models/LayerInfo';
 import layerUtil from '../../map-lib/support/LayerHelper';
-import { LAYER } from '../../constants/map';
+import { LAYER } from '../../constants/map.constant';
 
 type Props = {
   view?: __esri.MapView | __esri.SceneView,

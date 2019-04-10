@@ -46,6 +46,7 @@ class ButtonComponent extends React.PureComponent<Props, States>{
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={Boolean(anchorEl)}
         onClose={this.handleClose}
       >

@@ -71,7 +71,7 @@ export default class MeasureComponent extends React.PureComponent<Props, States>
     );
   }
 
-  shouldComponentUpdate(props: Props, states: States) {
+  shouldComponentUpdate(_: Props, states: States) {
     // nếu chế độ hiện tại là null và chế độ tiếp theo là Area thì kích hoạt đo diện tích
     if (this.state.mode === null
       && states.mode === MeasureMode.AREA) {

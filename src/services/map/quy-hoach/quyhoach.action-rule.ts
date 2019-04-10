@@ -9,4 +9,4 @@ export type QuyHoachAction =
   | { type: QuyHoachActionType.ThongTinQuyHoach_ChonLoaiQuyHoach_SUCCESS, hanhChinh: HanhChinh, loaiQuyHoach: DM_LoaiQuyHoach, quyHoachs: RanhGioiQuyHoach[] }
   | { type: QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach, objectId: number }
   | { type: QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach, objectId: number }
-  | { type: QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM, danhMucHoSos:DanhMucHoSo[] }
+  | { type: QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM, danhMucHoSos?:DanhMucHoSo[] }

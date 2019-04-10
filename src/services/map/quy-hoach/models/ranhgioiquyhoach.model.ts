@@ -3,6 +3,7 @@ export const RanhGioiQuyHoachName = {
   MaPhuongXa: 'MaPhuongXa',
   LoaiQuyHoach: 'LoaiQuyHoach',
   TenDuAn: 'TenDuAn',
+  MaDuAn: 'MaDuAn',
   TrangThai: 'TrangThai'
 }
 
@@ -15,6 +16,7 @@ export default interface RanhGioiQuyHoach {
   OBJECTID?: number;
   MaQuanHuyen?: string;
   MaPhuongXa?: string;
+  MaDuAn?:string;
   LoaiQuyHoach?: DM_LoaiQuyHoach;
   TenDuAn?: string;
   TrangThai: DM_RGQH_TrangThai;

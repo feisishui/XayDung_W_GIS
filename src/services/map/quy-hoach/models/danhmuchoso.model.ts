@@ -1,6 +1,6 @@
 export interface DanhMucHoSo {
   ID?: number;
-  TenTen?: string;
+  TenTep?: string;
   TenHoSo?: string;
   LoaiHoSo?: number;
 }

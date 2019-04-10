@@ -7,6 +7,7 @@ import HanhChinh from '../models/HanhChinh';
 import { AllModelReducer } from '../../../reducers/index';
 import { LAYER } from '../../../constants/index';
 import MainAction from '../../main/main.action-rule';
+import { DanhMucHoSo } from './models/danhmuchoso.model';
 
 
 export const chonGiaiDoan = (giaiDoan: DM_RGQH_TrangThai): QuyHoachAction => {
@@ -22,7 +23,7 @@ export const chonGiaiDoan = (giaiDoan: DM_RGQH_TrangThai): QuyHoachAction => {
  * @param hanhChinh Mã hành chính
  */
 export const chonHanhChinh = (hanhChinh: HanhChinh) => {
-  return (dispatch: Dispatch<QuyHoachAction>, getState: () => AllModelReducer) => {
+  return (dispatch: Dispatch<QuyHoachAction>) => {
     dispatch({
       type: QuyHoachActionType.ThongTinQuyHoach_ChonHanhChinh,
       hanhChinh
@@ -95,6 +96,7 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
     // focus theo objectId
     try {
       dispatch(loading.loadingReady());
+      dispatch(setDanhMucHoSo());
       const view = getState().map.view;
 
       if (view) {
@@ -105,13 +107,18 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
               rgqhLayer.queryFeatures({
                 returnGeometry: true,
                 outSpatialReference: view.spatialReference,
-                objectIds: [params.objectId]
+                objectIds: [params.objectId],
+                outFields: [RanhGioiQuyHoachName.MaDuAn]
               })
                 .then(res => {
                   highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
                   highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
                   view.goTo(res.features);
-                })
+                });
+
+              dispatch(setDanhMucHoSo([{ ID: 1, LoaiHoSo: 1, TenHoSo: 'Test', TenTep: 'hoso.jpg' }
+                , { ID: 1, LoaiHoSo: 2, TenHoSo: 'Test', TenTep: 'hoso.jpg' }
+                , { ID: 1, LoaiHoSo: 3, TenHoSo: 'Test', TenTep: 'hoso.jpg' }]))
             });
         } else {
           throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
@@ -127,3 +134,8 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
     }
   }
 }
+
+export const setDanhMucHoSo = (danhMucHoSos?: DanhMucHoSo[]): QuyHoachAction => ({
+  type: QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM,
+  danhMucHoSos
+});

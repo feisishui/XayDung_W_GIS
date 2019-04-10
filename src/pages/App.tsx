@@ -22,7 +22,6 @@ import { connect } from 'react-redux';
 import { AllModelReducer } from '../reducers/index';
 import { alertActions } from '../services/main/main.action';
 import { Alert } from '../services/main/main.model';
-import Header from '../components/Header/Header';
 //Module
 
 const styles = () => createStyles({

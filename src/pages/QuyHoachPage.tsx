@@ -3,12 +3,12 @@ import * as React from 'react';
 import BasePage from './BasePage';
 
 // Redux
-import { initViewDiv } from '../actions/index';
+import { initViewDiv, setDanhMucHoSo } from '../actions/index';
 
 // Component
 import { MapComponent, HeaderComponent as Header, ToolPaneComponent, DanhMucHoSoContainer } from '../components/QuyHoach/index';
 import SplitterLayout from 'react-splitter-layout';
-import { createStyles, WithStyles, withStyles, LinearProgress, Paper } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, LinearProgress, Paper, IconButton, Tooltip } from '@material-ui/core';
 import LayerInfo from '../services/map/models/LayerInfo';
 import layerUtils from '../map-lib/support/LayerHelper';
 
@@ -22,12 +22,14 @@ const styles = createStyles({
   hosophaply: {
     position: 'absolute', top: 15, right: 15, zIndex: 999, opacity: 0.96,
     maxHeight: 500,
+    width:300,
     overflowY: 'auto'
   },
   container: {
     flex: '1 1 auto',
     height: 'calc(100vh - 64px)'
-  }
+  },
+  closeHSPLButton: { position: 'absolute', right: 0, top: 0, zIndex: 1000 }
 });
 
 type States = {
@@ -40,7 +42,8 @@ type StateToProps = {
 };
 
 type DispatchToProps = {
-  initViewDiv: (div: HTMLDivElement) => void
+  initViewDiv: (div: HTMLDivElement) => void,
+  closeDanhMucHoSo: () => void
 };
 
 type Props = {
@@ -75,6 +78,14 @@ class QuyHoachPage extends BasePage<Props, States> {
             view={view}
           >
             <Paper className={classes.hosophaply}>
+              <div className={classes.closeHSPLButton}>
+                <Tooltip title="Đóng">
+                  <IconButton
+                    onClick={this.closeDanhMucHoSo.bind(this)} >
+                    <i className="far fa-times-circle" />
+                  </IconButton>
+                </Tooltip>
+              </div>
               <DanhMucHoSoContainer />
             </Paper>
           </MapComponent>
@@ -102,6 +113,10 @@ class QuyHoachPage extends BasePage<Props, States> {
       return false;
     }
   }
+
+  private closeDanhMucHoSo() {
+    this.props.closeDanhMucHoSo();
+  }
 }
 
 const mapStateToProps = (state: AllModelReducer): StateToProps => ({
@@ -109,4 +124,9 @@ const mapStateToProps = (state: AllModelReducer): StateToProps => ({
   view: state.map.view
 });
 
-export default connect(mapStateToProps, { initViewDiv })(withStyles(styles)(QuyHoachPage));
+const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
+  initViewDiv: (div: HTMLDivElement) => dispatch(initViewDiv(div)),
+  closeDanhMucHoSo: () => dispatch(setDanhMucHoSo())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(QuyHoachPage));
