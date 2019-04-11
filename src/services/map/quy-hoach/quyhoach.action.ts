@@ -161,8 +161,51 @@ export const capNhatNoiDungGopY = (noiDung: string, hoSo: DanhMucHoSo) => {
  * Tra cứu ranh quy hoạch
  * @param params Nội dung tra cứu
  */
-export const traCuuTheoDuAn = async (params: { maHuyenTP?: string, maPhuongXa?: string, loaiQuyHoach?: DM_LoaiQuyHoach }): Promise<RanhGioiQuyHoach[]> => {
-  return [1, 2, 3, 4, 5].map(m => ({ OBJECTID: m, MaDuAn: 'MDA000' + m, TenDuAn: 'Test' + m }));
+export const traCuuTheoDuAn = (params: { maHuyenTP?: string, maPhuongXa?: string, loaiQuyHoach?: DM_LoaiQuyHoach }) => {
+  return async (dispatch: Dispatch<QuyHoachAction | MainAction>, getState: () => AllModelReducer): Promise<RanhGioiQuyHoach[]> => {
+    try {
+      if (params.maHuyenTP
+      || params.maPhuongXa
+        || params.loaiQuyHoach) {
+        dispatch(loading.loadingReady());
+        const view = getState().map.view;
+
+        if (view) {
+          const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
+          if (rgqhLayer) {
+            let wheres = [];
+            params.maHuyenTP && wheres.push(`MaQuanHuyen = '${params.maHuyenTP}'`);
+            params.maPhuongXa && wheres.push(`MaPhuongXa = '${params.maPhuongXa}'`);
+            params.loaiQuyHoach && wheres.push(`LoaiQuyHoach = '${params.loaiQuyHoach}'`);
+            const features = (await rgqhLayer.queryFeatures({
+              where: wheres.join(' AND '),
+              returnGeometry: false,
+              outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn, RanhGioiQuyHoachName.MaDuAn]
+            })).features;
+
+            if (features.length === 0) {
+              dispatch(alertActions.info('Không có dữ liệu'));
+            } else {
+              dispatch(alertActions.success('Tìm thấy '+features.length + ' đồ án'));
+              return features.map(m=>m.attributes)
+            }
+          } else {
+            throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
+          }
+        } else {
+          throw new Error('Không xác định được view engine');
+        }
+      } else {
+        dispatch(alertActions.info('Vui lòng chọn tiêu chí tìm kiếm'));
+      }
+    } catch (error) {
+      dispatch(alertActions.error(error.message));
+    }
+    finally {
+      dispatch(loading.loadingFinish());
+    }
+    return [];
+  };
 };
 
 /**

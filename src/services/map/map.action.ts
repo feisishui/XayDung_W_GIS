@@ -50,6 +50,7 @@ export const initViewDiv = (div: HTMLDivElement) => {
       container: div,
       center: CST_MAP.CENTER,
       zoom: CST_MAP.ZOOM,
+      scale:CST_MAP.SCALE,
       ui: {
         components: ['zoom']
       }

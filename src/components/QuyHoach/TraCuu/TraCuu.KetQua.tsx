@@ -37,12 +37,11 @@ class Component extends React.PureComponent<Props, States>{
     const { classes, doAns } = this.props;
     return <div className={classes.root}>
       <List
-        component="nav"
         className={classes.root}
       >
         {
           doAns.map((m, index) =>
-            <ListItem button key={index} onClick={this.props.onClick.bind(null,m)}>
+            <ListItem button key={index} onClick={this.props.onClick.bind(null, m)}>
               <ListItemIcon>
                 <Avatar className={classes.avatar}>{index + 1}</Avatar>
               </ListItemIcon>
