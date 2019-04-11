@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createStyles, WithStyles, withStyles, List, ListSubheader, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, List, ListSubheader, ListItem, ListItemText } from '@material-ui/core';
 import { DanhMucHoSo } from '../../../services/map/quy-hoach/models/danhmuchoso.model';
 const styles = createStyles({
   root: {}
@@ -16,7 +16,7 @@ type States = {
 
 };
 
-class Component extends React.Component<Props, States>{
+class Component extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {

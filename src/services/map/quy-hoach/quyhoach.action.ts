@@ -1,5 +1,5 @@
 import { alertActions, loading } from '../../main/main.action';
-import { DM_RGQH_TrangThai, DM_LoaiQuyHoach, RanhGioiQuyHoachName } from './models/ranhgioiquyhoach.model';
+import RanhGioiQuyHoach, { DM_RGQH_TrangThai, DM_LoaiQuyHoach, RanhGioiQuyHoachName } from './models/ranhgioiquyhoach.model';
 import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
 import { Dispatch } from 'redux';
@@ -56,7 +56,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
             const features = (await rgqhLayer.queryFeatures({
               where: `LoaiQuyHoach = '${loaiQuyHoach}' and MaQuanHuyen = '${maQuanHuyen}' and TrangThai = '${giaiDoan}'`,
               returnGeometry: false,
-              outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn]
+              outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn,RanhGioiQuyHoachName.MaDuAn]
             })).features;
 
             if (features.length === 0) {
@@ -91,12 +91,16 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
 }
 
 var highlightDoAnQuyHoach: IHandle | null = null;
-export const chonDoAnQuyHoach = (params: { objectId: number }) => {
+export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
   return async (dispatch: Dispatch<MainAction | QuyHoachAction>, getState: () => AllModelReducer) => {
     // focus theo objectId
     try {
       dispatch(loading.loadingReady());
       dispatch(setDanhMucHoSo());
+      dispatch(pushAction());
+      if(!params.rgqh.OBJECTID){
+        throw new Error('Không xác định được thuộc tính định danh của đồ án');
+      }
       const view = getState().map.view;
 
       if (view) {
@@ -106,15 +110,15 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
           const features = (await rgqhLayer.queryFeatures({
             returnGeometry: true,
             outSpatialReference: view.spatialReference,
-            objectIds: [params.objectId],
+            objectIds: [params.rgqh.OBJECTID],
             outFields: [RanhGioiQuyHoachName.MaDuAn]
           })).features;
           highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
-          highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.objectId]);
+          highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.rgqh.OBJECTID]);
 
           if (features.length > 0) {
             view.goTo(features);
-
+            dispatch(pushAction(params.rgqh));
             // lấy danh mục hồ sơ
             const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
             dispatch(setDanhMucHoSo(danhMuc));
@@ -130,6 +134,13 @@ export const chonDoAnQuyHoach = (params: { objectId: number }) => {
     }
     finally {
       dispatch(loading.loadingFinish());
+    }
+  }
+
+  function pushAction(rgqh?:RanhGioiQuyHoach):QuyHoachAction{
+    return {
+      type:QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach,
+      rgqh
     }
   }
 }

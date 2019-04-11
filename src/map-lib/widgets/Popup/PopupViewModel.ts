@@ -129,7 +129,6 @@ export default class PopupViewModel extends Evented{
     this.assignParams(layerInfo);
     const layer = layerInfo.layer as __esri.MapImageLayer;
     layer.when((layerView:__esri.LayerView) => {
-      console.log(layerView);
       // lấy sublayers
       const subLayers = layer.sublayers;
       subLayers.forEach(layer => {

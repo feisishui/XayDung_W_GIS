@@ -1,6 +1,6 @@
 import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
-import { DM_LoaiQuyHoach, DM_RGQH_TrangThai, DoAnQuyHoach } from './models/ranhgioiquyhoach.model';
+import RanhGioiQuyHoach, { DM_LoaiQuyHoach, DM_RGQH_TrangThai, DoAnQuyHoach } from './models/ranhgioiquyhoach.model';
 import HanhChinh from '../models/HanhChinh';
 import { DanhMucHoSo, NoiDungGopY } from './models/danhmuchoso.model';
 
@@ -10,6 +10,7 @@ export type Model = {
   hanhChinhSelected?: HanhChinh,
   giaiDoan?: DM_RGQH_TrangThai,
   doAnQuyHoachs?: Array<DoAnQuyHoach>,
+  doAnSelected?:RanhGioiQuyHoach,
   danhMucHoSos?: DanhMucHoSo[],
   danhMucHoSoSelected?: DanhMucHoSo,
   noiDungGopYs?: NoiDungGopY[]
@@ -27,6 +28,7 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         doAnQuyHoachs: undefined,
         hanhChinhSelected: undefined,
         danhMucHoSos: undefined,
+        doAnSelected:undefined,
         noiDungGopYs: action.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined
       }
       
@@ -67,7 +69,10 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
       return { ...state, danhMucHoSos: action.danhMucHoSos }
 
     case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_SELECTED:
-      return { ...state, danhMucHoSoSelected: action.danhMucHoSo, noiDungGopYs: state.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined };
+      return { ...state, danhMucHoSoSelected: action.danhMucHoSo};
+
+    case QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach:
+      return { ...state, doAnSelected:action.rgqh,noiDungGopYs: state.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined };
 
     case QuyHoachActionType.GopYQuyHoach_NhapNoiDungGopY:
       if (!state.noiDungGopYs && action.hoSo.ID)

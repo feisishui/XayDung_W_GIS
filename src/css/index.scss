@@ -2,3 +2,8 @@ $color-main: #1B9CFC;
 $color-second:#25CCF7;
 @import "main";
 @import "map";
+
+@page {
+  size: auto;
+  margin: 0;
+}

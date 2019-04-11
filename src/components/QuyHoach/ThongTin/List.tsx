@@ -8,7 +8,7 @@ import {
   Typography
 } from '@material-ui/core';
 import ListItem from './ListItem';
-import { DM_RGQH_TrangThai, DoAnQuyHoach, DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
+import RanhGioiQuyHoach, { DM_RGQH_TrangThai, DoAnQuyHoach, DM_LoaiQuyHoach } from '../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
 import { AllModelReducer } from '../../../reducers/index';
 import { chonLoaiQuyHoach,chonDoAnQuyHoach } from '../../../actions/action';
 import { connect } from 'react-redux';
@@ -39,7 +39,7 @@ type StateToProps = {
 
 type DispatchToProps = {
   chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => void,
-  chonDoAnQuyHoach: (objectId:number) => void
+  chonDoAnQuyHoach: (rgqh:RanhGioiQuyHoach) => void
 };
 
 type Props = {
@@ -106,8 +106,8 @@ class Component extends React.PureComponent<Props, States>{
     this.props.chonLoaiQuyHoach(doAnQuyHoach.loaiQuyHoach);
     return false;
   }
-  handleSubItemClick = async (objectId:number) => {
-    this.props.chonDoAnQuyHoach(objectId);
+  handleSubItemClick = async (rgqh:RanhGioiQuyHoach) => {
+    this.props.chonDoAnQuyHoach(rgqh);
     return false;
   }
 
@@ -121,7 +121,7 @@ const mapStateToProps = (state: AllModelReducer): StateToProps => ({
 
 const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
   chonLoaiQuyHoach: (loaiQuyHoach: DM_LoaiQuyHoach) => dispatch(chonLoaiQuyHoach({ loaiQuyHoach })),
-  chonDoAnQuyHoach:(objectId:number)=>dispatch(chonDoAnQuyHoach({objectId}))
+  chonDoAnQuyHoach:(rgqh:RanhGioiQuyHoach)=>dispatch(chonDoAnQuyHoach({rgqh}))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Component));

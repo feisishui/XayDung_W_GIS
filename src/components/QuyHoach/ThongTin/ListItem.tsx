@@ -45,7 +45,7 @@ type Props = {
   title: string,
   doAnQuyHoachs: RanhGioiQuyHoach[],
   onClick: () => Promise<boolean>,
-  onSubItemClick: (objectId: number) => void
+  onSubItemClick: (rgqh:RanhGioiQuyHoach) => void
 }
   & WithStyles<typeof styles>;
 
@@ -79,7 +79,7 @@ class Component extends React.PureComponent<Props, States>{
       <Collapse in={this.state.open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {doAnQuyHoachs.map((m, index) =>
-            <ListItem key={index} button className={classes.nested} onClick={this.props.onSubItemClick.bind(null, m.OBJECTID as number)}>
+            <ListItem key={index} button className={classes.nested} onClick={this.props.onSubItemClick.bind(null, m)}>
               <ListItemIcon>
                 <Avatar className={classes.avatar}>{index + 1}</Avatar>
               </ListItemIcon>
