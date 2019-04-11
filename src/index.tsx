@@ -48,7 +48,21 @@ const theme = createMuiTheme({
     }
   },
   overrides: {
+    MuiTypography: {
+      colorTextSecondary: {
+        color: '#fff'
+      }
+    },
+    MuiAppBar: {
+
+    },
     MuiButton: {
+      containedPrimary: {
+        color: '#fff',
+      },
+      containedSecondary: {
+        color: '#fff',
+      },
       textPrimary: {
         color: '#fff'
       }

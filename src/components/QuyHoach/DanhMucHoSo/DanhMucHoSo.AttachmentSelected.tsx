@@ -61,10 +61,10 @@ class Component extends React.Component<Props, States>{
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <Typography variant="h6" color="inherit" className={classes.flex}>
+              <Typography variant="h6" color="textSecondary" className={classes.flex}>
                 {title}
               </Typography>
-              <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+              <IconButton onClick={this.handleClose} aria-label="Close">
                 <CloseIcon />
               </IconButton>
             </Toolbar>

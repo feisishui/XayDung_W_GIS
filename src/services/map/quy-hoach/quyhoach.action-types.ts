@@ -7,4 +7,5 @@ export enum QuyHoachActionType {
   ThongTinQuyHoach_ChonLoaiQuyHoach_SUCCESS = 'ThongTinQuyHoach_ChonLoaiQuyHoach_SUCCESS',
   ThongTinQuyHoach_DanhMucHoSo_THEM = 'ThongTinQuyHoach_DanhMucHoSo_THEM',
   ThongTinQuyHoach_DanhMucHoSo_SELECTED = 'ThongTinQuyHoach_DanhMucHoSo_SELECTED',
+  GopYQuyHoach_NhapNoiDungGopY = 'GopYQuyHoach_NhapNoiDungGopY',
 };

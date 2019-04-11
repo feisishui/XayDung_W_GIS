@@ -2,7 +2,7 @@ import { QuyHoachActionType } from './quyhoach.action-types';
 import { QuyHoachAction } from './quyhoach.action-rule';
 import { DM_LoaiQuyHoach, DM_RGQH_TrangThai, DoAnQuyHoach } from './models/ranhgioiquyhoach.model';
 import HanhChinh from '../models/HanhChinh';
-import { DanhMucHoSo } from './models/danhmuchoso.model';
+import { DanhMucHoSo, NoiDungGopY } from './models/danhmuchoso.model';
 
 
 
@@ -11,7 +11,8 @@ export type Model = {
   giaiDoan?: DM_RGQH_TrangThai,
   doAnQuyHoachs?: Array<DoAnQuyHoach>,
   danhMucHoSos?: DanhMucHoSo[],
-  danhMucHoSoSelected?: DanhMucHoSo
+  danhMucHoSoSelected?: DanhMucHoSo,
+  noiDungGopYs?: NoiDungGopY[]
 };
 
 export const defaultState: Model = {
@@ -25,8 +26,10 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         giaiDoan: action.giaiDoan,
         doAnQuyHoachs: undefined,
         hanhChinhSelected: undefined,
-        danhMucHoSos: undefined
+        danhMucHoSos: undefined,
+        noiDungGopYs: action.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined
       }
+      
     case QuyHoachActionType.ThongTinQuyHoach_ChonHanhChinh:
       let loaiQuyHoachs: DM_LoaiQuyHoach[] = [
         DM_LoaiQuyHoach["Quy hoạch chung"],
@@ -45,6 +48,7 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         hanhChinhSelected: action.hanhChinh,
         doAnQuyHoachs: loaiQuyHoachs.map(m => ({ loaiQuyHoach: m, doAns: [] } as DoAnQuyHoach))
       }
+
     case QuyHoachActionType.ThongTinQuyHoach_ChonLoaiQuyHoach_SUCCESS:
       // thêm dữ liệu đồ án quy hoạch
       let doAnQuyHoachs = state.doAnQuyHoachs ? [...state.doAnQuyHoachs] : [];
@@ -58,10 +62,28 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
       }
 
       return { ...state, doAnQuyHoachs };
+
     case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_THEM:
       return { ...state, danhMucHoSos: action.danhMucHoSos }
+
     case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_SELECTED:
-      return { ...state, danhMucHoSoSelected: action.danhMucHoSo };
+      return { ...state, danhMucHoSoSelected: action.danhMucHoSo, noiDungGopYs: state.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined };
+
+    case QuyHoachActionType.GopYQuyHoach_NhapNoiDungGopY:
+      if (!state.noiDungGopYs && action.hoSo.ID)
+        return state;
+      let noiDungGopYs = [...state.noiDungGopYs];
+
+      let noiDungGopY = noiDungGopYs.find(f => f.hoSo.ID === action.hoSo.ID);
+      // kiểm tra đã tồn tại hay chưa
+      if (noiDungGopY) {
+        noiDungGopY.noiDung = action.noiDung;
+      } else {
+        noiDungGopY = { hoSo: action.hoSo, noiDung: action.noiDung };
+        noiDungGopYs.push(noiDungGopY);
+      }
+      return { ...state, noiDungGopYs };
+
     default:
       return state;
   }

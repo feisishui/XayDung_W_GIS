@@ -10,3 +10,8 @@ export interface DanhMucHoSo {
 export enum LoaiDanhMuc{
   PhapLy=1,BanVe,ThuyetMinh
 }
+
+export interface NoiDungGopY{
+  hoSo:DanhMucHoSo,
+  noiDung:string
+}

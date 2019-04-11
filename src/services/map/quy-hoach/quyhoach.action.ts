@@ -143,3 +143,17 @@ export const chonHoSo = (hoSo?: DanhMucHoSo): QuyHoachAction => ({
   type: QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_SELECTED,
   danhMucHoSo: hoSo
 })
+
+export const capNhatNoiDungGopY = (noiDung: string, hoSo: DanhMucHoSo) => {
+  return (dispatch: Dispatch<QuyHoachAction | MainAction>) => {
+    if (!hoSo.ID) {
+      dispatch(alertActions.error('Không tìm thấy định danh của hồ sơ, vui lòng thử lại thao tác'));
+      return;
+    }
+    dispatch(alertActions.success('Đã cập nhật nội dung góp ý cho hồ sơ ' + (hoSo.TenHoSo || hoSo.ID)));
+    dispatch({
+      type: QuyHoachActionType.GopYQuyHoach_NhapNoiDungGopY,
+      hoSo, noiDung
+    });
+  }
+}
