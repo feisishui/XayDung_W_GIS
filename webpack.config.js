@@ -18,7 +18,7 @@ var prodPlugins = [
     staticFileGlobsIgnorePatterns: [/\.map$/],
     runtimeCaching: [{
         // JSAPI scripts
-        urlPattern: new RegExp("https://js.arcgis.com/4.7/esri/css/main.css"),
+        urlPattern: new RegExp("https://js.arcgis.com/4.9/esri/css/main.css"),
         handler: "fastest"
       },
       {
@@ -35,7 +35,7 @@ module.exports = env => {
   var plugins = [
     new webpack.DefinePlugin({
       'SERVICE_URL': JSON.stringify(isProd? '/api':'http://bdqhxd.ditagis.com/api'),
-      'VERSION':JSON.stringify("0.0.1")
+      'VERSION':JSON.stringify("0.1.0")
     }),
     new CleanWebpackPlugin(["dist"]),
     new CopyWebpackPlugin([{

@@ -1,7 +1,7 @@
 import IService from "../../../api/IService";
 import { DanhMucHoSo } from '../models/danhmuchoso.model';
 import fetch from '../../../../helpers/fetch';
-import { API_URL } from "../../../api";
+import { API_URL } from "../../../api/index";
 
 const URL = API_URL + '/TepDinhKemDanhMucHoSo'
 
