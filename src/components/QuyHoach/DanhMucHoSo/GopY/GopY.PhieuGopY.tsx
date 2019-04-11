@@ -4,6 +4,7 @@ import { AllModelReducer } from '../../../../reducers';
 import { connect } from 'react-redux';
 import { NoiDungGopY } from '../../../../services/map/quy-hoach/models/danhmuchoso.model';
 import RanhGioiQuyHoach from '../../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
+import { alertActions } from '../../../../actions';
 const styles = createStyles({
   container: {
     width: '100%',
@@ -59,11 +60,16 @@ type StateToProps = {
   noiDungGopYs?: NoiDungGopY[]
 };
 
+type DispatchToProps={
+  gopY: () => void
+};
+
 type Props = {
 
 }
   & WithStyles<typeof styles>
-  & StateToProps;
+  & StateToProps
+  & DispatchToProps;
 
 type States = {
   tenCQ: string,
@@ -199,7 +205,7 @@ class Component extends React.PureComponent<Props, States>{
           </div>
         </div>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary">Góp ý</Button>
+          <Button variant="contained" color="primary" onClick={this.props.gopY}>Góp ý</Button>
           <Button variant="text" onClick={this.taiVe}>Tải về</Button>
         </div>
       </div>
@@ -232,4 +238,8 @@ const mapStateToProps = (state: AllModelReducer): StateToProps => ({
   noiDungGopYs: state.quyHoach.noiDungGopYs
 })
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Component));
+const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
+  gopY: () => dispatch(alertActions.info('Đang phát triển...'))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Component));

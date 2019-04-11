@@ -109,7 +109,7 @@ class QuyHoachPage extends BasePage<Props, States> {
     }
   }
 
-  private closeDanhMucHoSo() {
+  closeDanhMucHoSo = () => {
     this.props.closeDanhMucHoSo();
   }
 }

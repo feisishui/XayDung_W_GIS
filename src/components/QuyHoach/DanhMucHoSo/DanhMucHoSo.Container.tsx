@@ -66,7 +66,7 @@ type States = {
   isHienThiPhieuGopY: boolean
 };
 
-class Component extends React.PureComponent<Props, States>{
+class Component extends React.Component<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -115,18 +115,16 @@ class Component extends React.PureComponent<Props, States>{
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.danhMucHoSos != this.props.danhMucHoSos) {
-      if (nextProps.danhMucHoSos) {
-        this.setState({
-          banVes: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.BanVe),
-          thuyetMinhs: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.ThuyetMinh),
-          hoSoPhapLys: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.PhapLy)
-        })
-      } else {
-        this.setState({
-          banVes: [], thuyetMinhs: [], hoSoPhapLys: []
-        })
-      }
+    if (nextProps.danhMucHoSos) {
+      this.setState({
+        banVes: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.BanVe),
+        thuyetMinhs: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.ThuyetMinh),
+        hoSoPhapLys: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.PhapLy)
+      })
+    } else {
+      this.setState({
+        banVes: [], thuyetMinhs: [], hoSoPhapLys: []
+      })
     }
   }
 
