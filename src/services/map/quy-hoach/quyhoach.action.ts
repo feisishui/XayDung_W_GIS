@@ -56,7 +56,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
             const features = (await rgqhLayer.queryFeatures({
               where: `LoaiQuyHoach = '${loaiQuyHoach}' and MaQuanHuyen = '${maQuanHuyen}' and TrangThai = '${giaiDoan}'`,
               returnGeometry: false,
-              outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn,RanhGioiQuyHoachName.MaDuAn]
+              outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn, RanhGioiQuyHoachName.MaDuAn]
             })).features;
 
             if (features.length === 0) {
@@ -90,7 +90,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
   };
 }
 
-var highlightDoAnQuyHoach: IHandle | null = null;
+
 export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
   return async (dispatch: Dispatch<MainAction | QuyHoachAction>, getState: () => AllModelReducer) => {
     // focus theo objectId
@@ -98,31 +98,19 @@ export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
       dispatch(loading.loadingReady());
       dispatch(setDanhMucHoSo());
       dispatch(pushAction());
-      if(!params.rgqh.OBJECTID){
+      if (!params.rgqh.OBJECTID) {
         throw new Error('Không xác định được thuộc tính định danh của đồ án');
       }
       const view = getState().map.view;
 
       if (view) {
-        const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
-        if (rgqhLayer) {
-          const layerView = await view.whenLayerView(rgqhLayer);
-          const features = (await rgqhLayer.queryFeatures({
-            returnGeometry: true,
-            outSpatialReference: view.spatialReference,
-            objectIds: [params.rgqh.OBJECTID],
-            outFields: [RanhGioiQuyHoachName.MaDuAn]
-          })).features;
-          highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
-          highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([params.rgqh.OBJECTID]);
+        const features = await focusRanhQuyHoach(view, params.rgqh.OBJECTID);
 
-          if (features.length > 0) {
-            view.goTo(features);
-            dispatch(pushAction(params.rgqh));
-            // lấy danh mục hồ sơ
-            const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
-            dispatch(setDanhMucHoSo(danhMuc));
-          }
+        if (features && features.length > 0) {
+          dispatch(pushAction(params.rgqh));
+          // lấy danh mục hồ sơ
+          const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
+          dispatch(setDanhMucHoSo(danhMuc));
         } else {
           throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
         }
@@ -137,9 +125,9 @@ export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
     }
   }
 
-  function pushAction(rgqh?:RanhGioiQuyHoach):QuyHoachAction{
+  function pushAction(rgqh?: RanhGioiQuyHoach): QuyHoachAction {
     return {
-      type:QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach,
+      type: QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach,
       rgqh
     }
   }
@@ -168,3 +156,59 @@ export const capNhatNoiDungGopY = (noiDung: string, hoSo: DanhMucHoSo) => {
     });
   }
 }
+
+/**
+ * Tra cứu ranh quy hoạch
+ * @param params Nội dung tra cứu
+ */
+export const traCuuTheoDuAn = async (params: { maHuyenTP?: string, maPhuongXa?: string, loaiQuyHoach?: DM_LoaiQuyHoach }): Promise<RanhGioiQuyHoach[]> => {
+  return [1, 2, 3, 4, 5].map(m => ({ OBJECTID: m, MaDuAn: 'MDA000' + m, TenDuAn: 'Test' + m }));
+};
+
+/**
+ * Click vào kết quả tra cứu theo dự án
+ * @param params 
+ */
+export const clickKetQuaTraCuuDuAn = (params: { doAn: RanhGioiQuyHoach }) => {
+  return async (dispatch: Dispatch<MainAction>, getState: () => AllModelReducer) => {
+    try {
+      dispatch(loading.loadingReady());
+
+      if (!params.doAn.OBJECTID) {
+        throw new Error('Không xác định được thuộc tính định danh của đồ án');
+      }
+
+      const view = getState().map.view;
+
+      if (view) {
+        await focusRanhQuyHoach(view, params.doAn.OBJECTID);
+      } else {
+        throw new Error('Không xác định được view engine');
+      }
+    } catch (error) {
+      dispatch(alertActions.error(error.message));
+    }
+    finally {
+      dispatch(loading.loadingFinish());
+    }
+  }
+}
+var highlightDoAnQuyHoach: IHandle | null = null;
+const focusRanhQuyHoach = async (view: __esri.MapView | __esri.SceneView, objectId: number) => {
+  const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
+  if (rgqhLayer) {
+    const layerView = await view.whenLayerView(rgqhLayer);
+    const features = (await rgqhLayer.queryFeatures({
+      returnGeometry: true,
+      outSpatialReference: view.spatialReference,
+      objectIds: [objectId],
+      outFields: [RanhGioiQuyHoachName.MaDuAn]
+    })).features;
+    highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
+    highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([objectId]);
+
+    if (features.length > 0) view.goTo(features);
+    return features;
+  }
+  return null;
+};

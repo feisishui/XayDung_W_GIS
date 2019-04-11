@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createStyles, WithStyles, withStyles, Grid, TextField, Button, Typography } from '@material-ui/core';
-import { StateToString } from 'redux-logger';
 import { AllModelReducer } from '../../../../reducers';
 import { connect } from 'react-redux';
 import { NoiDungGopY } from '../../../../services/map/quy-hoach/models/danhmuchoso.model';

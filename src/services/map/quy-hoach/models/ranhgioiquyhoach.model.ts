@@ -12,14 +12,21 @@ export interface DoAnQuyHoach {
   doAns: RanhGioiQuyHoach[]
 }
 
+export const LoaiQuyHoach = [
+  { code: 'QHC', value: 'Quy hoạch chung' },
+  { code: 'QHPK', value: 'Quy hoạch phân khu' },
+  { code: 'QHNTM', value: 'Quy hoạch nông thôn mới' },
+  { code: 'QHCT', value: 'Quy hoạch chi tiết' } 
+]
+
 export default interface RanhGioiQuyHoach {
   OBJECTID?: number;
   MaQuanHuyen?: string;
   MaPhuongXa?: string;
-  MaDuAn?:string;
+  MaDuAn?: string;
   LoaiQuyHoach?: DM_LoaiQuyHoach;
   TenDuAn?: string;
-  TrangThai: DM_RGQH_TrangThai;
+  TrangThai?: DM_RGQH_TrangThai;
 }
 
 export enum DM_LoaiQuyHoach {
@@ -27,10 +34,6 @@ export enum DM_LoaiQuyHoach {
   'Quy hoạch phân khu' = 'QHPK',
   'Quy hoạch nông thôn mới' = 'QHNTM',
   'Quy hoạch chi tiết' = 'QHCT'
-}
-
-export interface LoaiQuyHoach extends __esri.CodedValueDomainCodedValues {
-
 }
 
 export enum DM_RGQH_TrangThai {

@@ -6,12 +6,12 @@ import BasePage from './BasePage';
 import { initViewDiv, setDanhMucHoSo } from '../actions/index';
 
 // Component
-import { MapComponent, HeaderComponent as Header, ToolPaneComponent, DanhMucHoSoContainer } from '../components/QuyHoach/index';
+import { MapComponent, HeaderComponent as Header, ToolPaneComponent, DanhMucHoSoContainer, TraCuuContainer } from '../components/QuyHoach/index';
 import SplitterLayout from 'react-splitter-layout';
-import { createStyles, WithStyles, withStyles, LinearProgress, Paper, IconButton, Tooltip } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, LinearProgress} from '@material-ui/core';
 import LayerInfo from '../services/map/models/LayerInfo';
 import layerUtils from '../map-lib/support/LayerHelper';
-
+import PopupComponent from '../components/material-ui/PopupComponent';
 // ESRI
 import { connect } from 'react-redux';
 import { AllModelReducer } from '../reducers/index';
@@ -19,17 +19,12 @@ import { AllModelReducer } from '../reducers/index';
 
 const styles = createStyles({
   root: { height: '100%', width: '100%' },
-  hosophaply: {
-    position: 'absolute', top: 15, right: 15, zIndex: 999, opacity: 0.96,
-    maxHeight: 500,
-    width:300,
-    overflowY: 'auto'
-  },
+
   container: {
     flex: '1 1 auto',
     height: 'calc(100vh - 64px)'
   },
-  closeHSPLButton: { position: 'absolute', right: 0, top: 0, zIndex: 1000 }
+
 });
 
 type States = {
@@ -77,17 +72,14 @@ class QuyHoachPage extends BasePage<Props, States> {
             layerInfos={layerInfos}
             view={view}
           >
-            <Paper className={classes.hosophaply}>
-              <div className={classes.closeHSPLButton}>
-                <Tooltip title="Đóng">
-                  <IconButton
-                    onClick={this.closeDanhMucHoSo.bind(this)} >
-                    <i className="far fa-times-circle" />
-                  </IconButton>
-                </Tooltip>
-              </div>
+            <PopupComponent onClose={this.closeDanhMucHoSo}>
               <DanhMucHoSoContainer />
-            </Paper>
+            </PopupComponent>
+
+            <PopupComponent  style={{width:500,left:0}} title="Tra cứu đồ án quy hoạch" onClose={this.closeDanhMucHoSo}>
+              <TraCuuContainer />
+            </PopupComponent>
+
           </MapComponent>
           {!isLoadLayers && <LinearProgress />}
         </SplitterLayout>
