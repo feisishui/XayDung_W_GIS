@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { createStyles, WithStyles, Theme, withStyles } from '@material-ui/core';
+import { createStyles, WithStyles, Theme, withStyles, Button } from '@material-ui/core';
 import { DanhMucHoSo, LoaiDanhMuc } from '../../../services/map/quy-hoach/models/danhmuchoso.model';
 import List from './DanhMucHoSo.List';
 import AttachmentSelected from './DanhMucHoSo.AttachmentSelected';
-import FormGopY from './DanhMucHoSo.FormGopY';
+import FormGopY from './GopY/DanhMucHoSo.FormGopY';
+import PhieuGopY from './GopY/GopY.PhieuGopY';
+import PhieuGopYDlg from './GopY/GopY.PhieuGopYDlg';
 import { AllModelReducer } from '../../../reducers';
 import { connect } from 'react-redux';
 import { chonHoSo, capNhatNoiDungGopY, alertActions } from '../../../actions/action';
@@ -29,6 +31,11 @@ const styles = (theme: Theme) => createStyles({
     '& .formGopY': {
       height: 150
     }
+  },
+  btnXemPhieuGopY: {
+    margin: 15,
+    // display: 'flex',
+    // justifyContent: 'flex-end'
   }
 });
 
@@ -56,6 +63,7 @@ type States = {
   hoSoPhapLys: DanhMucHoSo[],
   banVes: DanhMucHoSo[],
   thuyetMinhs: DanhMucHoSo[],
+  isHienThiPhieuGopY: boolean
 };
 
 class Component extends React.PureComponent<Props, States>{
@@ -64,7 +72,8 @@ class Component extends React.PureComponent<Props, States>{
     this.state = {
       hoSoPhapLys: [],
       banVes: [],
-      thuyetMinhs: []
+      thuyetMinhs: [],
+      isHienThiPhieuGopY: false
     };
   }
   render() {
@@ -75,7 +84,7 @@ class Component extends React.PureComponent<Props, States>{
     }
 
     const { hoSoSelected, giaiDoan } = this.props;
-    const { hoSoPhapLys, banVes, thuyetMinhs } = this.state;
+    const { hoSoPhapLys, banVes, thuyetMinhs, isHienThiPhieuGopY } = this.state;
 
     return <div className={classes.root}>
       <List title="I. Hồ sơ pháp lý" danhMucHoSos={hoSoPhapLys} chonHoSo={this.props.chonHoSo} />
@@ -91,6 +100,17 @@ class Component extends React.PureComponent<Props, States>{
             }
           </div>
         </AttachmentSelected>}
+      {giaiDoan && giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"]
+        &&
+        <div className={classes.btnXemPhieuGopY}>
+          <Button fullWidth variant="contained" color="primary" onClick={() => this.setState({ isHienThiPhieuGopY: true })} >XEM PHIẾU GÓP Ý</Button>
+        </div>
+      }
+      {isHienThiPhieuGopY &&
+        <PhieuGopYDlg open={true} onClose={() => this.setState({ isHienThiPhieuGopY: false })}>
+          <PhieuGopY />
+        </PhieuGopYDlg>
+      }
     </div>;
   }
 
