@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createStyles, WithStyles, withStyles, Paper, Tooltip, IconButton, Typography, Theme } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, Paper, Tooltip, IconButton, Theme } from '@material-ui/core';
 import classnames from 'classnames';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
 const styles = (theme: Theme) => createStyles({
@@ -18,7 +18,8 @@ const styles = (theme: Theme) => createStyles({
 type Props = {
   onClose: () => void,
   title?: string,
-  style?: CSSProperties
+  style?: CSSProperties,
+  isOpen:boolean
 }
   & WithStyles<typeof styles>;
 
@@ -34,6 +35,8 @@ class Component extends React.PureComponent<Props, States>{
     };
   }
   render() {
+    if(!this.props.isOpen)
+     return null;
     const { classes, style, title } = this.props;
     return <Paper className={classnames(classes.root, style)}>
       <div className={classes.header}>

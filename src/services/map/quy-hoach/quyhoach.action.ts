@@ -193,6 +193,11 @@ export const clickKetQuaTraCuuDuAn = (params: { doAn: RanhGioiQuyHoach }) => {
     }
   }
 }
+
+/**
+ * Goto đến vị trí ranh quy hoạch
+ * @params objectId mã đối tượng goTo
+ */
 var highlightDoAnQuyHoach: IHandle | null = null;
 const focusRanhQuyHoach = async (view: __esri.MapView | __esri.SceneView, objectId: number) => {
   const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
@@ -212,3 +217,10 @@ const focusRanhQuyHoach = async (view: __esri.MapView | __esri.SceneView, object
   }
   return null;
 };
+
+export function hienThiTraCuu(mode: boolean = false): QuyHoachAction {
+  return {
+    type: QuyHoachActionType.TraCuu_HienThi,
+    mode
+  }
+}

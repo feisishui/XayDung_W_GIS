@@ -10,13 +10,15 @@ export type Model = {
   hanhChinhSelected?: HanhChinh,
   giaiDoan?: DM_RGQH_TrangThai,
   doAnQuyHoachs?: Array<DoAnQuyHoach>,
-  doAnSelected?:RanhGioiQuyHoach,
+  doAnSelected?: RanhGioiQuyHoach,
   danhMucHoSos?: DanhMucHoSo[],
   danhMucHoSoSelected?: DanhMucHoSo,
-  noiDungGopYs?: NoiDungGopY[]
+  noiDungGopYs?: NoiDungGopY[],
+  isHienThiTraCuu: boolean
 };
 
 export const defaultState: Model = {
+  isHienThiTraCuu: false
 };
 
 function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
@@ -28,10 +30,10 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         doAnQuyHoachs: undefined,
         hanhChinhSelected: undefined,
         danhMucHoSos: undefined,
-        doAnSelected:undefined,
+        doAnSelected: undefined,
         noiDungGopYs: action.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined
       }
-      
+
     case QuyHoachActionType.ThongTinQuyHoach_ChonHanhChinh:
       let loaiQuyHoachs: DM_LoaiQuyHoach[] = [
         DM_LoaiQuyHoach["Quy hoạch chung"],
@@ -69,10 +71,10 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
       return { ...state, danhMucHoSos: action.danhMucHoSos }
 
     case QuyHoachActionType.ThongTinQuyHoach_DanhMucHoSo_SELECTED:
-      return { ...state, danhMucHoSoSelected: action.danhMucHoSo};
+      return { ...state, danhMucHoSoSelected: action.danhMucHoSo };
 
     case QuyHoachActionType.ThongTinQuyHoach_ChonQuyHoach:
-      return { ...state, doAnSelected:action.rgqh,noiDungGopYs: state.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined };
+      return { ...state, doAnSelected: action.rgqh, noiDungGopYs: state.giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"] ? [] : undefined };
 
     case QuyHoachActionType.GopYQuyHoach_NhapNoiDungGopY:
       if (!state.noiDungGopYs && action.hoSo.ID)
@@ -88,6 +90,9 @@ function reducer(state: Model = defaultState, action: QuyHoachAction): Model {
         noiDungGopYs.push(noiDungGopY);
       }
       return { ...state, noiDungGopYs };
+
+    case QuyHoachActionType.TraCuu_HienThi:
+      return { ...state, isHienThiTraCuu: action.mode }
 
     default:
       return state;
