@@ -130,7 +130,7 @@ class Component extends React.Component<Props, States>{
 
   getUrl = (hoSo: DanhMucHoSo) => {
     if (hoSo.ContentType && hoSo.ContentType === 'application/msword') {
-      return `https://drive.google.com/viewerng/viewer?embedded=true&url=${hoSo.Url}`;
+      return `https://view.officeapps.live.com/op/embed.aspx?src=${hoSo.Url}`;
     }
     return hoSo.Url
   }

@@ -58,7 +58,7 @@ class LoginComponent extends React.PureComponent<Props, States> {
           <div className={classes.cardHeading}>
             <Button
               variant="contained"
-              color="inherit"
+              color="primary"
               type="submit"
             >
               Đăng nhập

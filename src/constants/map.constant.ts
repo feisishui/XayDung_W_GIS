@@ -14,7 +14,7 @@ export const LAYER = {
   RanhGioiQuyHoach: 'ranhgioiquyhoachLYR'
 };
 export const MAP = {
-  CENTER: [106.477017, 11.3254024],
+  CENTER: [106.701767,11.132015],
   ZOOM: 10,
   SCALE: 500000
 };

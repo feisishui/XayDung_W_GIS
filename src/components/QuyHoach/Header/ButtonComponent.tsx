@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { createStyles, WithStyles, withStyles, Button, Menu, MenuItem } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles, Button, Menu, MenuItem, Popover, MenuList, Theme } from '@material-ui/core';
 import HanhChinh, { values } from '../../../services/map/models/HanhChinh';
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
   root: {
     borderColor: '#fff',
     borderLeft: '#fff 1px solid',
@@ -10,6 +10,10 @@ const styles = createStyles({
   },
   button: {
     color: '#fff'
+  },
+  popupOver: {
+    backgroundColor: theme.palette.primary.main,
+    boxShadow: 'none'
   }
 });
 
@@ -43,21 +47,32 @@ class ButtonComponent extends React.PureComponent<Props, States>{
       >
         {this.props.children}
       </Button>
-      <Menu
+      <Popover
         id="simple-menu"
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
         onClose={this.handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
       >
-        {values.map((m, index) =>
-          <MenuItem
-            dense
-            key={index}
-            onClick={this.handleItemClick.bind(null, m)}>
-            {m.TenHuyenTP}
-          </MenuItem>)}
-      </Menu>
+        <MenuList>
+          {values.map((m, index) =>
+            <MenuItem
+              style={{ width: 200 }}
+              dense
+              key={index}
+              onClick={this.handleItemClick.bind(null, m)}>
+              {m.TenHuyenTP}
+            </MenuItem>)
+          }
+        </MenuList>
+      </Popover>
     </div>
   }
 

@@ -26,7 +26,13 @@ const styles = (theme: Theme) => createStyles({
   item: {
     cursor: 'pointer',
     margin: 0,
-    padding: 0
+    padding: 0,
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& $primary, & $icon': {
+        color: theme.palette.common.white,
+      },
+    }
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4,

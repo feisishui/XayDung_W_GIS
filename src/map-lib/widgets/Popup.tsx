@@ -71,8 +71,11 @@ class Popup {
       this.highlight.removeAll();
       if (newValue && (!newValue.layer || (newValue.layer && newValue.layer.type !== 'feature'))) {
         this.highlight.add(newValue);
-      } 
-    })
+      }
+    });
+    this.view.popup.watch('visible', (newValue: __esri.Graphic, oldValue: __esri.Graphic) => {
+      oldValue && !newValue && this.highlight.removeAll();
+    });
   }
 
   private triggerActionHandler(event: {
