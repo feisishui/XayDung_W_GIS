@@ -8,10 +8,16 @@ export interface DanhMucHoSo {
 }
 
 export enum LoaiDanhMuc{
-  PhapLy=1,BanVe,ThuyetMinh
+  PhapLy=1,BanVe,ThuyetMinh,ChuDauTu,DonViTuVan
 }
 
 export interface NoiDungGopY{
   hoSo:DanhMucHoSo,
   noiDung:string
+}
+
+export interface ChuDauTu{
+  TenCDT?:string;
+  MaCDT?:string;
+  Attachment?:__esri.AttachmentInfo
 }

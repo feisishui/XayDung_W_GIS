@@ -34,7 +34,7 @@ module.exports = env => {
   const isProd = env && env.production;
   var plugins = [
     new webpack.DefinePlugin({
-      'SERVICE_URL': JSON.stringify(isProd? '/api':'http://bdqhxd.ditagis.com/api'),
+      'SERVICE_URL': JSON.stringify(isProd &&  '/api'),
       'VERSION':JSON.stringify("1.1")
     }),
     new CleanWebpackPlugin(["dist"]),

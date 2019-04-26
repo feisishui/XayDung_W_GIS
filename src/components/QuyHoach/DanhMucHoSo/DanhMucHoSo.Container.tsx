@@ -63,6 +63,8 @@ type States = {
   hoSoPhapLys: DanhMucHoSo[],
   banVes: DanhMucHoSo[],
   thuyetMinhs: DanhMucHoSo[],
+  chuDauTus: DanhMucHoSo[],
+  donViTuVans: DanhMucHoSo[],
   isHienThiPhieuGopY: boolean
 };
 
@@ -73,6 +75,8 @@ class Component extends React.Component<Props, States>{
       hoSoPhapLys: [],
       banVes: [],
       thuyetMinhs: [],
+      chuDauTus:[],
+      donViTuVans:[],
       isHienThiPhieuGopY: false
     };
   }
@@ -84,12 +88,14 @@ class Component extends React.Component<Props, States>{
     }
 
     const { hoSoSelected, giaiDoan } = this.props;
-    const { hoSoPhapLys, banVes, thuyetMinhs, isHienThiPhieuGopY } = this.state;
+    const { hoSoPhapLys, banVes, thuyetMinhs, chuDauTus,donViTuVans, isHienThiPhieuGopY } = this.state;
 
     return <div className={classes.root}>
       <List title="I. Hồ sơ pháp lý" danhMucHoSos={hoSoPhapLys} chonHoSo={this.props.chonHoSo} />
       <List title="II. Bản vẽ" danhMucHoSos={banVes} chonHoSo={this.props.chonHoSo} />
       <List title="III. Thuyết minh" danhMucHoSos={thuyetMinhs} chonHoSo={this.props.chonHoSo} />
+      <List title="IV. Chủ đầu tư" danhMucHoSos={chuDauTus} chonHoSo={this.props.chonHoSo} />
+      <List title="V. Đơn vị tư vấn" danhMucHoSos={donViTuVans} chonHoSo={this.props.chonHoSo} />
       {hoSoSelected &&
         <AttachmentSelected title={hoSoSelected.TenHoSo || ''} open={true} onClose={this.props.unHoSoSelect}>
           <div className={classes.attachmentSelected}>
@@ -119,17 +125,22 @@ class Component extends React.Component<Props, States>{
       this.setState({
         banVes: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.BanVe),
         thuyetMinhs: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.ThuyetMinh),
-        hoSoPhapLys: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.PhapLy)
+        hoSoPhapLys: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.PhapLy),
+        chuDauTus: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.ChuDauTu),
+        donViTuVans: nextProps.danhMucHoSos.filter(f => f.LoaiDanhMuc === LoaiDanhMuc.DonViTuVan)
       })
     } else {
       this.setState({
-        banVes: [], thuyetMinhs: [], hoSoPhapLys: []
+        banVes: [], thuyetMinhs: [], hoSoPhapLys: [],chuDauTus:[],donViTuVans:[]
       })
     }
   }
 
   getUrl = (hoSo: DanhMucHoSo) => {
-    if (hoSo.ContentType && hoSo.ContentType === 'application/msword') {
+    if (hoSo.ContentType 
+      && (hoSo.ContentType === 'application/msword'
+      || hoSo.ContentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+      ) {
       return `https://view.officeapps.live.com/op/embed.aspx?src=${hoSo.Url}`;
     }
     return hoSo.Url
