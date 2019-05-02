@@ -108,6 +108,7 @@ export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
 
         if (features && features.length > 0) {
           dispatch(pushAction(params.rgqh));
+          view.popup.open({features,updateLocationEnabled:true});
           // lấy danh mục hồ sơ
           const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
           dispatch(setDanhMucHoSo(danhMuc));
@@ -250,7 +251,7 @@ const focusRanhQuyHoach = async (view: __esri.MapView | __esri.SceneView, object
       returnGeometry: true,
       outSpatialReference: view.spatialReference,
       objectIds: [objectId],
-      outFields: [RanhGioiQuyHoachName.MaDuAn]
+      outFields: ['*']
     })).features;
     highlightDoAnQuyHoach && highlightDoAnQuyHoach.remove();
     highlightDoAnQuyHoach = (layerView as __esri.FeatureLayerView).highlight([objectId]);

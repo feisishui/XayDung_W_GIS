@@ -83,7 +83,7 @@ class MapComponent extends React.PureComponent<Props, States> {
         view.popup.dockOptions = { position: 'top-left' };
         new Popup.default({
           view,
-          layerInfos: view.map.allLayers.filter(f => f.id !== LAYER.BASE_MAP && f.id !== LAYER.RanhGioiQuyHoach)
+          layerInfos: view.map.allLayers.filter(f => f.id !== LAYER.BASE_MAP)
             .map(layer => {
               const layerInfo = layerInfos.find(info => layer.id === info.LayerID);
               let showDeleteButton = false,

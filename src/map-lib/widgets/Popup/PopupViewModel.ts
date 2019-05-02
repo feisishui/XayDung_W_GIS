@@ -81,8 +81,8 @@ export default class PopupViewModel extends Evented{
         _fields = _fields
           .filter(field =>
             field &&
-            ((field.type === 'oid' && !showObjectID)// không cho phép hiển thị objectid
-              || field.type === 'global-id' && !showGlobalID)        // không cho phép hiển thị global id
+            !((field.type === 'oid' && showObjectID)// không cho phép hiển thị objectid
+              || field.type === 'global-id' && showGlobalID)        // không cho phép hiển thị global id
           );
         layerFields = _fields.map(m => {
           return {
