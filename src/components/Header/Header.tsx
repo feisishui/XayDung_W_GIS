@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   AppBar, Toolbar, IconButton,
   Typography, Menu, MenuItem,
-  WithStyles, withStyles, Drawer, ListItem, ListItemText, Divider, createStyles,
+  WithStyles, withStyles, ListItemText, createStyles,
 
 } from '@material-ui/core';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
@@ -11,30 +11,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import routes from '../../modules/routers';
 import { AllModelReducer } from '../../reducers/index';
 import { connect } from 'react-redux';
-import version from '../../modules/version';
 
-const MyDrawer = (props: { isOpenDrawer: boolean, onClose: () => void }) => (
-  <Drawer open={props.isOpenDrawer} onClose={props.onClose}>
-    <div
-      tabIndex={0}
-      role="button"
-      onClick={props.onClose}
-      onKeyDown={props.onClose}
-    >
-      {routes.map(m => (
-        <Link key={m.id} to={m.props.path}>
-          <ListItem button>
-            <ListItemText primary={m.name} />
-          </ListItem>
-        </Link>
-      ))}
-      <Divider />
-      <Typography variant="subtitle1">
-        Phiên bản: {version.getVersion()}
-      </Typography>
-    </div>
-  </Drawer>
-);
 
 type StateToProps = {
   displayName: string,
@@ -64,7 +41,6 @@ type Props = {
   & WithStyles<typeof styles>;
 
 type States = {
-  isOpenDrawer: boolean,
   anchorEl?: HTMLElement
 };
 
@@ -72,7 +48,6 @@ class Header extends React.PureComponent<Props, States> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      isOpenDrawer: false
     };
   }
 
@@ -94,15 +69,9 @@ class Header extends React.PureComponent<Props, States> {
     this.setState({ anchorEl: undefined });
   };
 
-  toggleDrawer = (open: boolean) => () => {
-    this.setState({
-      isOpenDrawer: open
-    });
-  };
-
   render() {
     const { displayName, classes } = this.props;
-    const { anchorEl, isOpenDrawer } = this.state;
+    const { anchorEl } = this.state;
     const title = this.getTitle();
     const open = Boolean(anchorEl);
     return (
@@ -163,7 +132,6 @@ class Header extends React.PureComponent<Props, States> {
             </div>
           </Toolbar>
         </AppBar>
-        <MyDrawer isOpenDrawer={isOpenDrawer} onClose={this.toggleDrawer(false)} />
       </div>
     );
   }

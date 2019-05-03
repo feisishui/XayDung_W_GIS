@@ -1,9 +1,10 @@
 import * as React from 'react';
-import MenuHeader from '../Header/MenuHeader';
 import {
+
   WithStyles, withStyles, createStyles,
 
 } from '@material-ui/core';
+import MenuHeader from '../Header/MenuHeader';
 import { RouteComponentProps } from 'react-router-dom';
 import GroupButton from './Header/GroupButton';
 
@@ -11,7 +12,7 @@ const styles = createStyles({
 });
 
 type Props = {
-} & RouteComponentProps<null>  
+} & RouteComponentProps<null>
   & WithStyles<typeof styles>;
 
 type States = {
@@ -24,13 +25,15 @@ class Header extends React.PureComponent<Props, States> {
     };
   }
 
+
   render() {
+    const { classes } = this.props;
     return (
-      <div >
-           <MenuHeader>     <GroupButton/></MenuHeader> 
+      <div>
+        <MenuHeader>  <GroupButton /></MenuHeader>
+
       </div>
     );
   }
 }
-
 export default withStyles(styles)(Header);
