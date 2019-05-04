@@ -112,8 +112,10 @@ export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
           dispatch(pushAction(params.rgqh));
           view.popup.open({ features, updateLocationEnabled: true });
           // lấy danh mục hồ sơ
+          dispatch(alertActions.info('Đang tải danh mục hồ sơ...'));
           const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
           dispatch(setDanhMucHoSo(danhMuc));
+          dispatch(alertActions.clear());
         } else {
           throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
         }

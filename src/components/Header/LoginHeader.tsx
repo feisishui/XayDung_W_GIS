@@ -56,7 +56,7 @@ class Header extends React.PureComponent<Props, States> {
             Sở Xây Dựng Bình Dương
         </div>
           <div className={classes.titleSub}>
-            <p>Ứng dụng công nghệ GIS để quản lý quy hoạch tỉnh Bình Dương</p>
+            <p> Xây dựng hệ thống thông tin địa lý và các phần mềm chuyên ngành xây dựng giai đoạn 2</p>
           </div>
         </div>
       </div>

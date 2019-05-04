@@ -131,9 +131,9 @@ class MenuPage extends BasePage<Props, States> {
           <div className={classes.titleMain}>Sở Xây Dựng Bình Dương</div>
           <div className={classes.titleSub}>
             <p>
-              Ứng dụng công nghệ GIS để quản lý quy hoạch
-              <br></br>
-              Tỉnh Bình Dương
+              Xây dựng hệ thống thông tin địa lý
+              và
+              các phần mềm chuyên ngành xây dựng giai đoạn 2
             </p>
           </div>
         </div>
