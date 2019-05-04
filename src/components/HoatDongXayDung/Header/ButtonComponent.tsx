@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { createStyles, WithStyles, withStyles, Button, Menu, MenuItem, Popover, MenuList, Theme } from '@material-ui/core';
-import HanhChinh, { values } from '../../../services/map/models/HanhChinh';
+import { createStyles, WithStyles, withStyles, Button,  MenuItem, Popover, MenuList, Theme } from '@material-ui/core';
+import {LinhVucCongViec} from '../../../services/map/hoat-dong-xay-dung/models/hoatdongxaydung.model';
 const styles = (theme: Theme) => createStyles({
   root: {
     borderColor: '#fff',
@@ -18,8 +18,9 @@ const styles = (theme: Theme) => createStyles({
 });
 
 type Props = {
-  onItemClick: (hanhChinh: HanhChinh) => void,
-  onClick: () => void
+  onItemClick: () => void,
+  onClick: () => void,
+  values:LinhVucCongViec[]
 }
   & WithStyles<typeof styles>;
 
@@ -37,7 +38,7 @@ class ButtonComponent extends React.PureComponent<Props, States>{
     };
   }
   render() {
-    const { classes } = this.props;
+    const { classes,values } = this.props;
     const { anchorEl } = this.state;
     return <div className={classes.root}>
       <Button
@@ -68,7 +69,7 @@ class ButtonComponent extends React.PureComponent<Props, States>{
               dense
               key={index}
               onClick={this.handleItemClick.bind(null, m)}>
-              {m.TenHuyenTP}
+              {m.CongViec}
             </MenuItem>)
           }
         </MenuList>
@@ -81,8 +82,8 @@ class ButtonComponent extends React.PureComponent<Props, States>{
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleItemClick = (hanhChinh: HanhChinh) => {
-    this.props.onItemClick(hanhChinh);
+  handleItemClick = () => {
+    // this.props.onItemClick(hanhChinh);
     this.handleClose();
   };
   handleClose = () => {

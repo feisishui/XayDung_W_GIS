@@ -4,14 +4,13 @@ import {
   WithStyles, withStyles, createStyles,
 
 } from '@material-ui/core';
-import { RouteComponentProps } from 'react-router-dom';
 import GroupButton from './Header/GroupButton';
 
 const styles = createStyles({
 });
 
 type Props = {
-} & RouteComponentProps<null>  
+}
   & WithStyles<typeof styles>;
 
 type States = {

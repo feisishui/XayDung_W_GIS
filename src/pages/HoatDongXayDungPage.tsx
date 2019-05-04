@@ -3,10 +3,10 @@ import * as React from 'react';
 import BasePage from './BasePage';
 
 // Redux
-import { initViewDiv, setDanhMucHoSo, hienThiTraCuu } from '../actions/index';
+import { initViewDiv } from '../actions/index';
 
 // Component
-import { MapComponent, HeaderComponent as Header, ToolPaneComponent, DanhMucHoSoContainer, TraCuuContainer } from '../components/QuyHoach/index';
+import { MapComponent, HeaderComponent as Header, ToolPaneComponent, } from '../components/HoatDongXayDung/index';
 import SplitterLayout from 'react-splitter-layout';
 import { createStyles, WithStyles, withStyles, LinearProgress } from '@material-ui/core';
 import LayerInfo from '../services/map/models/LayerInfo';
@@ -34,14 +34,10 @@ type States = {
 type StateToProps = {
   layerInfos?: LayerInfo[],
   view?: __esri.MapView | __esri.SceneView,
-  isHienThiTraCuu: boolean,
-  isHienThiDMHS: boolean
 };
 
 type DispatchToProps = {
   initViewDiv: (div: HTMLDivElement) => void,
-  closeDanhMucHoSo: () => void,
-  closeTraCuu: () => void
 };
 
 type Props = {
@@ -61,7 +57,7 @@ class QuyHoachPage extends BasePage<Props, States> {
   }
 
   render() {
-    const { classes, view, layerInfos, isHienThiTraCuu, isHienThiDMHS } = this.props;
+    const { classes, view, layerInfos } = this.props;
     const { isLoadLayers } = this.state;
 
     return (
@@ -75,13 +71,6 @@ class QuyHoachPage extends BasePage<Props, States> {
             layerInfos={layerInfos}
             view={view}
           >
-            <PopupComponent title="Danh mục hồ sơ" isOpen={isHienThiDMHS} onClose={this.closeDanhMucHoSo}>
-              <DanhMucHoSoContainer />
-            </PopupComponent>
-
-            <PopupComponent isOpen={isHienThiTraCuu} style={{ width: 500, left: 0 }} title="Tra cứu đồ án quy hoạch" onClose={this.props.closeTraCuu}>
-              <TraCuuContainer />
-            </PopupComponent>
 
           </MapComponent>
           {!isLoadLayers && <LinearProgress />}
@@ -109,22 +98,15 @@ class QuyHoachPage extends BasePage<Props, States> {
     }
   }
 
-  closeDanhMucHoSo = () => {
-    this.props.closeDanhMucHoSo();
-  }
 }
 
 const mapStateToProps = (state: AllModelReducer): StateToProps => ({
   layerInfos: state.map.layerInfos,
   view: state.map.view,
-  isHienThiTraCuu: state.quyHoach.isHienThiTraCuu,
-  isHienThiDMHS: state.quyHoach.danhMucHoSos !== undefined
 });
 
 const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
   initViewDiv: (div: HTMLDivElement) => dispatch(initViewDiv(div)),
-  closeDanhMucHoSo: () => dispatch(setDanhMucHoSo()),
-  closeTraCuu: () => dispatch(hienThiTraCuu(false))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(QuyHoachPage));

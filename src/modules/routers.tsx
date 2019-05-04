@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {QuyHoachPage,HoatDongXayDungPage} from '../pages/index';
 import { APPLICATION } from '../constants/index';
 export interface Route {

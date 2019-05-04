@@ -4,7 +4,8 @@ import { AllModelReducer } from '../../../../reducers';
 import { connect } from 'react-redux';
 import { NoiDungGopY } from '../../../../services/map/quy-hoach/models/danhmuchoso.model';
 import RanhGioiQuyHoach from '../../../../services/map/quy-hoach/models/ranhgioiquyhoach.model';
-import { alertActions } from '../../../../actions';
+import { luuYKienQuyHoach } from '../../../../actions';
+import { YKienQuyHoach } from '../../../../services/map/quy-hoach/models/ykienquyhoach.model';
 const styles = createStyles({
   container: {
     width: '100%',
@@ -60,8 +61,8 @@ type StateToProps = {
   noiDungGopYs?: NoiDungGopY[]
 };
 
-type DispatchToProps={
-  gopY: () => void
+type DispatchToProps = {
+  gopY: (yKienQuyHoach: YKienQuyHoach) => void
 };
 
 type Props = {
@@ -76,7 +77,8 @@ type States = {
   diaChi: string,
   dienThoai: string,
   noiDungGopY: string,
-  email: string
+  email: string,
+  isGopY:boolean
 };
 
 class Component extends React.PureComponent<Props, States>{
@@ -87,7 +89,8 @@ class Component extends React.PureComponent<Props, States>{
       diaChi: '',
       dienThoai: '',
       noiDungGopY: '',
-      email: ''
+      email: '',
+      isGopY:false
     };
   }
 
@@ -103,7 +106,7 @@ class Component extends React.PureComponent<Props, States>{
     if (!doAnSelected)
       return <Typography>Không xác định được đồ án được chọn, vui lòng thử lại</Typography>;
 
-    const { diaChi, dienThoai, noiDungGopY, tenCQ, email } = this.state;
+    const { diaChi, dienThoai, noiDungGopY, tenCQ, email,isGopY } = this.state;
 
     return (
       <div className={classes.container}>
@@ -161,7 +164,7 @@ class Component extends React.PureComponent<Props, States>{
                     Tên cơ quan, tổ chức, cá nhân:
                   </Grid>
                   <Grid item xs={12} sm={8}>
-                    <TextField fullWidth value={tenCQ}      onChange={this.textChangeHandle('tenCQ')}/>
+                    <TextField fullWidth value={tenCQ} onChange={this.textChangeHandle('tenCQ')} />
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
@@ -169,7 +172,7 @@ class Component extends React.PureComponent<Props, States>{
                     Địa chỉ:
                   </Grid>
                   <Grid item xs={12} sm={8}>
-                    <TextField fullWidth value={diaChi}      onChange={this.textChangeHandle('diaChi')} />
+                    <TextField fullWidth value={diaChi} onChange={this.textChangeHandle('diaChi')} />
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
@@ -177,7 +180,7 @@ class Component extends React.PureComponent<Props, States>{
                     Điện thoại:
                   </Grid>
                   <Grid item xs={12} sm={8}>
-                    <TextField fullWidth value={dienThoai} type="number"      onChange={this.textChangeHandle('dienThoai')}/>
+                    <TextField fullWidth value={dienThoai} type="number" onChange={this.textChangeHandle('dienThoai')} />
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
@@ -185,7 +188,7 @@ class Component extends React.PureComponent<Props, States>{
                     Địa chỉ mail:
                   </Grid>
                   <Grid item xs={12} sm={8}>
-                    <TextField fullWidth type="email" value={email}      onChange={this.textChangeHandle('email')} />
+                    <TextField fullWidth type="email" value={email} onChange={this.textChangeHandle('email')} />
                   </Grid>
                 </Grid>
               </Grid>
@@ -205,7 +208,7 @@ class Component extends React.PureComponent<Props, States>{
           </div>
         </div>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" onClick={this.props.gopY}>Góp ý</Button>
+          <Button variant="contained" color="primary" onClick={this.submitHandle} disabled={isGopY}>Góp ý</Button>
           <Button variant="text" onClick={this.taiVe}>Tải về</Button>
         </div>
       </div>
@@ -231,6 +234,32 @@ class Component extends React.PureComponent<Props, States>{
     //@ts-ignore
     this.setState({ [name]: evt.target.value });
   }
+
+  submitHandle = () => {
+    try {
+       // tạo đối tượng góp ý
+    const { diaChi, dienThoai, email, noiDungGopY, tenCQ } = this.state;
+    const {doAnSelected}=this.props;
+    var model: YKienQuyHoach = {
+      DiaChi: diaChi,
+      TenToChuc: tenCQ,
+      Email: email,
+      SDT: dienThoai,
+      NoiDungGopY: noiDungGopY,
+      SoToTrinhCDT:doAnSelected && doAnSelected.MaDuAn
+    };
+    this.setState({isGopY:true});
+
+    // cập nhật vào csdl
+    const result = this.props.gopY(model);
+   
+    } catch (error) {
+    }
+    finally{
+      this.setState({isGopY:false});
+    }
+   
+  }
 }
 
 const mapStateToProps = (state: AllModelReducer): StateToProps => ({
@@ -239,7 +268,7 @@ const mapStateToProps = (state: AllModelReducer): StateToProps => ({
 })
 
 const mapDispatchToProps = (dispatch: Function): DispatchToProps => ({
-  gopY: () => dispatch(alertActions.info('Đang phát triển...'))
-})
+  gopY: (yKienQuyHoach: YKienQuyHoach) => dispatch(luuYKienQuyHoach(yKienQuyHoach))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Component));

@@ -5,14 +5,13 @@ import {
 
 } from '@material-ui/core';
 import MenuHeader from '../Header/MenuHeader';
-import { RouteComponentProps } from 'react-router-dom';
 import GroupButton from './Header/GroupButton';
 
 const styles = createStyles({
 });
 
 type Props = {
-} & RouteComponentProps<null>
+} 
   & WithStyles<typeof styles>;
 
 type States = {

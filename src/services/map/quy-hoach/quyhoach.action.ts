@@ -8,7 +8,9 @@ import { AllModelReducer } from '../../../reducers/index';
 import { LAYER } from '../../../constants/index';
 import MainAction from '../../main/main.action-rule';
 import { DanhMucHoSo } from './models/danhmuchoso.model';
+import { YKienQuyHoach } from './models/ykienquyhoach.model';
 import DanhMucHoSoAPI from './api/danhmuchoso.api';
+import YKienQuyHoachAPI from './api/ykienquyhoach.api';
 
 export const chonGiaiDoan = (giaiDoan: DM_RGQH_TrangThai): QuyHoachAction => {
   return {
@@ -108,7 +110,7 @@ export const chonDoAnQuyHoach = (params: { rgqh: RanhGioiQuyHoach }) => {
 
         if (features && features.length > 0) {
           dispatch(pushAction(params.rgqh));
-          view.popup.open({features,updateLocationEnabled:true});
+          view.popup.open({ features, updateLocationEnabled: true });
           // lấy danh mục hồ sơ
           const danhMuc = await new DanhMucHoSoAPI().byDoAn(features[0].attributes[RanhGioiQuyHoachName.MaDuAn])
           dispatch(setDanhMucHoSo(danhMuc));
@@ -166,7 +168,7 @@ export const traCuuTheoDuAn = (params: { maHuyenTP?: string, maPhuongXa?: string
   return async (dispatch: Dispatch<QuyHoachAction | MainAction>, getState: () => AllModelReducer): Promise<RanhGioiQuyHoach[]> => {
     try {
       if (params.maHuyenTP
-      || params.maPhuongXa
+        || params.maPhuongXa
         || params.loaiQuyHoach) {
         dispatch(loading.loadingReady());
         const view = getState().map.view;
@@ -187,8 +189,8 @@ export const traCuuTheoDuAn = (params: { maHuyenTP?: string, maPhuongXa?: string
             if (features.length === 0) {
               dispatch(alertActions.info('Không có dữ liệu'));
             } else {
-              dispatch(alertActions.success('Tìm thấy '+features.length + ' đồ án'));
-              return features.map(m=>m.attributes)
+              dispatch(alertActions.success('Tìm thấy ' + features.length + ' đồ án'));
+              return features.map(m => m.attributes)
             }
           } else {
             throw new Error('Không tìm thấy lớp dữ liệu ranh giới quy hoạch');
@@ -266,5 +268,29 @@ export function hienThiTraCuu(mode: boolean = false): QuyHoachAction {
   return {
     type: QuyHoachActionType.TraCuu_HienThi,
     mode
+  }
+}
+
+
+/**
+ * Cập nhật ý kiến quy hoạch vòa cơ sở dữ liệu
+ * @param yKienQuyHoach Nội dung ý kiến
+ */
+export const luuYKienQuyHoach = (yKienQuyHoach: YKienQuyHoach) => {
+  return async (dispatch: Dispatch, getState: () => AllModelReducer):Promise<boolean> => {
+    try {
+      dispatch(alertActions.info('Đang cập nhật...'));
+      dispatch(loading.loadingReady());
+      if(!yKienQuyHoach.SoToTrinhCDT) throw new Error('Không xác định được mã dự án');
+      await new YKienQuyHoachAPI().add(yKienQuyHoach);
+      dispatch(alertActions.success('Cập nhật ý kiến quy hoạch thành công'));
+      return true;
+    } catch (error) {
+      dispatch(alertActions.error(error && error.message));
+    }
+    finally{
+      dispatch(loading.loadingFinish());
+    }
+    return false;
   }
 }
