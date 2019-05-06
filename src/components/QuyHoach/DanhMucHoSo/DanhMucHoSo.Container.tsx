@@ -75,8 +75,8 @@ class Component extends React.Component<Props, States>{
       hoSoPhapLys: [],
       banVes: [],
       thuyetMinhs: [],
-      chuDauTus:[],
-      donViTuVans:[],
+      chuDauTus: [],
+      donViTuVans: [],
       isHienThiPhieuGopY: false
     };
   }
@@ -88,7 +88,7 @@ class Component extends React.Component<Props, States>{
     }
 
     const { hoSoSelected, giaiDoan } = this.props;
-    const { hoSoPhapLys, banVes, thuyetMinhs, chuDauTus,donViTuVans, isHienThiPhieuGopY } = this.state;
+    const { hoSoPhapLys, banVes, thuyetMinhs, chuDauTus, donViTuVans, isHienThiPhieuGopY } = this.state;
 
     return <div className={classes.root}>
       <List title="I. Hồ sơ pháp lý" danhMucHoSos={hoSoPhapLys} chonHoSo={this.props.chonHoSo} />
@@ -99,7 +99,11 @@ class Component extends React.Component<Props, States>{
       {hoSoSelected &&
         <AttachmentSelected title={hoSoSelected.TenHoSo || ''} open={true} onClose={this.props.unHoSoSelect}>
           <div className={classes.attachmentSelected}>
-            <iframe width="100%" src={this.getUrl(hoSoSelected)} />
+            {hoSoSelected.ContentType && hoSoSelected.ContentType.startsWith('image')
+              && <div style={{ width: '100%' }}><img src={this.getUrl(hoSoSelected)} style={{ width: '100%' }} alt={hoSoSelected.TenHoSo} /></div>}
+            {hoSoSelected.ContentType && !hoSoSelected.ContentType.startsWith('image')
+              && <iframe width="100%" src={this.getUrl(hoSoSelected)} />
+            }
             {
               giaiDoan && giaiDoan === DM_RGQH_TrangThai["Lấy ý kiến"]
               && <div className="formGopY"> <FormGopY onSave={this.capNhatNoiDungGopY} /></div>
@@ -131,16 +135,16 @@ class Component extends React.Component<Props, States>{
       })
     } else {
       this.setState({
-        banVes: [], thuyetMinhs: [], hoSoPhapLys: [],chuDauTus:[],donViTuVans:[]
+        banVes: [], thuyetMinhs: [], hoSoPhapLys: [], chuDauTus: [], donViTuVans: []
       })
     }
   }
 
   getUrl = (hoSo: DanhMucHoSo) => {
-    if (hoSo.ContentType 
+    if (hoSo.ContentType
       && (hoSo.ContentType === 'application/msword'
-      || hoSo.ContentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-      ) {
+        || hoSo.ContentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    ) {
       return `https://view.officeapps.live.com/op/embed.aspx?src=${hoSo.Url}`;
     }
     return hoSo.Url
