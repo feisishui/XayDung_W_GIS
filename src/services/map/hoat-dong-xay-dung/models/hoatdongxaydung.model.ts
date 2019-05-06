@@ -2,9 +2,18 @@ export interface LinhVucCongViec {
     LinhVuc: string;
     CongViec: string;
 }
+export interface LinhVucCongViecFull {
+    LinhVuc: LinhVuc;
+    CongViec: CongViec;
+}
 
 export interface CongViec{
     MaCongViec:string;TenCongViec:string;
+}
+
+export interface LinhVuc{
+    MaLinhVuc:string;
+    TenLinhVuc:string;
 }
 
 export const CongViecs:CongViec[]=[

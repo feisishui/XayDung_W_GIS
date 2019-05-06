@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStyles, WithStyles, withStyles, Button,  MenuItem, Popover, MenuList, Theme } from '@material-ui/core';
-import {LinhVucCongViec} from '../../../services/map/hoat-dong-xay-dung/models/hoatdongxaydung.model';
+import {LinhVucCongViec, CongViec} from '../../../services/map/hoat-dong-xay-dung/models/hoatdongxaydung.model';
 const styles = (theme: Theme) => createStyles({
   root: {
     borderColor: '#fff',
@@ -20,7 +20,7 @@ const styles = (theme: Theme) => createStyles({
 type Props = {
   onItemClick: () => void,
   onClick: () => void,
-  values:LinhVucCongViec[]
+  values:CongViec[]
 }
   & WithStyles<typeof styles>;
 
@@ -69,7 +69,7 @@ class ButtonComponent extends React.PureComponent<Props, States>{
               dense
               key={index}
               onClick={this.handleItemClick.bind(null, m)}>
-              {m.CongViec}
+              {m.TenCongViec}
             </MenuItem>)
           }
         </MenuList>
