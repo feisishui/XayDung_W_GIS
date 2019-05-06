@@ -56,7 +56,7 @@ export const chonLoaiQuyHoach = (params: { maQuanHuyen?: string, loaiQuyHoach: D
           const rgqhLayer = view.map.findLayerById(LAYER.RanhGioiQuyHoach) as __esri.FeatureLayer;
           if (rgqhLayer) {
             const features = (await rgqhLayer.queryFeatures({
-              where: `LoaiQuyHoach = '${loaiQuyHoach}' and MaQuanHuyen = '${maQuanHuyen}' and TrangThai = '${giaiDoan}'`,
+              where: `LoaiQuyHoach = '${loaiQuyHoach}' and MaQuanHuyen = '${maQuanHuyen}' and TrangThai = '${giaiDoan}' and ${RanhGioiQuyHoachName.TenDuAn} is not null`,
               returnGeometry: false,
               outFields: ['OBJECTID', RanhGioiQuyHoachName.TenDuAn, RanhGioiQuyHoachName.MaDuAn]
             })).features;
