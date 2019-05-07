@@ -6,25 +6,31 @@ import mapReducer, {
 import quyHoachReducer, {
   Model as QuyHoachModel, defaultState as quyHoachState,
 } from '../services/map/quy-hoach/quyhoach.reducer';
+import suCoReducer, {
+  Model as SuCoModel, defaultState as sucoState,
+} from '../services/map/SuCo/suco.reducer';
 import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
 
 export type AllModelReducer = {
   main: MainModel,
   map: MapModel,
-  quyHoach:QuyHoachModel
+  quyHoach:QuyHoachModel,
+  mapSuCo:SuCoModel
 };
 
 export const initialState: AllModelReducer = {
   main: mainState,
   map: mapState,
-  quyHoach:quyHoachState
+  quyHoach:quyHoachState,
+  mapSuCo:sucoState
 };
 const reducers = (history: History) => combineReducers({
   router: connectRouter(history),
   main: mainReducer,
   map: mapReducer,
-  quyHoach:quyHoachReducer
+  quyHoach:quyHoachReducer,
+  mapSuCo:suCoReducer
 });
 
 export default reducers;

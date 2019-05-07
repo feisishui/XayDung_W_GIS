@@ -1,4 +1,4 @@
-import { BASEMAP, LAYER } from '../../constants/map';
+import { BASEMAP, LAYER } from '../../constants/map.constant';
 import QueryTask = require('esri/tasks/QueryTask');
 export interface HanhChinhResult {
   MaPhuong: string;

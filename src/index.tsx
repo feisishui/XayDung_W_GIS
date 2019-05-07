@@ -36,55 +36,20 @@ if (!versionmanager.equalVersion(version)) {
   versionmanager.setVersion(version);
 }
 
-// MUI THEME
+//MUI THEME
 const theme = createMuiTheme({
   palette: {
-    // type:'dark',
     primary: {
-      main: '#1B9CFC',
+      main: '#0984e3'
     },
     secondary: {
-      main: '#25CCF7'
-    }
-  },
-  overrides: {
-    MuiTypography: {
-      colorTextSecondary: {
-        color: '#fff'
-      }
-    },
-    MuiAppBar: {
-
-    },
-    MuiButton: {
-      containedPrimary: {
-        color: '#fff',
-      },
-      containedSecondary: {
-        color: '#fff',
-      },
-      textPrimary: {
-        color: '#fff'
-      }
-    },
-    MuiBadge: {
-      colorPrimary: {
-        color: '#fff'
-      }
-    },
-    MuiListItem: {
-    },
-    MuiListItemIcon: {
-      root: {
-        margin: 0
-      }
+      main: '#ee3338'
     }
   },
   typography: {
     useNextVariants: true,
   },
 });
-
 // ROUTER
 const history = createBrowserHistory();
 

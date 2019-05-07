@@ -1,6 +1,6 @@
 import { APPLICATION } from './core.constant';
 export const BASEMAP = {
-  INDEX_HANH_CHINH: 5,
+  INDEX_HANH_CHINH: 13,
   MaHuyenTP: 'MaHuyenTP',
   MaPhuongXa: 'MaPhuongXa',
   MaDuong: 'MaDuong'
@@ -11,7 +11,8 @@ export const SERVICE_PRINT =
 
 export const LAYER = {
   BASE_MAP: 'basemap',
-  RanhGioiQuyHoach: 'ranhgioiquyhoachLYR'
+  RanhGioiQuyHoach: 'ranhgioiquyhoachLYR',
+  DIEM_SU_CO:'diemsucoLYR'
 };
 export const MAP = {
   CENTER: [106.701767,11.132015],
@@ -20,7 +21,11 @@ export const MAP = {
 };
 
 export const APP_LAYER = {
-  [APPLICATION.QuyHoach]: ['*'],
+  [APPLICATION.ThongTinQuyHoach]: ['*'],
+  [APPLICATION.XemDuLieu]: ['*'],
+  [APPLICATION.QuanLySuCo]: ['*'],
+  [APPLICATION.QuanLySuCoDonVi]: ['*'],
+  [APPLICATION.TiepNhanSuCo]: [LAYER.DIEM_SU_CO, LAYER.BASE_MAP]
 };
 
 export const FIELDS_NO_EDIT = [

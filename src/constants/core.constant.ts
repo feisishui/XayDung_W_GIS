@@ -1,4 +1,8 @@
 export const APPLICATION = {
-  QuyHoach: 'qh',
-  HoatDongXayDung:'hdxd'
+  ThongTinQuyHoach: 'qh',
+  HoatDongXayDung:'hdxd',
+  QuanLySuCo:'qlsc',
+  QuanLySuCoDonVi:'qlsc-dv',
+  TiepNhanSuCo:'tnsc',
+  XemDuLieu:'xdl  '  
 };

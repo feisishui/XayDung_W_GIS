@@ -1,9 +1,14 @@
 import MapImageLayer = require('esri/layers/MapImageLayer');
 import FeatureLayer from '../layers/FeatureLayer';
 import GroupLayer = require('esri/layers/GroupLayer');
+import UniqueValueRenderer = require('esri/renderers/UniqueValueRenderer');
+import PictureMarkerSymbol = require('esri/symbols/PictureMarkerSymbol');
 import LayerInfo from '../../services/map/models/LayerInfo';
 import { LAYER, APP_LAYER } from '../../constants/map.constant';
+import * as SuCo from '../../services/map/SuCo/suco.model';
 import LayerList = require('esri/widgets/LayerList');
+import { checkAppDonVi } from '../../services/map/SuCo/suco.helper';
+import Auth from '../../modules/Auth';
 export default class LayerHelper {
   public static assignLayer(layerInfos: LayerInfo[], APP_NAME?: string): Array<__esri.Layer> {
     let layers: Array<__esri.Layer> = [];
@@ -172,4 +177,87 @@ export default class LayerHelper {
     }
   }
 
+  public static getSuCoRenderer() {
+		const isSCTT = checkAppDonVi();
+		return new SuCoRenderer().renderer(isSCTT);
+	}
+
+}
+
+
+class SuCoRenderer {
+	private readonly baseUrl = '/images/map/suco';
+	public renderer(isSCTT: boolean = false) {
+		if (!isSCTT)
+			return new UniqueValueRenderer({
+				field: 'LinhVuc', field2: 'TinhTrang', fieldDelimiter: '-',
+				uniqueValueInfos: this.getUniqueValueInfos(),
+			});
+		else {
+			return new UniqueValueRenderer({
+				valueExpression: this.getSCTTValueExpression(),
+				uniqueValueInfos: this.getUniqueValueInfos(),
+			});
+		}
+	}
+
+	private getSCTTValueExpression() {
+		// mục đích của việc này để lấy được tình trạng sự cố của đơn vị thông qua
+		// mã sự cố thông tin được tạo theo cú pháp {TinhTrang}-{MaSCTT}
+		// mảng SCTTs trong lớp Sự cố sẽ chứa 0-* mã theo cấu trúc trên được ngăn nhau bởi dấu ;
+		// sử dụng arcade expression của arcgis js để thực hiện
+		// https://developers.arcgis.com/arcade/
+		var user = Auth.getUser();
+		if (!user) return '';
+		var text = `$feature.MaSCTTs`; // lấy giá trị MaSCTTs
+		var text2 = `REPLACE(REPLACE(REPLACE(${text},'HTH-',''),'DXL-',''),'MTN-','')`; // xóa {TinhTrang}- chỉ để lại {MaSCTT}
+		// tạo một mảng bằng cách tách chuỗi với ký tự ;
+		// Mảng này không chứa {TinhTrang} nhằm mục đích khi sử dụng phương thức IndexOf truyền vào {MaDonVi}-{MaSuCo} = {MaSCTT} thì có trả về kết quả đúng chứ nếu không có mảng này nó sẽ ở dạng {TinhTrang}-{MaDonVi}-{MaSuCo} != {MaSCTT}
+		var tmpArray = `SPLIT(${text2},';')`;
+
+		// tạo một mảng bằng cách tách chuỗi với ký tự ;
+		// Mảng này có chứa {TinhTrang} để bước tiếp theo có thể cắt chuỗi để lấy {TinhTrang}
+		var baseArray = `SPLIT(${text},';')`;
+
+		// tạo id để tìm vị trí thứ tự mã cần tìm theo tài khoản với cấu trúc {MaDonVi}-{MaSuCo}
+		// MaDonVi được xác nhận theo tên tài khoản với cấu trúc qlsc_{MaDonVi}
+		var id = `'${user.username.replace('qlsc_', '')}-'+$feature.MaSuCo`;
+
+		// lấy vị trí trong mảng
+		var index = `IndexOf(${tmpArray},${id})`;
+
+		// nếu tồn tại vị trí thì bây giờ sẽ lấy giá trị của vị trí đó trong mảng gốc
+		// ví dụ tìm được mã ở vị trí thứ 1 => baseArray[1] = {TinhTrang}-{MaSCTT}
+		// sử dụng hàm LEFT để lấy 3 ký tự đầu tiên ({TinhTrang} sẽ có 3 ký tự - MTN,DXL,HTH..) => {TinhTrang}
+		var tinhTrang = `IIF(${index} > -1, LEFT(${baseArray}[${index}],3), null)`;
+
+		// trả về kết quả là {LinhVuc}-{TinhTrang} để phù hợp với giá trị trong uniqueValueInfos
+		return `$feature.LinhVuc+'-'+${tinhTrang}`;
+	}
+
+	private getUniqueValueInfos() {
+		let uniqueValueInfos: __esri.UniqueValueRendererUniqueValueInfos[] = [];
+		[SuCo.LinhVuc.CapNuoc, SuCo.LinhVuc.CayXanh, SuCo.LinhVuc.ChieuSang,
+		SuCo.LinhVuc.DienLuc, SuCo.LinhVuc.GiaoThong, SuCo.LinhVuc.ThoatNuoc, SuCo.LinhVuc.VienThong]
+			.forEach(linhVuc =>
+				this.renderUniqueValue(linhVuc)
+					.forEach(uniqueRender =>
+						uniqueValueInfos.push(uniqueRender)));
+		return uniqueValueInfos;
+	}
+
+	private renderUniqueValue(linhVuc: number) {
+
+		return [SuCo.TinhTrang.MoiTiepNhan, SuCo.TinhTrang.DangXuLy, SuCo.TinhTrang.HoanThanh]
+			.map(m => {
+				const value = `${linhVuc != null ? linhVuc : -1}-${m}`;
+				return {
+					value,
+					symbol: new PictureMarkerSymbol({
+						width: 20, height: 20,
+						url: `${this.baseUrl}/${value}.png`
+					})
+				} as __esri.UniqueValueRendererUniqueValueInfos
+			});
+	}
 }

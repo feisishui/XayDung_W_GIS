@@ -1,4 +1,5 @@
 export * from './quy-hoach/quyhoach.action';
+export * from './SuCo/suco.action';
 
 import { alertActions, MapAction, loading } from '../../actions/index';
 import { MapActionType } from '../../actions/action-types';

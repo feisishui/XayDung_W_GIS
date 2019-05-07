@@ -1,4 +1,10 @@
-import {QuyHoachPage,HoatDongXayDungPage} from '../pages/index';
+import {
+  QuyHoachPage,
+  HoatDongXayDungPage,
+  XemDuLieuPage,
+  QLSCPage,
+  TNSCPage
+} from '../pages/index';
 import { APPLICATION } from '../constants/index';
 export interface Route {
   id: string; name: string; component: any;
@@ -9,16 +15,36 @@ export interface Route {
 
 const routes: Array<Route> = [
   {
-    id: 'qh', name: 'Quy hoạch', component: QuyHoachPage,
-    props: { exact: true, path: '/' + APPLICATION.QuyHoach },
-    avatar: '/images/icons/qlkd.png',
+    id: APPLICATION.ThongTinQuyHoach, name: 'Quy hoạch', component: QuyHoachPage,
+    props: { exact: true, path: '/' + APPLICATION.ThongTinQuyHoach },
+    avatar: '/images/icons/ttqh.png',
     isPrivate: false
   },
   {
-    id: 'hdxd', name: 'Quản lý hoạt động xây dựng', component: HoatDongXayDungPage,
+    id: APPLICATION.HoatDongXayDung, name: 'Quản lý hoạt động xây dựng', component: HoatDongXayDungPage,
     props: { exact: true, path: '/' + APPLICATION.HoatDongXayDung },
     avatar: '/images/icons/hdxd.png',
     isPrivate: false
+  },
+  {
+    id: APPLICATION.XemDuLieu, name: 'Xem dữ liệu hạ tầng kỹ thuật', component: XemDuLieuPage,
+    props: { exact: true, path: APPLICATION.XemDuLieu },
+    avatar: '/images/icons/qlhtkt.png',isPrivate:false
+  },
+  {
+    id: APPLICATION.QuanLySuCo, name: 'Quản lý sự cố', component: QLSCPage,
+    props: { path: '/' + APPLICATION.QuanLySuCo },
+    avatar: '/images/icons/qlsc.png',isPrivate:true
+  },
+  {
+    id: APPLICATION.QuanLySuCoDonVi, name: 'Quản lý sự cố', component: QLSCPage,
+    props: { path: '/' + APPLICATION.QuanLySuCoDonVi },
+    avatar: '/images/icons/qlsc.png',isPrivate:true
+  },
+  {
+    id: APPLICATION.TiepNhanSuCo, name: 'Tiếp nhận sự cố', component: TNSCPage,
+    props: { path: '/' + APPLICATION.TiepNhanSuCo },
+    avatar: '/images/icons/tnsc.png',isPrivate:true
   },
 ];
 export default routes;
