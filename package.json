@@ -43,8 +43,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
-    "build": "webpack --mode production",
-    "deploy": "webpack --mode production && node deploy"
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^3.9.3",
