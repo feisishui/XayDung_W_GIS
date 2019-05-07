@@ -37,13 +37,14 @@ type Props = {
 
 type State = {
   donVis: DonVi[],
-  donVi?: string
+  donVi?: string,
+  isChuyenTiep:boolean
 };
 
 class TNSCDonViComponent extends React.Component<Props, State>{
   constructor(props: Props) {
     super(props);
-    this.state = { donVis: [] };
+    this.state = { donVis: [] ,isChuyenTiep:false};
   }
 
   async componentDidMount() {
@@ -53,7 +54,7 @@ class TNSCDonViComponent extends React.Component<Props, State>{
 
   render() {
     const { classes, maSuCo } = this.props;
-    const { donVis, donVi } = this.state;
+    const { donVis, donVi,isChuyenTiep } = this.state;
     return <div className={classes.root}>
       {/* <div className={classes.title}>
         <Typography variant="h3" color="inherit">Thông tin sự cố</Typography>
@@ -69,7 +70,7 @@ class TNSCDonViComponent extends React.Component<Props, State>{
       </div>
       <div className={classes.actionContainer}>
         <ActionComponent
-          disabled={donVi == undefined}
+          disabled={donVi == undefined || isChuyenTiep}
           onClose={this.props.onClose}
           onSubmit={this.onSubmit.bind(this)}
         />
@@ -83,8 +84,9 @@ class TNSCDonViComponent extends React.Component<Props, State>{
 
   private async onSubmit() {
     if (this.state.donVi && this.props.onSubmit) {
+      this.setState({isChuyenTiep:true});
       const result = await this.props.onSubmit(this.state.donVi);
-      result && this.setState({ donVi: undefined });
+      result && this.setState({ donVi: undefined,isChuyenTiep:false });
     }
   }
 }

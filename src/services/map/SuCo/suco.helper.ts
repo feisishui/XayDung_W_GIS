@@ -1,10 +1,10 @@
 import { APPLICATION } from '../../../constants/index';
 export const checkAppDonVi = () => {
-  const isAppDonVi = location.pathname.search(APPLICATION.QuanLySuCoDonVi) > -1;
+  const isAppDonVi = location.pathname === '/'+APPLICATION.QuanLySuCoDonVi;
   return isAppDonVi;
 }
 export const checkSuperApp = () => {
-  const isSuperApp = location.pathname.search(APPLICATION.QuanLySuCo)>-1;
+  const isSuperApp = location.pathname === '/'+APPLICATION.QuanLySuCo;
   return isSuperApp;
 }
 

@@ -171,11 +171,13 @@ class MapComponent extends BaseComponent<Props, States> {
   render() {
     const { className } = this.props;
     return (
-      <div className={className}
+      <div className="mapDiv">
+      <div 
         ref={
           (element: HTMLDivElement) => this.mapDiv = element
         }
       >
+      </div>
       </div>
     );
   }

@@ -19,7 +19,6 @@ const DISPLAY_FIELDS = ['MaSuCo', 'DiaChi', 'TGPhanAnh']
 const styles = (theme: Theme) => createStyles({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
   table: {

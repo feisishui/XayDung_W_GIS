@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  createStyles, WithStyles, withStyles, Grid, Typography
+  createStyles, WithStyles, withStyles, Grid, Typography, Paper, Theme
 } from '@material-ui/core';
 import SuCoThongTin from '../../../../services/map/SuCo/models/sucothongtin.model';
 
@@ -20,8 +20,14 @@ import {
 import { connect } from 'react-redux';
 import * as moment from 'moment/moment';
 
-const styles = createStyles({
-  root: {}
+const styles = (theme: Theme) => createStyles({
+  root: {},
+  paper: {
+    padding: theme.spacing.unit * 2
+  },
+  buttonGr:{
+    marginTop:theme.spacing.unit*4
+  }
 });
 
 type DispatchToProps = {
@@ -43,13 +49,15 @@ type States = {
   data: SuCoThongTin,
   hinhAnhSCs: __esri.AttachmentInfo[],
   hinhAnhSCTTs: __esri.AttachmentInfo[],
+  isSubmit:boolean,isPin:boolean
 };
 
 class DonViComponent extends React.Component<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {
-      data: props.data, hinhAnhSCs: [], hinhAnhSCTTs: []
+      data: props.data, hinhAnhSCs: [], hinhAnhSCTTs: [],
+      isPin:false,isSubmit:false
     };
   }
 
@@ -92,38 +100,50 @@ class DonViComponent extends React.Component<Props, States>{
   }
   render() {
     const { classes } = this.props;
-    const { data, hinhAnhSCs, hinhAnhSCTTs } = this.state;
+    const { data, hinhAnhSCs, hinhAnhSCTTs,
+    isPin,isSubmit
+   } = this.state;
     return <div className={classes.root}>
-      <Grid container>
+      <Grid container spacing={16}>
         <Grid item xs={12} sm={6}>
-          <NoiDungGocComponent yKienChiDao={data.YKienChiDao} hinhAnhs={hinhAnhSCs} />
+          <Paper className={classes.paper}>
+            <Typography>Thông tin sự cố</Typography>
+            <NoiDungGocComponent yKienChiDao={data.YKienChiDao} hinhAnhs={hinhAnhSCs} />
+          </Paper>
         </Grid>
-        <Grid container item xs={12} sm={6} spacing={24}>
-          <Grid item xs={12}>
-            {data.TGPhanHoi && <Typography>Phản hồi gần nhất lúc {moment(new Date(data.TGPhanHoi)).fromNow()}</Typography>}
+        <Grid item xs={12} sm={6}>
+          <Grid container>
+            <Paper className={classes.paper}>
+              <Typography>Nội dung phản hồi</Typography>
+              <Grid item xs={12}>
+                {data.TGPhanHoi && <Typography>Phản hồi gần nhất lúc {moment(new Date(data.TGPhanHoi)).fromNow()}</Typography>}
+              </Grid>
+              <Grid item xs={12}>
+                <FormComponent Loai={data.Loai} NoiDungPhanHoi={data.NoiDungPhanHoi} GhiChu={data.GhiChu} onChange={this.onChange.bind(this)} />
+              </Grid>
+              <Grid item xs={12}>
+                <AttachmentComponent
+                  attachments={hinhAnhSCTTs}
+                  capNhatHinhAnh={this.capNhatHinhAnh.bind(this)}
+                  xoaHinhAnh={this.xoaHinhAnh.bind(this)}
+                />
+              </Grid>
+              {
+                data.TinhTrang !== TinhTrang.HoanThanh &&
+                <Grid item xs={12}>
+                <div className={classes.buttonGr}>
+                  <ActionComponent
+                    disabledPin={(data.TinhTrang ? data.TinhTrang === TinhTrang.HoanThanh : false) || isPin}
+                    disabledSubmit={(data.TinhTrang ? data.TinhTrang === TinhTrang.HoanThanh : false) || isSubmit}
+                    onClear={this.onClear.bind(this)}
+                    onSubmit={this.onSubmit.bind(this)}
+                    onPin={this.onPin.bind(this)}
+                  />
+                  </div>
+                </Grid>
+              }
+            </Paper>
           </Grid>
-          <Grid item xs={12}>
-            <FormComponent Loai={data.Loai} NoiDungPhanHoi={data.NoiDungPhanHoi} GhiChu={data.GhiChu} onChange={this.onChange.bind(this)} />
-          </Grid>
-          <Grid item xs={12}>
-            <AttachmentComponent
-              attachments={hinhAnhSCTTs}
-              capNhatHinhAnh={this.capNhatHinhAnh.bind(this)}
-              xoaHinhAnh={this.xoaHinhAnh.bind(this)}
-            />
-          </Grid>
-          {
-            data.TinhTrang !== TinhTrang.HoanThanh &&
-            <Grid item xs={12}>
-              <ActionComponent
-                disabledPin={data.TinhTrang ? data.TinhTrang === TinhTrang.HoanThanh : false}
-                disabledSubmit={data.TinhTrang ? data.TinhTrang === TinhTrang.HoanThanh : false}
-                onClear={this.onClear.bind(this)}
-                onSubmit={this.onSubmit.bind(this)}
-                onPin={this.onPin.bind(this)}
-              />
-            </Grid>
-          }
         </Grid>
       </Grid>
     </div>
@@ -133,11 +153,21 @@ class DonViComponent extends React.Component<Props, States>{
     this.setState(state => ({ data: { ...state.data, NoiDungPhanHoi: '', Loai: null } }));
   }
 
-  private onSubmit() {
-    this.props.hoanThanh(this.state.data);
+  private async onSubmit() {
+    try {
+      this.setState({isSubmit:true});
+      this.props.hoanThanh(this.state.data);
+    }finally{
+      this.setState({isSubmit:false})
+    }
   }
   private onPin() {
-    this.props.pin(this.state.data);
+    try {
+      this.setState({isSubmit:true});
+      this.props.pin(this.state.data);
+    }finally{
+      this.setState({isSubmit:false})
+    }
   }
 
   private onChange(name: string, value: any) {

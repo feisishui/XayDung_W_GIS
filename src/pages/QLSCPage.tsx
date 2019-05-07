@@ -11,7 +11,8 @@ import InfoTableComponent from '../components/QuanLySuCo/InfoTableComponent';
 import ToolComponent from '../components/QuanLySuCo/ToolComponent';
 import ChiTietComponent from '../components/QuanLySuCo/ChiTiet/index';
 import LayerInfo from '../services/map/models/LayerInfo';
-import { LAYER
+import {
+  LAYER
 } from '../constants/map.constant';
 import layerUtils from '../map-lib/support/LayerHelper';
 // ESRI
@@ -21,19 +22,19 @@ import { alertActions } from '../services/main/main.action';
 import { emptyInfos, setLayer } from '../services/map/SuCo/suco.action';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core';
 import FeatureLayer from '../map-lib/layers/FeatureLayer';
+import SplitterLayout from 'react-splitter-layout';
 
 const styles = createStyles({
   root: {
     display: 'flex',
     flexDirection: 'row'
   },
-  toolContainer: {
-    width: '30%',
-    height: '100vh'
+  container: {
+    flex: '1 1 auto',
+    height: 'calc(100vh - 64px)'
   },
   mapContainer: {
     flexGrow: 1,
-    height: '100vh',
     display: 'flex',
     flexDirection: 'column',
     '& .map-view-container': {
@@ -86,23 +87,21 @@ class QLSCPage extends BasePage<Props, States> {
     const { isShowInfoTable, classes } = this.props;
     return (
       <div className={classes.root}>
-        <div className={classes.toolContainer}>
+        <SplitterLayout customClassName={classes.container} primaryIndex={1} secondaryInitialSize={340}>
           <ToolComponent />
-        </div>
-        <div className={classes.mapContainer}>
-          <MapComponent
-            className="map-view-container"
-            loadMapDiv={this.loadMapDiv.bind(this)}
-            layerInfos={this.props.layerInfos}
-            view={this.props.view}
-          />
-          {
-            isShowInfoTable
-            && <div className="info-container">
-              <InfoTableComponent />
-            </div>
-          }
-        </div>
+            <SplitterLayout vertical customClassName={classes.mapContainer} primaryIndex={0} secondaryInitialSize={200}>
+              <MapComponent
+                loadMapDiv={this.loadMapDiv.bind(this)}
+                layerInfos={this.props.layerInfos}
+                view={this.props.view}
+              />
+              {
+                isShowInfoTable
+                &&
+                <InfoTableComponent />
+              }
+            </SplitterLayout>
+        </SplitterLayout>
         <ChiTietComponent />
       </div>
     );
