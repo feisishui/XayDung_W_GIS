@@ -4,5 +4,5 @@ export const APPLICATION = {
   QuanLySuCo:'qlsc',
   QuanLySuCoDonVi:'qlsc-dv',
   TiepNhanSuCo:'tnsc',
-  XemDuLieu:'xdl  '  
+  XemDuLieu:'xdl'  
 };

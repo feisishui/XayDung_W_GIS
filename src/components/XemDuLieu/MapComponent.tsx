@@ -1,39 +1,30 @@
 // REACT
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 // ESRI
 import Expand = require('esri/widgets/Expand');
 import Legend = require('esri/widgets/Legend');
 import SearchWidget = require('esri/widgets/Search');
 import Locate = require('esri/widgets/Locate');
-import Print = require('esri/widgets/Print');
 import BasemapToggle = require('esri/widgets/BasemapToggle');
 import Measure from '../../map-lib/widgets/Measure';
 import * as Popup from '../../map-lib/widgets/Popup';
-import Action = require('esri/support/actions/ActionButton');
 
 // APP
-import SearchComponent from '../../map-lib/widgets/SearchComponent';
-import StatisticComponent from '../../map-lib/widgets/StatisticComponent';
 import LayerInfo from '../../services/map/models/LayerInfo';
 import layerUtil from '../../map-lib/support/LayerHelper';
-import { SERVICE_PRINT,LAYER } from '../../constants/map.constant';
-
-type DispatchToProps = {
-};
+import { LAYER } from '../../constants/map.constant';
 
 type Props = {
   view?: __esri.MapView | __esri.SceneView,
   loadMapDiv: (mapDiv: HTMLDivElement) => void,
   layerInfos?: LayerInfo[],
-}
-  & DispatchToProps;
+};
 type States = {
   isLoading: boolean
 };
 
-class QuanLyMangLuoiComponent extends React.Component<Props, States> {
+class QuanLyMangLuoiComponent extends React.PureComponent<Props, States> {
   private mapDiv: HTMLDivElement | undefined;
   private isLoadWidget: boolean = false;
   private isRegistryEvent: boolean = false;
@@ -63,115 +54,66 @@ class QuanLyMangLuoiComponent extends React.Component<Props, States> {
   }
 
   componentDidMount() {
-    if (this.mapDiv)
-      this.props.loadMapDiv(this.mapDiv);
+    if (this.mapDiv) { this.props.loadMapDiv(this.mapDiv); }
   }
 
   private initWidget(view: __esri.MapView | __esri.SceneView, layerInfos: LayerInfo[]) {
     if (view && layerInfos) {
-      view.ui.move(['zoom'], 'bottom-right');
-      // tìm kiếm
-      var search = new SearchWidget({
-        view: view,
-        searchAllEnabled: false
-      });
-      view.ui.add(search, 'top-left');
+      view.when(() => {
 
-      var layerList = layerUtil.createLayerList(view as any);
-      var expand =
-        new Expand({
-          expandTooltip: 'Lớp dữ liệu',
-          content: layerList
+        view.ui.move(['zoom'], 'bottom-right');
+        // tìm kiếm
+        var search = new SearchWidget({
+          view: view,
+          searchAllEnabled: false
         });
-      // expand.expand();
-      view.ui.add(expand, 'top-left');
-      // không có dòng này thì layerlist không load được legend
-      new Legend({ view: view });
+        view.ui.add(search, 'top-left');
 
-      view.popup.dockOptions = { position: 'top-left' };
-      new Popup.default({
-        view,
-        layerInfos: view.map.allLayers.filter(f => f.type === 'feature')
-          .map(layer => {
-            const layerInfo = layerInfos.find(info => layer.id === info.LayerID);
-            let showDeleteButton = false,
-              showAttachments = true,
-              isEditable = false;
+        var layerList = layerUtil.createLayerList(view as any);
+        var expand =
+          new Expand({
+            expandTooltip: 'Lớp dữ liệu',
+            content: layerList
+          });
+        // expand.expand();
+        view.ui.add(expand, 'top-left');
+        // không có dòng này thì layerlist không load được legend
+        new Legend({ view: view });
 
-            let actions: Action[] = [];
-
-            if (layerInfo) {
-              isEditable = layerInfo.IsEdit;
-              showDeleteButton = layerInfo.IsDelete;
-            }
-
-            return {
-              layer: layer,
-              showDeleteButton,
-              showAttachments,
-              isEditable,
-              actions
-            } as Popup.LayerInfo;
-          }).toArray()
-      });
-
-      // Tìm kiếm
-      {
-        let element = document.createElement('div');
-        ReactDOM.render(
-          <SearchComponent
-            view={view as any}
-          />, element);
-
-        let searchExpand = new Expand({
-          content: element,
-          expandIconClass: 'esri-icon-search',
-          expandTooltip: 'Tìm kiếm',
-          collapseTooltip: 'Đóng'
-        });
-
-        view.ui.add(searchExpand, 'top-right');
-      }
-
-
-      // Thống kê
-      {
-        let element = document.createElement('div');
-        ReactDOM.render(
-          <StatisticComponent
-            view={view as any}
-          />, element);
-
-        let statisticExpand = new Expand({
-          content: element,
-          expandIconClass: 'esri-icon-chart',
-          expandTooltip: 'Thống kê',
-          collapseTooltip: 'Đóng'
-        });
-
-        view.ui.add(statisticExpand, 'top-right');
-      }
-
-      view.ui.add(new Expand({
-        content: new Print({
+        view.popup.dockOptions = { position: 'top-left' };
+        new Popup.default({
           view,
-          printServiceUrl: SERVICE_PRINT
+          layerInfos: view.map.allLayers.filter(f => f.id !== LAYER.BASE_MAP)
+            .map(layer => {
+              const layerInfo = layerInfos.find(info => layer.id === info.LayerID);
+              let showDeleteButton = false,
+                showAttachments = true,
+                isEditable = false;
 
-        }),
-        expandIconClass: 'esri-icon-printer',
-        expandTooltip: 'In',
-        collapseTooltip: 'Đóng'
-      }), 'top-right');
+              if (layerInfo) {
+                isEditable = layerInfo.IsEdit;
+                showDeleteButton = layerInfo.IsDelete;
+              }
 
-         //Layer Editor
-      let basemapToggle = new BasemapToggle({ view, nextBasemap: 'osm' })
-      view.ui.add(basemapToggle, 'bottom-left');
-      // basemapToggle.toggle();
+              return {
+                layer: layer,
+                showDeleteButton,
+                showAttachments,
+                isEditable,
+                // actions
+              } as Popup.LayerInfo;
+            }).toArray()
+        });
 
-      // opacity dữ liệu nền khi chuyển sang dữ liệu nền vệ tinh
-      basemapToggle.on('toggle', this.onToggleBasemapToggle.bind(this));
+        let basemapToggle = new BasemapToggle({ view, nextBasemap: 'osm' });
+        view.ui.add(basemapToggle, 'bottom-left');
+        basemapToggle.toggle();
 
-      view.ui.add(new Locate({ view }), 'bottom-right');
+        // opacity dữ liệu nền khi chuyển sang dữ liệu nền vệ tinh
+        basemapToggle.on('toggle', this.onToggleBasemapToggle.bind(this));
+
+        view.ui.add(new Locate({ view }), 'bottom-right');
+      });
     }
   }
 
@@ -183,19 +125,14 @@ class QuanLyMangLuoiComponent extends React.Component<Props, States> {
     }
   }
 
-  private registerEvent(view: __esri.MapView | __esri.SceneView) {
-    view.popup.on('trigger-action', this.triggerActionHandler.bind(this));
-  }
-
-  private async triggerActionHandler(event: {
-    action: Action
-  }) {
+  private registerEvent(_: __esri.MapView | __esri.SceneView) {
+    return null;
   }
 
   render() {
     return (
-      <div>
-        <div className="mapDiv"
+      <div className="mapDiv">
+        <div
           ref={
             (element: HTMLDivElement) => this.mapDiv = element
           }
