@@ -27,11 +27,10 @@ import layerUtils from '../map-lib/support/LayerHelper';
 import MSG from '../constants/MSG';
 import { Model } from '../services/map/SuCo/suco.model';
 import SplitterLayout from 'react-splitter-layout';
+import Header from '../components/Header/Header';
 
 const styles = createStyles({
   root: {
-    display: 'flex',
-    flexDirection: 'row'
   },
   container: {
     flex: '1 1 auto',
@@ -92,6 +91,7 @@ class TNSCPage extends BasePage<Props, States> {
     if (view) layer = view.map.findLayerById(CST_LAYER.DIEM_SU_CO) as FeatureLayer;
     return (
       <div className={classes.root}>
+      <Header/>
         <SplitterLayout customClassName={classes.container} primaryIndex={1} secondaryInitialSize={500}>
 
           <div >

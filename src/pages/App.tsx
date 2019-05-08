@@ -98,7 +98,6 @@ class AppPage extends React.PureComponent<Props, {}> {
             />
             :
             <div>
-              <Header/>
             <m.component id={m.id} />
             </div>
         } />);
