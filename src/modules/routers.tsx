@@ -28,7 +28,7 @@ const routes: Array<Route> = [
   },
   {
     id: APPLICATION.XemDuLieu, name: 'Xem dữ liệu hạ tầng kỹ thuật', component: XemDuLieuPage,
-    props: { exact: true, path: APPLICATION.XemDuLieu },
+    props: { exact: true, path: '/'+APPLICATION.XemDuLieu },
     avatar: '/images/icons/qlhtkt.png',isPrivate:false
   },
   {
@@ -44,7 +44,7 @@ const routes: Array<Route> = [
   {
     id: APPLICATION.TiepNhanSuCo, name: 'Tiếp nhận sự cố', component: TNSCPage,
     props: { path: '/' + APPLICATION.TiepNhanSuCo },
-    avatar: '/images/icons/tnsc.png',isPrivate:true
+    avatar: '/images/icons/tnsc.png',isPrivate:false
   },
 ];
 export default routes;
