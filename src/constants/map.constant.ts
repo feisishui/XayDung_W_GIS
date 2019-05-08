@@ -72,7 +72,7 @@ export const MAP = {
 };
 
 export const APP_LAYER = {
-  [APPLICATION.ThongTinQuyHoach]: [LAYER.BASE_MAP, LAYER.QuyHoachChiTiet, LAYER.QuyHoachChung, LAYER.QuyHoachNongThonMoi, LAYER.QuyHoachPhanKhu],
+  [APPLICATION.ThongTinQuyHoach]: [LAYER.BASE_MAP, LAYER.QuyHoachChiTiet, LAYER.QuyHoachChung, LAYER.QuyHoachNongThonMoi, LAYER.QuyHoachPhanKhu,LAYER.RanhGioiQuyHoach],
   [APPLICATION.XemDuLieu]: [LAYER.BASE_MAP,
   LAYER.BaoVeMoiTruong,
   LAYER.BeChua,
