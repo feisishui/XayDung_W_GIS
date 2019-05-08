@@ -35,21 +35,21 @@ type States = {
 };
 
 enum TabIndex {
-  TimKiem, ThongKe, Tao, In
+   In
 }
 
 class ToolComponent extends React.PureComponent<Props, States>{
   constructor(props: Props) {
     super(props);
     this.state = {
-      tabIndex: TabIndex.TimKiem
+      tabIndex: TabIndex.In
     };
   }
   render() {
     const { classes, view } = this.props;
     const { tabIndex } = this.state;
     return <div className={classes.root}>
-      <Tabs value={tabIndex} scrollable onChange={this.handleChange.bind(this)} className={classes.tab}>
+      <Tabs value={tabIndex} variant="scrollable" onChange={this.handleChange.bind(this)} className={classes.tab}>
         {/* <Tab label="Tìm kiếm" icon={<SearchIcon />} />
         <Tab label="Thống kê" icon={<EqualizerIcon />} /> */}
         <Tab label="In" icon={<PrintIcon />} />

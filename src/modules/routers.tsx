@@ -3,7 +3,8 @@ import {
   HoatDongXayDungPage,
   XemDuLieuPage,
   QLSCPage,
-  TNSCPage
+  TNSCPage,
+  HaTangKyThuatPage
 } from '../pages/index';
 import { APPLICATION } from '../constants/index';
 export interface Route {
@@ -24,7 +25,7 @@ const routes: Array<Route> = [
     id: APPLICATION.HoatDongXayDung, name: 'Quản lý hoạt động xây dựng', component: HoatDongXayDungPage,
     props: { exact: true, path: '/' + APPLICATION.HoatDongXayDung },
     avatar: '/images/icons/hdxd.png',
-    isPrivate: false
+    isPrivate: true
   },
   {
     id: APPLICATION.XemDuLieu, name: 'Xem dữ liệu hạ tầng kỹ thuật', component: XemDuLieuPage,
@@ -45,6 +46,11 @@ const routes: Array<Route> = [
     id: APPLICATION.TiepNhanSuCo, name: 'Tiếp nhận sự cố', component: TNSCPage,
     props: { path: '/' + APPLICATION.TiepNhanSuCo },
     avatar: '/images/icons/tnsc.png',isPrivate:false
+  },
+  {
+    id: APPLICATION.QuanLyHaTangKyThuat, name: 'Quản lý hạ tầng kỹ thuật', component: HaTangKyThuatPage,
+    props: { path: '/' + APPLICATION.QuanLyHaTangKyThuat },
+    avatar: '/images/icons/qlhtkt.png',isPrivate:true
   },
 ];
 export default routes;
