@@ -227,6 +227,7 @@ class FormComponent extends React.Component<Props, States> {
           <AttachmentComponent
             capNhatHinhAnh={this.handleCapNhatHinhAnh}
             attachments={attachments}
+            xoaHinhAnh={this.handleXoaHinhAnh}
           />
         </Paper>
         {this.renderStepActions(STEP_NAME.NHAP_THONG_TIN)}
@@ -413,21 +414,32 @@ class FormComponent extends React.Component<Props, States> {
     let files = (form.lastChild as HTMLInputElement).files;
     if (files && files.length > 0) {
       let file = files[0];
-    
+
       var reader = new FileReader();
-      reader.onloadend = ()=> {
+      reader.onloadend = () => {
         let attachment = {
-          contentType:file.type,
-          name:file.name,
-          url:reader.result as string,
+          id: this.state.attachments.length > 0?this.state.attachments[this.state.attachments.length - 1].id + 1:1,
+          contentType: file.type,
+          name: file.name,
+          url: reader.result as string,
         } as __esri.AttachmentInfo;
-        this.setState(state=>({attachments:[attachment, ...state.attachments]}))
-     }
+        this.setState(state => ({ attachments: [attachment, ...state.attachments] }))
+      }
       reader.readAsDataURL(file);
     }
 
 
     return Promise.resolve(true);
+  }
+
+  handleXoaHinhAnh = (id: number) => {
+    const { attachments } = this.state;
+    let index = attachments.findIndex(f => f.id === id);
+    if (index > -1) {
+      let newAttachments = [...attachments];
+      newAttachments.splice(index,1);
+      this.setState({attachments:newAttachments});
+    }
   }
 
 }
