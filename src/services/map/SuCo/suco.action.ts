@@ -97,7 +97,7 @@ export const emptyInfos = (): MapSuCoAction => ({
  * @param info Thông tin
  * @param geometry Vị trí
  */
-export const phanAnhSuCo = (info: Model, geometry: __esri.Point
+export const phanAnhSuCo = (info: Model, geometry: __esri.Point,attachments:HTMLFormElement[]
 ) => {
   return async (dispatch: Dispatch<any>, getState: () => AllModelReducer): Promise<boolean> => {
     const layer = getLayer(getState());
@@ -133,6 +133,11 @@ export const phanAnhSuCo = (info: Model, geometry: __esri.Point
 
         if (result.addFeatureResults[0].error) throw new Error(result.addFeatureResults[0].error);
         else {
+          // cap nhat attachment
+          let successObjectId = result.addFeatureResults[0].objectId;
+          attachments.forEach(form=>
+              layer.addAttachment({attributes:{OBJECTID:successObjectId}} as __esri.Graphic,form)
+            );
           const id = await layIDSuCo(layer, result.addFeatureResults[0].objectId);
           dispatch(alertActions.success('Mã sự cố: ' + id)); // thông báo
           dispatch(newIdSuCo(id));

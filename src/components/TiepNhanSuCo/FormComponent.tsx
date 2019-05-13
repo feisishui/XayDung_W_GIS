@@ -70,7 +70,7 @@ type Props = {
   layer: FeatureLayer,
   onChangePoint: (point?: __esri.Point) => void,
   newIDSuCo?: string,
-  phanAnh: (model: Model, geometry: __esri.Point) => Promise<boolean>,
+  phanAnh: (model: Model, geometry: __esri.Point, attachments: HTMLFormElement[]) => Promise<boolean>,
   chuyenDonVi?: () => void
 } & WithStyles<typeof styles>;
 
@@ -80,6 +80,7 @@ enum STEP_NAME {
 
 class FormComponent extends React.Component<Props, States> {
   private handleChonViTri: IHandle | null = null;
+  private attachmentForms:HTMLFormElement[] = [];
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -149,7 +150,7 @@ class FormComponent extends React.Component<Props, States> {
       this.setState({ isPhanAnh: true });
       // cập nhật sự cố
       const { view } = this.props;
-      const { viTri, diaChi, hoVaTen, soDienThoai, linhVuc, noiDung, nguyenNhan } = this.state;
+      const { viTri, diaChi, hoVaTen, soDienThoai, linhVuc, noiDung, nguyenNhan, attachments } = this.state;
 
       if (!viTri) { throw MSG.ChuaChonViTri; }
       if (!diaChi) throw MSG.ChuaNhapDiaChi;
@@ -168,8 +169,10 @@ class FormComponent extends React.Component<Props, States> {
           NguyenNhan: nguyenNhan,
           MaPhuongXa: hanhChinh.MaPhuong, MaHuyenTP: hanhChinh.MaQuan
         } as any,
-        viTri
+        viTri,
+      this.attachmentForms
       );
+      return true;
     } catch (error) {
       return false;
     }
@@ -180,8 +183,8 @@ class FormComponent extends React.Component<Props, States> {
         this.handleChonViTri.remove();
         delete this.handleChonViTri;
       }
+      this.setState({ isPhanAnh: false });
     }
-    this.setState({ isPhanAnh: false });
   }
 
   private clear() {
@@ -197,6 +200,7 @@ class FormComponent extends React.Component<Props, States> {
       nguyenNhan: undefined,
       attachments: []
     });
+    this.attachmentForms = [];
   }
   private getSteps() {
     let steps: Item[] = [];
@@ -414,11 +418,11 @@ class FormComponent extends React.Component<Props, States> {
     let files = (form.lastChild as HTMLInputElement).files;
     if (files && files.length > 0) {
       let file = files[0];
-
+this.attachmentForms.push(form);
       var reader = new FileReader();
       reader.onloadend = () => {
         let attachment = {
-          id: this.state.attachments.length > 0?this.state.attachments[this.state.attachments.length - 1].id + 1:1,
+          id: this.state.attachments.length > 0 ? this.state.attachments[this.state.attachments.length - 1].id + 1 : 1,
           contentType: file.type,
           name: file.name,
           url: reader.result as string,
@@ -436,10 +440,12 @@ class FormComponent extends React.Component<Props, States> {
     const { attachments } = this.state;
     let index = attachments.findIndex(f => f.id === id);
     if (index > -1) {
+      this.attachmentForms.splice(index,1);
       let newAttachments = [...attachments];
-      newAttachments.splice(index,1);
-      this.setState({attachments:newAttachments});
+      newAttachments.splice(index, 1);
+      this.setState({ attachments: newAttachments });
     }
+    return Promise.resolve(true);
   }
 
 }

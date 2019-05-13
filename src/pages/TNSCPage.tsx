@@ -56,7 +56,7 @@ type StateToProps = {
 type DispatchToProps = {
   initViewDiv: (div: HTMLDivElement) => void,
   alertError: (message: string) => void,
-  phanAnhSuCo: (model: Model, geometry: __esri.Point) => Promise<boolean>,
+  phanAnhSuCo: (model: Model, geometry: __esri.Point,attachments:HTMLFormElement[]) => Promise<boolean>,
   chuyenDonVi: (maSuCo: string, maDonVi: string) => Promise<boolean>,
   setLayer: (layer: FeatureLayer) => void
 };
@@ -200,8 +200,8 @@ class TNSCPage extends BasePage<Props, States> {
    * @param model Thông tin
    * @param geometry Vị trí
    */
-  private phanAnhSuCo(model: Model, geometry: __esri.Point): Promise<boolean> {
-    return this.props.phanAnhSuCo(model, geometry);
+  private phanAnhSuCo(model: Model, geometry: __esri.Point,attachments:HTMLFormElement[]): Promise<boolean> {
+    return this.props.phanAnhSuCo(model, geometry,attachments);
   }
 
   /**
