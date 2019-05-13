@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
   Button,
-  createStyles, WithStyles, Theme, withStyles
+  createStyles, WithStyles, Theme, withStyles, Paper, Typography
 } from '@material-ui/core';
 import Stepper, { Item } from './FormComponent/Stepper';
 import FormInput from './FormComponent/FormInput';
@@ -14,6 +14,7 @@ import hanhChinhUtils from '../../map-lib/support/HanhChinhUtils';
 import FeatureLayer = require('esri/layers/FeatureLayer');
 import MSG from './MSG';
 import { Model } from '../../services/map/SuCo/suco.model';
+import AttachmentComponent from '../material-ui/AttachmentComponent';
 const styles = (theme: Theme) => createStyles({
   root: {
     fontFamily: `'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`,
@@ -43,6 +44,10 @@ const styles = (theme: Theme) => createStyles({
   infoFinishContentRevert: {
     margin: '20px 0',
     textAlign: 'center'
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 3
   }
 });
 
@@ -57,7 +62,8 @@ type States = {
   viTri?: __esri.Point,
   dmLinhVuc: __esri.CodedValueDomainCodedValues[],
   dmNguyenNhan: __esri.CodedValueDomainCodedValues[],
-  isPhanAnh:boolean
+  isPhanAnh: boolean,
+  attachments: __esri.AttachmentInfo[]
 };
 type Props = {
   view: __esri.MapView | __esri.SceneView,
@@ -79,7 +85,8 @@ class FormComponent extends React.Component<Props, States> {
     this.state = {
       stepIndex: STEP_NAME.NHAP_THONG_TIN,
       dmLinhVuc: [], dmNguyenNhan: [],
-      isPhanAnh:false
+      isPhanAnh: false,
+      attachments: []
     };
   }
 
@@ -139,7 +146,7 @@ class FormComponent extends React.Component<Props, States> {
 
   private async onSubmit(): Promise<boolean> {
     try {
-      this.setState({isPhanAnh:true});
+      this.setState({ isPhanAnh: true });
       // cập nhật sự cố
       const { view } = this.props;
       const { viTri, diaChi, hoVaTen, soDienThoai, linhVuc, noiDung, nguyenNhan } = this.state;
@@ -174,7 +181,7 @@ class FormComponent extends React.Component<Props, States> {
         delete this.handleChonViTri;
       }
     }
-    this.setState({isPhanAnh:false});
+    this.setState({ isPhanAnh: false });
   }
 
   private clear() {
@@ -187,13 +194,15 @@ class FormComponent extends React.Component<Props, States> {
       soDienThoai: undefined,
       viTri: undefined,
       linhVuc: undefined,
-      nguyenNhan: undefined
+      nguyenNhan: undefined,
+      attachments: []
     });
   }
   private getSteps() {
     let steps: Item[] = [];
-
-    const { soDienThoai, hoVaTen, diaChi, noiDung, linhVuc, nguyenNhan, dmLinhVuc, dmNguyenNhan } = this.state;
+    const { classes } = this.props;
+    const { soDienThoai, hoVaTen, diaChi, noiDung, linhVuc, nguyenNhan, dmLinhVuc, dmNguyenNhan,
+      attachments } = this.state;
     steps.push({
       label: 'Nhập thông tin',
       content: <div>
@@ -213,6 +222,13 @@ class FormComponent extends React.Component<Props, States> {
           dmLinhVuc={dmLinhVuc}
           dmNguyenNhan={dmNguyenNhan}
         />
+        <Paper className={classes.paper}>
+          <Typography>Hình ảnh đính kèm</Typography>
+          <AttachmentComponent
+            capNhatHinhAnh={this.handleCapNhatHinhAnh}
+            attachments={attachments}
+          />
+        </Paper>
         {this.renderStepActions(STEP_NAME.NHAP_THONG_TIN)}
       </div>
     });
@@ -288,7 +304,7 @@ class FormComponent extends React.Component<Props, States> {
   }
 
   private renderStepActions(step: number) {
-    const { stepIndex, viTri, diaChi ,isPhanAnh} = this.state;
+    const { stepIndex, viTri, diaChi, isPhanAnh } = this.state;
 
     return (
       <div style={{ margin: '12px 0' }}>
@@ -391,6 +407,27 @@ class FormComponent extends React.Component<Props, States> {
     event.preventDefault();
     if (this.props.chuyenDonVi)
       this.props.chuyenDonVi();
+  }
+
+  handleCapNhatHinhAnh = (form: HTMLFormElement): Promise<boolean> => {
+    let files = (form.lastChild as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      let file = files[0];
+    
+      var reader = new FileReader();
+      reader.onloadend = ()=> {
+        let attachment = {
+          contentType:file.type,
+          name:file.name,
+          url:reader.result as string,
+        } as __esri.AttachmentInfo;
+        this.setState(state=>({attachments:[attachment, ...state.attachments]}))
+     }
+      reader.readAsDataURL(file);
+    }
+
+
+    return Promise.resolve(true);
   }
 
 }

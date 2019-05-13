@@ -81,6 +81,7 @@ type Props = {
   & WithStyles<typeof styles>
   & PageProps;
 class MenuPage extends BasePage<Props, States> {
+  private CloneColors = COLORS;
   constructor(props: Props) {
     super(props);
     this.state = { routes: [] };
@@ -114,8 +115,10 @@ class MenuPage extends BasePage<Props, States> {
   }
 
   private randomColor() {
-    const index = Math.floor(Math.random() * (COLORS.length - 1));
-    return COLORS[index];
+    const index = Math.floor(Math.random() * (this.CloneColors.length - 1));
+    let color =  this.CloneColors[index];
+     this.CloneColors.splice(index,1);
+    return color;
   }
 
   render() {
