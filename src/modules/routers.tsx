@@ -4,7 +4,8 @@ import {
   XemDuLieuPage,
   QLSCPage,
   TNSCPage,
-  HaTangKyThuatPage
+  HaTangKyThuatPage,
+  PhanAnhSaiPhamXayDungPage
 } from '../pages/index';
 import { APPLICATION } from '../constants/index';
 export interface Route {
@@ -45,6 +46,11 @@ const routes: Array<Route> = [
   {
     id: APPLICATION.TiepNhanSuCo, name: 'Tiếp nhận sự cố', component: TNSCPage,
     props: { path: '/' + APPLICATION.TiepNhanSuCo },
+    avatar: '/images/icons/tnsc.png',isPrivate:false
+  },
+  {
+    id: APPLICATION.PhanAnhSaiPhamXayDung, name: 'Phản ánh sai phạm xây dựng', component: PhanAnhSaiPhamXayDungPage,
+    props: { path: '/' + APPLICATION.PhanAnhSaiPhamXayDung },
     avatar: '/images/icons/tnsc.png',isPrivate:false
   },
   {

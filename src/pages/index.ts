@@ -4,6 +4,7 @@ export { default as TNSCPage } from './TNSCPage';
 export { default as QLSCPage } from './QLSCPage';
 export { default as XemDuLieuPage } from './XemDuLieuPage';
 export { default as HaTangKyThuatPage } from './HaTangKyThuatPage';
+export { default as PhanAnhSaiPhamXayDungPage } from './PhanAnhSaiPhamXayDungPage';
 export { default as LogoutFunction } from './LogoutFunction';
 export { default as LoginPage } from './LoginPage';
 export { default as NotFound } from './NotFound';

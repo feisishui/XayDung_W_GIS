@@ -18,6 +18,7 @@ export enum LinhVuc {
   CayXanh,
   ChieuSang,
   DienLuc,
+  SaiPhamXayDung
 }
 
 export interface KetQuaTruyVan {

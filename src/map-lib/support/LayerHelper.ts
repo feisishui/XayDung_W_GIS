@@ -238,7 +238,7 @@ class SuCoRenderer {
 	private getUniqueValueInfos() {
 		let uniqueValueInfos: __esri.UniqueValueRendererUniqueValueInfos[] = [];
 		[SuCo.LinhVuc.CapNuoc, SuCo.LinhVuc.CayXanh, SuCo.LinhVuc.ChieuSang,
-		SuCo.LinhVuc.DienLuc, SuCo.LinhVuc.GiaoThong, SuCo.LinhVuc.ThoatNuoc, SuCo.LinhVuc.VienThong]
+		SuCo.LinhVuc.DienLuc, SuCo.LinhVuc.GiaoThong, SuCo.LinhVuc.ThoatNuoc, SuCo.LinhVuc.VienThong,SuCo.LinhVuc.SaiPhamXayDung]
 			.forEach(linhVuc =>
 				this.renderUniqueValue(linhVuc)
 					.forEach(uniqueRender =>
